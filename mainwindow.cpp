@@ -177,6 +177,7 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    itemsB = items;
 }
 
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
@@ -412,4 +413,54 @@ void MainWindow::finishedThread()
 void MainWindow::on_pushButton_Compare_Folders_clicked()
 {
     startComparingFoldersInBackground();
+}
+
+// Save To File
+void MainWindow::saveItemsToFile(const QString &fileName)
+{
+    QFile file(fileName);
+    if(file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream out(&file);
+        out.setCodec("UTF-8");
+        out.setGenerateByteOrderMark(false);
+        HashFileInfoStruct s;
+        QString delimeter = QString("\t");
+        QString endOfLine = QString("\n");
+
+        out << QString("%Group ID") << delimeter;
+        out << QString("Size") << delimeter;
+        out << QString("Hash") << delimeter << QString("FileName");
+        out << endOfLine;
+
+        QListIterator<HashFileInfoStruct> it(*itemsB);
+        while(it.hasNext())
+        {
+            s = it.next();
+            out << QString("%1").arg(s.groupID) << delimeter;
+            out << s.size << delimeter << s.hash << delimeter << s.fileName << endOfLine;
+        }
+        file.close();
+    }
+}
+
+void MainWindow::on_pushButton_Save_From_Table_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(this, QString("Save File"),
+                                     QDir::homePath(),
+                                     QString("Text files (*.txt)") );
+    if(!fileName.isNull() && !fileName.isEmpty())
+    {
+        QFileInfo qF(fileName);
+        if(qF.exists())
+        {
+            QMessageBox::StandardButton reply = QMessageBox::question(this, "File already exists!", "Overwrite?",
+                                                                      QMessageBox::Yes|QMessageBox::No);
+            if (reply == QMessageBox::No)
+            {
+                return;
+            }
+        }
+        saveItemsToFile(fileName);
+    }
 }

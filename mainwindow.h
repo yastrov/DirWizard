@@ -63,8 +63,10 @@ private slots:
     void compareFoldersComplete(QList<HashFileInfoStruct> *items);
     void finishedThread();
     void on_pushButton_Compare_Folders_clicked();
+    void on_pushButton_Save_From_Table_clicked();
 
 private:
+    QList<HashFileInfoStruct> *itemsB;
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
     // ComboBox
@@ -84,6 +86,7 @@ private:
     // Comparing Folders
     void startComparingFoldersInBackground();
     // Other
+    void saveItemsToFile(const QString &fileName);
 };
 
 #endif // MAINWINDOW_H
