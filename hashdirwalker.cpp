@@ -69,8 +69,12 @@ void HashDirWalker::processFilesRecursively(const QVector<QDir> &rootDirs)
 
 void HashDirWalker::processFilesRecursively(const QDir &rootDir) {
     QDirIterator it(rootDir, QDirIterator::Subdirectories);
-    while(it.hasNext()) {
+    while(it.hasNext() && !stopped) {
         processFile(it.next());
+    }
+    if(stopped)
+    {
+        emit finished();
     }
 }
 

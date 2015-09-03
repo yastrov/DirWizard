@@ -73,11 +73,6 @@ void DirComparator::processFile(const QString &fileName)
             }
         }
     }
-    if(stopped)
-    {
-        emit finished();
-        return;
-    }
 }
 
 void DirComparator::clearNoDuplicatedHashes()

@@ -36,6 +36,7 @@ protected:
     QList<QDir> rootDirs;
 
 signals:
+    void finished();
 
 public slots:
     void stop();

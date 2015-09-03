@@ -84,11 +84,6 @@ void DuplicateFinder::processFile(const QString &fileName)
             }
         }
     }
-    if(stopped)
-    {
-        emit finished();
-        return;
-    }
 }
 
 void DuplicateFinder::clearNoDuplicatedSize()
