@@ -19,6 +19,8 @@ release {
   DEFINES += MYPREFIX_RELEASE
 }
 
+CONFIG += c++11
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     hashdirwalker.cpp \
