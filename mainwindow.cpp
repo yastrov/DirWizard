@@ -4,7 +4,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    dirNameForFolderDialog(QDir::current().dirName())
+    dirNameForFolderDialog(QDir::current().dirName()),
+    itemsB(nullptr)
 {
     ui->setupUi(this);
     initDirsListWidget();
@@ -446,6 +447,8 @@ void MainWindow::saveItemsToFile(const QString &fileName)
 
 void MainWindow::on_pushButton_Save_From_Table_clicked()
 {
+    if(itemsB != nullptr)
+    {
     QString fileName = QFileDialog::getSaveFileName(this, QString("Save File"),
                                      QDir::homePath(),
                                      QString("Text files (*.txt)") );
@@ -462,5 +465,6 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
             }
         }
         saveItemsToFile(fileName);
+    }
     }
 }
