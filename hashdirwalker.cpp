@@ -82,7 +82,9 @@ QByteArray HashDirWalker::fileChecksum(const QString &fileName,
                                     QCryptographicHash &hash)
 {
     hash.reset();
+#ifdef MYPREFIX_DEBUG
     qDebug() << fileName;
+#endif
     QFile file(fileName);
         if (file.open(QFile::ReadOnly)) {
             while (!file.atEnd())
@@ -99,7 +101,9 @@ QByteArray HashDirWalker::fileChecksum(const QString &fileName,
                                     QCryptographicHash *hash)
 {
     hash->reset();
+#ifdef MYPREFIX_DEBUG
     qDebug() << fileName;
+#endif
     QFile file(fileName);
         if (file.open(QFile::ReadOnly)) {
             while (!file.atEnd())

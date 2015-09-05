@@ -14,7 +14,7 @@ class HashDirWalker : public QObject
 {
     Q_OBJECT
 public:
-    explicit HashDirWalker(QCryptographicHash::Algorithm hash, QObject *parent = 0);
+    explicit HashDirWalker(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
     static QByteArray fileChecksum(const QString &fileName, QCryptographicHash &hash);
     static QByteArray fileChecksum(const QString &fileName, QCryptographicHash *hash);
     static QByteArray fileChecksum(const QString &fileName);

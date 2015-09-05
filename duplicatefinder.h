@@ -22,7 +22,7 @@ class DuplicateFinder : public HashDirWalker
 {
     Q_OBJECT
 public:
-    DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *parent = 0);
+    DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
     void processFile(const QString &fileName);
 
 private:
@@ -36,7 +36,7 @@ private:
     QList<HashFileInfoStruct> * reduceToResult();
 
 signals:
-    void finishedWData(QList<HashFileInfoStruct> *items=0);
+    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
 
 public slots:
     void process();

@@ -16,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    if(itemsB != nullptr)
+        delete itemsB;
     delete ui;
 }
 
@@ -178,6 +180,8 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    if(itemsB != nullptr)
+        delete itemsB;
     itemsB = items;
 }
 
@@ -210,6 +214,9 @@ void MainWindow::startDuplicateSearchInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
+        if(itemsB != nullptr)
+            delete itemsB;
+
         QThread* thread = new QThread;
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), 0);
 
@@ -295,6 +302,9 @@ void MainWindow::compareFoldersComplete(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    if(itemsB != nullptr)
+        delete itemsB;
+    itemsB = items;
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -305,6 +315,9 @@ void MainWindow::startComparingFoldersInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
+        if(itemsB != nullptr)
+            delete itemsB;
+
         QThread* thread = new QThread;
         DirComparator *worker = new DirComparator(getCurrentHashAlgo(), 0);
 

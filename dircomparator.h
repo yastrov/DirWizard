@@ -22,7 +22,7 @@ class DirComparator : public HashDirWalker
 {
      Q_OBJECT
 public:
-    DirComparator(QCryptographicHash::Algorithm hash, QObject *parent = 0);
+    DirComparator(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
     void processFile(const QString &fileName);
 
 private:
@@ -36,7 +36,7 @@ private:
 
 signals:
     void finished();
-    void finishedWData(QList<HashFileInfoStruct> *items=0);
+    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
 
 public slots:
     void process();
