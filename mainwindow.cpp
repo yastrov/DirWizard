@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent) :
     initHashComboBoxWidget();
     initTableWidget();
     QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_AboutAction_Triggered);
+    QObject::connect(ui->pushButton_Calc_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
+    QObject::connect(ui->pushButton_Check_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -218,7 +220,7 @@ void MainWindow::startDuplicateSearchInBackground()
             delete itemsB;
 
         QThread* thread = new QThread;
-        DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), 0);
+        DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
         worker->moveToThread(thread);
@@ -319,7 +321,7 @@ void MainWindow::startComparingFoldersInBackground()
             delete itemsB;
 
         QThread* thread = new QThread;
-        DirComparator *worker = new DirComparator(getCurrentHashAlgo(), 0);
+        DirComparator *worker = new DirComparator(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
         worker->moveToThread(thread);
@@ -479,5 +481,76 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
         }
         saveItemsToFile(fileName);
     }
+    }
+}
+
+/*
+    Calc Hashes
+*/
+void MainWindow::startCalcHashesInBackground()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "startCalcHashesInBackground";
+#endif
+    QList<QDir> dirs = getElementsFromDirsListWidget();
+    if(!dirs.isEmpty())
+    {
+        if(itemsB != nullptr)
+            delete itemsB;
+
+        QThread* thread = new QThread;
+        CalcAndSaveHash *worker = new CalcAndSaveHash(getCurrentHashAlgo(), nullptr);
+
+        worker->setQDir(dirs);
+        worker->moveToThread(thread);
+        QObject::connect(thread, &QThread::started, worker, &CalcAndSaveHash::process);
+        QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
+        QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
+        QObject::connect(this, &MainWindow::stopThread, worker, &CalcAndSaveHash::stop);
+#ifdef MYPREFIX_DEBUG
+        qDebug() << "startThread";
+#endif
+        thread->start();
+    }
+}
+
+void MainWindow::on_pushButton_Calc_Hashes_clicked()
+{
+    startCalcHashesInBackground();
+}
+
+/*
+Checked Hashes
+*/
+void MainWindow::on_pushButton_Check_Hashes_clicked()
+{
+    startCheckHashesInBackground();
+}
+
+void MainWindow::startCheckHashesInBackground()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "startCheckHashesInBackground";
+#endif
+    QList<QDir> dirs = getElementsFromDirsListWidget();
+    if(!dirs.isEmpty())
+    {
+        if(itemsB != nullptr)
+            delete itemsB;
+
+        QThread* thread = new QThread;
+        LoadAndCheckHash *worker = new LoadAndCheckHash(getCurrentHashAlgo(), nullptr);
+
+        worker->setQDir(dirs);
+        worker->moveToThread(thread);
+        QObject::connect(thread, &QThread::started, worker, &LoadAndCheckHash::process);
+        QObject::connect(worker, &LoadAndCheckHash::finished, thread, &QThread::quit);
+        QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
+        QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::compareFoldersComplete);
+        QObject::connect(this, &MainWindow::stopThread, worker, &LoadAndCheckHash::stop);
+#ifdef MYPREFIX_DEBUG
+        qDebug() << "startThread";
+#endif
+        thread->start();
     }
 }

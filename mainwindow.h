@@ -34,6 +34,8 @@
 #include <QStringListIterator>
 #include <QStringList>
 #include <QMessageBox>
+#include "calcandsavehash.h"
+#include "loadandcheckhash.h"
 
 namespace Ui {
 class MainWindow;
@@ -64,11 +66,13 @@ private slots:
     void finishedThread();
     void on_pushButton_Compare_Folders_clicked();
     void on_pushButton_Save_From_Table_clicked();
+    void on_pushButton_Calc_Hashes_clicked();
+    void on_pushButton_Check_Hashes_clicked();
 
 private:
-    QList<HashFileInfoStruct> *itemsB;
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
+    QList<HashFileInfoStruct> *itemsB;
     // ComboBox
     void addItemToComboBox(QString text, int data);
     void initHashComboBoxWidget();
@@ -87,6 +91,9 @@ private:
     void startComparingFoldersInBackground();
     // Other
     void saveItemsToFile(const QString &fileName);
+    // Calc hashes
+    void startCalcHashesInBackground();
+    void startCheckHashesInBackground();
 };
 
 #endif // MAINWINDOW_H

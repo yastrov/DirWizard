@@ -35,7 +35,6 @@ private:
     QList<HashFileInfoStruct> * reduceToResult();
 
 signals:
-    void finished();
     void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
 
 public slots:

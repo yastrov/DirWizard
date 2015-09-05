@@ -25,12 +25,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     hashdirwalker.cpp \
     duplicatefinder.cpp \
-    dircomparator.cpp
+    dircomparator.cpp \
+    calcandsavehash.cpp \
+    loadandcheckhash.cpp
 
 HEADERS  += mainwindow.h \
     hashdirwalker.h \
     duplicatefinder.h \
     hashfileinfostruct.h \
-    dircomparator.h
+    dircomparator.h \
+    calcandsavehash.h \
+    loadandcheckhash.h
 
 FORMS    += mainwindow.ui
