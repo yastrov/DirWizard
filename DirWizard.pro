@@ -38,3 +38,15 @@ HEADERS  += mainwindow.h \
     loadandcheckhash.h
 
 FORMS    += mainwindow.ui
+
+VERSION = 0.0.0.1
+#QMAKE_TARGET_COMPANY = company
+QMAKE_TARGET_PRODUCT = DirWizard
+QMAKE_TARGET_DESCRIPTION = "Program for find duplicates or unique files, calculate and check hashes."
+QMAKE_TARGET_COPYRIGHT = (c) Yuriy Astrov
+GITHUB_URL = "https://github.com/yastrov/DirWizard"
+
+DEFINES += \
+APP_VERSION=\"\\\"$$VERSION\\\"\" \
+APP_URL=\"\\\"$$GITHUB_URL\\\"\" \
+

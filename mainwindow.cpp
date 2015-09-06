@@ -414,7 +414,7 @@ void MainWindow::on_AboutAction_Triggered(bool checked)
 {
     QMessageBox::about(this,
                        QString("About DirWizard"),
-                       QString("Written by Yuriy (Yuri) Astrov\nBased on QT 5."));
+                       QString("Written by Yuriy (Yuri) Astrov\nBased on QT 5, Licensed by GPLv2.\nVersion: %1\nURL: %2").arg(APP_VERSION, APP_URL));
 
  }
 
