@@ -392,7 +392,7 @@ void MainWindow::on_pushButton_Duplicate_Search_clicked()
 /*
  * Remove Seleccted item (Dir Name) from ListWidget
  */
-void MainWindow::on_pushButton_RemoveDir_clicked()
+void MainWindow::on_pushButton_Remove_Dir_clicked()
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "on_pushButton_RemoveDir_clicked";
@@ -414,7 +414,12 @@ void MainWindow::on_AboutAction_Triggered(bool checked)
 {
     QMessageBox::about(this,
                        QString("About DirWizard"),
-                       QString("Written by Yuriy (Yuri) Astrov\nBased on QT 5, Licensed by GPLv2.\nVersion: %1\nURL: %2").arg(APP_VERSION, APP_URL));
+                       tr("<h2>DirWizard</h2>"
+                          "<p>Written by Yuriy (Yuri) Astrov<br/>"
+                          "Based on QT 5<br/>"
+                          "Licensed by GPLv2<br/>"
+                          "Version: %1<br/>"
+                          "URL: <a href='%2'>%2</a><p>").arg(APP_VERSION, APP_URL));
 
  }
 
