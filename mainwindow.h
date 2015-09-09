@@ -57,7 +57,7 @@ private slots:
     void on_pushButton_Cancel_clicked();
     void on_pushButton_Remove_Checked_clicked();
     void on_pushButton_Duplicate_Search_clicked();
-    void on_pushButton_RemoveDir_clicked();
+    void on_pushButton_Remove_Dir_clicked();
     void on_AboutAction_Triggered(bool checked);
     // Duplicate files search
     void showDuplicatesInTable(QList<HashFileInfoStruct> *items);
