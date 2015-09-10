@@ -5,7 +5,7 @@ HashDirWalker::HashDirWalker(QCryptographicHash::Algorithm hash, QObject *parent
     stopped(false),
     hashAlgo(new QCryptographicHash(hash))
 {
-    //this->hashAlgo = new QCryptographicHash(hash);
+
 }
 
 void HashDirWalker::stop()

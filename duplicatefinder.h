@@ -14,7 +14,9 @@
 #include <QCryptographicHash>
 #include <hashfileinfostruct.h>
 #include <hashdirwalker.h>
+#ifdef MYPREFIX_DEBUG
 #include <QDebug>
+#endif
 
 #define SizeForInnerVector 0
 
@@ -28,7 +30,6 @@ public:
 private:
     QHash<qint64, QVector<HashFileInfoStruct> > hashBySize;
     QHash<QString, QVector<HashFileInfoStruct> > hashByHash;
-    //QCryptographicHash *hashAlgo;
     int resultCount;
     void clearNoDuplicatedSize();
     void makeHashByHashes();

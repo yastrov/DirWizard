@@ -7,7 +7,9 @@
 #include <QDir>
 #include <QList>
 #include <QCryptographicHash>
+#ifdef MYPREFIX_DEBUG
 #include <QDebug>
+#endif
 #include <QListWidgetItem>
 #include <QCryptographicHash>
 #include <QComboBox>
@@ -72,7 +74,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
-    QList<HashFileInfoStruct> *itemsB;
+    QList<HashFileInfoStruct> *itemsResult;
     // ComboBox
     void addItemToComboBox(QString text, int data);
     void initHashComboBoxWidget();
@@ -91,6 +93,7 @@ private:
     void startComparingFoldersInBackground();
     // Other
     void saveItemsToFile(const QString &fileName);
+    void ClearItemsResultStore();
     // Calc hashes
     void startCalcHashesInBackground();
     void startCheckHashesInBackground();

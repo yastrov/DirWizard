@@ -2,7 +2,6 @@
 
 DirComparator::DirComparator(QCryptographicHash::Algorithm hash, QObject *parent):
     HashDirWalker(hash, parent),
-    //hashAlgo(hash),
     resultCount(0)
 {
 #ifdef MYPREFIX_DEBUG

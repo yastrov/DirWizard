@@ -62,7 +62,6 @@ void LoadAndCheckHash::processFile(const QString &fileName)
             }
             file.close();
         }
-        //origFileName = fInfo.path() + QDir::separator() + origFileName;
 
 
 #ifdef MYPREFIX_DEBUG

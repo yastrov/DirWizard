@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dirNameForFolderDialog(QDir::current().dirName()),
-    itemsB(nullptr)
+    itemsResult(nullptr)
 {
     ui->setupUi(this);
     initDirsListWidget();
@@ -18,8 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    if(itemsB != nullptr)
-        delete itemsB;
+    ClearItemsResultStore();
     delete ui;
 }
 
@@ -27,7 +26,6 @@ MainWindow::~MainWindow()
 void MainWindow::initDirsListWidget()
 {
    ui->listWidget->clear();
-   // QObject::connect here in the Past
 }
 
 QList<QDir> MainWindow::getElementsFromDirsListWidget()
@@ -82,8 +80,6 @@ void MainWindow::initHashComboBoxWidget()
     addItemToComboBox(QString("Sha512"), QCryptographicHash::Sha512);
     addItemToComboBox(QString("Sha3_256"), QCryptographicHash::Sha3_256);
     addItemToComboBox(QString("Sha3_512"), QCryptographicHash::Sha3_512);
-    //QObject::connect(ui->comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentComboBoxIndexChanged(int)));
-    //QObject::connect(ui->comboBox, &QComboBox::currentIndexChanged, this, &MainWindow::currentComboBoxIndexChanged);
 }
 
 void MainWindow::addItemToComboBox(QString text, int data)
@@ -182,14 +178,15 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
-    if(itemsB != nullptr)
-        delete itemsB;
-    itemsB = items;
+    ClearItemsResultStore();
+    itemsResult = items;
 }
 
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
 {
+#ifdef MYPREFIX_DEBUG
     qDebug() << "getCheckedFileNamesFormTable";
+#endif
     QList<QString> result;
     int rowCount = ui->tableWidget->rowCount();
     QTableWidgetItem *item;
@@ -216,8 +213,7 @@ void MainWindow::startDuplicateSearchInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
-        if(itemsB != nullptr)
-            delete itemsB;
+        ClearItemsResultStore();
 
         QThread* thread = new QThread;
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
@@ -273,7 +269,7 @@ void MainWindow::compareFoldersComplete(QList<HashFileInfoStruct> *items)
     {
         file = itemIt.next();
 
-        text = QString("");
+        text = "";
         tableItem = new QTableWidgetItem(text);
         tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
         tableItem->setCheckState(Qt::Unchecked);
@@ -304,9 +300,8 @@ void MainWindow::compareFoldersComplete(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
-    if(itemsB != nullptr)
-        delete itemsB;
-    itemsB = items;
+    ClearItemsResultStore();
+    itemsResult = items;
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -317,8 +312,7 @@ void MainWindow::startComparingFoldersInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
-        if(itemsB != nullptr)
-            delete itemsB;
+        ClearItemsResultStore();
 
         QThread* thread = new QThread;
         DirComparator *worker = new DirComparator(getCurrentHashAlgo(), nullptr);
@@ -446,15 +440,15 @@ void MainWindow::saveItemsToFile(const QString &fileName)
         out.setCodec("UTF-8");
         out.setGenerateByteOrderMark(false);
         HashFileInfoStruct s;
-        QString delimeter = QString("\t");
-        QString endOfLine = QString("\n");
+        QString delimeter = "\t";
+        QString endOfLine = "\n";
 
         out << QString("%Group ID") << delimeter;
         out << QString("Size") << delimeter;
         out << QString("Hash") << delimeter << QString("FileName");
         out << endOfLine;
 
-        QListIterator<HashFileInfoStruct> it(*itemsB);
+        QListIterator<HashFileInfoStruct> it(*itemsResult);
         while(it.hasNext())
         {
             s = it.next();
@@ -467,7 +461,7 @@ void MainWindow::saveItemsToFile(const QString &fileName)
 
 void MainWindow::on_pushButton_Save_From_Table_clicked()
 {
-    if(itemsB != nullptr)
+    if(itemsResult != nullptr)
     {
     QString fileName = QFileDialog::getSaveFileName(this, QString("Save File"),
                                      QDir::homePath(),
@@ -500,8 +494,7 @@ void MainWindow::startCalcHashesInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
-        if(itemsB != nullptr)
-            delete itemsB;
+        ClearItemsResultStore();
 
         QThread* thread = new QThread;
         CalcAndSaveHash *worker = new CalcAndSaveHash(getCurrentHashAlgo(), nullptr);
@@ -540,8 +533,7 @@ void MainWindow::startCheckHashesInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty())
     {
-        if(itemsB != nullptr)
-            delete itemsB;
+        ClearItemsResultStore();
 
         QThread* thread = new QThread;
         LoadAndCheckHash *worker = new LoadAndCheckHash(getCurrentHashAlgo(), nullptr);
@@ -558,4 +550,10 @@ void MainWindow::startCheckHashesInBackground()
 #endif
         thread->start();
     }
+}
+
+void MainWindow::ClearItemsResultStore()
+{
+    if(itemsResult != nullptr)
+        delete itemsResult;
 }

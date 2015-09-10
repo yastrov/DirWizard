@@ -1,6 +1,8 @@
 #ifndef CALCANDSAVEHASH_H
 #define CALCANDSAVEHASH_H
+#ifdef MYPREFIX_DEBUG
 #include <QDebug>
+#endif
 #include <QCryptographicHash>
 #include "hashdirwalker.h"
 #include "hashfileinfostruct.h"

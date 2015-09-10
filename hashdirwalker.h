@@ -8,7 +8,9 @@
 #include <QList>
 #include <QVector>
 #include <QDirIterator>
+#ifdef MYPREFIX_DEBUG
 #include <QDebug>
+#endif
 
 class HashDirWalker : public QObject
 {
