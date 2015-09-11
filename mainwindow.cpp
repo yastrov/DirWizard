@@ -13,7 +13,8 @@ MainWindow::MainWindow(QWidget *parent) :
     initTableWidget();
     QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_AboutAction_Triggered);
     QObject::connect(ui->pushButton_Calc_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
-    QObject::connect(ui->pushButton_Check_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
+    //QObject::connect(ui->pushButton_Check_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
+    //QObject::connect(ui->pushButton_Check_Zip, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Zip_clicked);
 }
 
 MainWindow::~MainWindow()
@@ -556,4 +557,39 @@ void MainWindow::ClearItemsResultStore()
 {
     if(itemsResult != nullptr)
         delete itemsResult;
+}
+
+void MainWindow::on_pushButton_Check_Zip_clicked()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
+#endif
+    startCheckZipsInBackground();
+}
+
+void MainWindow::startCheckZipsInBackground()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "startCheckHashesInBackground";
+#endif
+    QList<QDir> dirs = getElementsFromDirsListWidget();
+    if(!dirs.isEmpty())
+    {
+        ClearItemsResultStore();
+
+        QThread* thread = new QThread;
+        ZipWalkChecker *worker = new ZipWalkChecker(nullptr);
+
+        worker->setQDir(dirs);
+        worker->moveToThread(thread);
+        QObject::connect(thread, &QThread::started, worker, &ZipWalkChecker::process);
+        QObject::connect(worker, &ZipWalkChecker::finished, thread, &QThread::quit);
+        QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
+        QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::compareFoldersComplete);
+        QObject::connect(this, &MainWindow::stopThread, worker, &ZipWalkChecker::stop);
+#ifdef MYPREFIX_DEBUG
+        qDebug() << "startThread";
+#endif
+        thread->start();
+    }
 }

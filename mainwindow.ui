@@ -43,7 +43,7 @@
       <x>0</x>
       <y>0</y>
       <width>799</width>
-      <height>491</height>
+      <height>655</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -345,6 +345,16 @@
               </widget>
              </item>
              <item>
+              <widget class="QPushButton" name="pushButton_Check_Zip">
+               <property name="toolTip">
+                <string>Check ZIP archives</string>
+               </property>
+               <property name="text">
+                <string>Check ZIP</string>
+               </property>
+              </widget>
+             </item>
+             <item>
               <widget class="QPushButton" name="pushButton_Cancel">
                <property name="font">
                 <font>
@@ -358,19 +368,6 @@
                 <string>Cancel</string>
                </property>
               </widget>
-             </item>
-             <item>
-              <spacer name="verticalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>40</height>
-                </size>
-               </property>
-              </spacer>
              </item>
             </layout>
            </item>
@@ -410,30 +407,65 @@
           </layout>
          </item>
          <item>
-          <widget class="QTableWidget" name="tableWidget">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QScrollArea" name="scrollArea">
            <property name="minimumSize">
             <size>
              <width>780</width>
-             <height>205</height>
+             <height>230</height>
             </size>
            </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
+           <property name="widgetResizable">
+            <bool>true</bool>
            </property>
-           <property name="toolTip">
-            <string>Result table</string>
-           </property>
-           <property name="horizontalScrollBarPolicy">
-            <enum>Qt::ScrollBarAlwaysOn</enum>
-           </property>
+           <widget class="QWidget" name="scrollAreaWidgetContents">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>780</width>
+              <height>211</height>
+             </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>780</width>
+              <height>205</height>
+             </size>
+            </property>
+            <widget class="QTableWidget" name="tableWidget">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>780</width>
+               <height>206</height>
+              </rect>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>780</width>
+               <height>206</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="toolTip">
+              <string>Result table</string>
+             </property>
+             <property name="horizontalScrollBarPolicy">
+              <enum>Qt::ScrollBarAlwaysOn</enum>
+             </property>
+            </widget>
+           </widget>
           </widget>
          </item>
          <item>

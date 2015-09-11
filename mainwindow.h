@@ -38,6 +38,7 @@
 #include <QMessageBox>
 #include "calcandsavehash.h"
 #include "loadandcheckhash.h"
+#include "zipwalkchecker.h"
 
 namespace Ui {
 class MainWindow;
@@ -70,6 +71,7 @@ private slots:
     void on_pushButton_Save_From_Table_clicked();
     void on_pushButton_Calc_Hashes_clicked();
     void on_pushButton_Check_Hashes_clicked();
+    void on_pushButton_Check_Zip_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -97,6 +99,7 @@ private:
     // Calc hashes
     void startCalcHashesInBackground();
     void startCheckHashesInBackground();
+    void startCheckZipsInBackground();
 };
 
 #endif // MAINWINDOW_H

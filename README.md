@@ -21,7 +21,7 @@ No many programs for find duplicates files, and and even fewer programs to find 
 -  c++ with some features from c++11
 -  qt-opensource-windows-x86-mingw492-5.5.0
 
-## Classes structure
+## Class Hierarchy
 
 QMainWindow -> MainWindow
 QObject -> DirWalker -> HashDirWalker
@@ -30,3 +30,27 @@ QObject -> DirWalker -> HashDirWalker
                 |           |->DuplicateFinder
                 |           |->CalcAndSaveHash
                 |           |->LoadAndCheckHash
+                |
+                |-----> ZipWalkChecker
+
+## Windows build instruction
+I used MinGW 4.9.2 32 bit version. (From qt-opensource-windows-x86-mingw492-5.5.0 package.)  
+Download zlib (for example [zlib128.zip](http://zlib.net/zlib128.zip) ) and extract to C:\Qt\zlib-1.2.8 :
+
+Bat script:
+    setlocal
+    set PATH=C:\Qt\Qt5.5.0\Tools\mingw492_32\bin\;%PATH%
+    cd C:\Qt\zlib-1.2.8
+    mingw32-make -f win32/Makefile.gcc
+    endlocal
+
+Download [QuaZIP](http://sourceforge.net/projects/quazip/) and unpack to C:\Qt\quazip-0.7.1 .
+Bat script:
+    setlocal
+    set PATH=C:\Qt\Qt5.5.0\Tools\mingw492_32\bin\;C:\Qt\Qt5.5.0\5.5\mingw492_32\bin;%PATH%
+    cd C:\Qt\quazip-0.7.1
+    qmake "CONFIG+=release" "INCLUDEPATH+=C:/Qt/zlib-1.2.8" "LIBS+=-LC:/Qt/zlib-1.2.8 -lz"
+    mingw32-make
+    qmake "CONFIG+=debug" "INCLUDEPATH+=C:/Qt/zlib-1.2.8" "LIBS+=-LC:/Qt/zlib-1.2.8 -lz"
+    mingw32-make
+    endlocal

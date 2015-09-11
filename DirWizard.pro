@@ -20,6 +20,22 @@ release {
 }
 
 CONFIG += c++11
+LFLAGS = -static-libgcc -static-libstdc++ -s
+
+win32: {
+    INCLUDEPATH += C:/Qt/zlib-1.2.8
+    INCLUDEPATH += C:/Qt/quazip-0.7.1
+}
+
+win32-g++: {
+    LIBS += -LC:/Qt/zlib-1.2.8 -lz
+    LIBS += -LC:/Qt/quazip-0.7.1/quazip/release -lquazip
+}
+
+win32-msvc: {
+    LIBS += C:/Qt/zlib-1.2.8/zlib.lib
+    LIBS += C:/Qt/quazip-0.7.1/quazip/release/quazip.lib
+}
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -29,6 +45,7 @@ SOURCES += main.cpp\
     dircomparator.cpp \
     calcandsavehash.cpp \
     loadandcheckhash.cpp \
+    zipwalkchecker.cpp
 
 HEADERS  += mainwindow.h \
     dirwalker.h \
@@ -38,6 +55,7 @@ HEADERS  += mainwindow.h \
     dircomparator.h \
     calcandsavehash.h \
     loadandcheckhash.h \
+    zipwalkchecker.h
 
 FORMS    += mainwindow.ui
 
