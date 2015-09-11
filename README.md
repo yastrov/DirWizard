@@ -19,13 +19,14 @@ No many programs for find duplicates files, and and even fewer programs to find 
 -  QT 5 with QThreads, signals and slots, QTableWidget, QComboBox Widget, QListWidget.
 -  QT Creator
 -  c++ with some features from c++11
+-  qt-opensource-windows-x86-mingw492-5.5.0
 
 ## Classes structure
 
 QMainWindow -> MainWindow
-QObject -> HashDirWalker
-                    |
-                    |->DirComparator
-                    |->DuplicateFinder
-                    |->CalcAndSaveHash
-                    |->LoadAndCheckHash
+QObject -> DirWalker -> HashDirWalker
+                |           |
+                |           |->DirComparator
+                |           |->DuplicateFinder
+                |           |->CalcAndSaveHash
+                |           |->LoadAndCheckHash

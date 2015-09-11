@@ -4,15 +4,12 @@
 #include <QObject>
 #include <QFile>
 #include <QCryptographicHash>
-#include <QDir>
-#include <QList>
-#include <QVector>
-#include <QDirIterator>
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
+#include "dirwalker.h"
 
-class HashDirWalker : public QObject
+class HashDirWalker : public DirWalker
 {
     Q_OBJECT
 public:
@@ -20,25 +17,12 @@ public:
     static QByteArray fileChecksum(const QString &fileName, QCryptographicHash &hash);
     static QByteArray fileChecksum(const QString &fileName, QCryptographicHash *hash);
     static QByteArray fileChecksum(const QString &fileName);
-    virtual void processFile(const QString &fileName) = 0;
-
-    void setQDir(const QDir &rootDir);
-    void setQDir(const QList<QDir> &rootDirs);
-    void setQDir(const QVector<QDir> &rootDirs);
-    void setQDir(const QString &rootDir);
-    void setQDir(const QList<QString> &rootDirs);
-    void setQDir(const QVector<QString> &rootDirs);
 
 protected:
-    bool stopped;
-    void processFilesRecursively(const QDir &rootDir);
-    void processFilesRecursively(const QList<QDir> &rootDirs);
-    void processFilesRecursively(const QVector<QDir> &rootDirs);
     QCryptographicHash *hashAlgo;
-    QList<QDir> rootDirs;
 
 signals:
-    void finished();
+
 
 public slots:
     void stop();

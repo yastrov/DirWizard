@@ -23,19 +23,21 @@ CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
+    dirwalker.cpp \
     hashdirwalker.cpp \
     duplicatefinder.cpp \
     dircomparator.cpp \
     calcandsavehash.cpp \
-    loadandcheckhash.cpp
+    loadandcheckhash.cpp \
 
 HEADERS  += mainwindow.h \
+    dirwalker.h \
     hashdirwalker.h \
     duplicatefinder.h \
     hashfileinfostruct.h \
     dircomparator.h \
     calcandsavehash.h \
-    loadandcheckhash.h
+    loadandcheckhash.h \
 
 FORMS    += mainwindow.ui
 
