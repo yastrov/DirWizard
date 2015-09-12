@@ -36,6 +36,7 @@
 #include <QStringListIterator>
 #include <QStringList>
 #include <QMessageBox>
+#include <QCloseEvent>
 #include "calcandsavehash.h"
 #include "loadandcheckhash.h"
 #include "zipwalkchecker.h"
@@ -76,6 +77,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
+    bool isBackgroundThreadRunning;
     QList<HashFileInfoStruct> *itemsResult;
     // ComboBox
     void addItemToComboBox(QString text, int data);
@@ -96,10 +98,14 @@ private:
     // Other
     void saveItemsToFile(const QString &fileName);
     void ClearItemsResultStore();
+    void setUiPushButtonsEnabled(bool flag);
     // Calc hashes
     void startCalcHashesInBackground();
     void startCheckHashesInBackground();
     void startCheckZipsInBackground();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

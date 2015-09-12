@@ -5,6 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dirNameForFolderDialog(QDir::current().dirName()),
+    isBackgroundThreadRunning(false),
     itemsResult(nullptr)
 {
     ui->setupUi(this);
@@ -212,7 +213,7 @@ void MainWindow::startDuplicateSearchInBackground()
     qDebug() << "startDuplicateSearchInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty())
+    if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
         ClearItemsResultStore();
 
@@ -225,6 +226,7 @@ void MainWindow::startDuplicateSearchInBackground()
         QObject::connect(thread, &QThread::started, worker, &DuplicateFinder::process);
         //connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
         QObject::connect(worker, &DuplicateFinder::finished, thread, &QThread::quit);
+        QObject::connect(thread, &QThread::finished, worker, &DuplicateFinder::deleteLater);//From Off documentation
         QObject::connect(worker, &DuplicateFinder::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(showDuplicatesInTable(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
@@ -233,6 +235,7 @@ void MainWindow::startDuplicateSearchInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        isBackgroundThreadRunning = true;
     }
 }
 
@@ -311,7 +314,7 @@ void MainWindow::startComparingFoldersInBackground()
     qDebug() << "startComparingFoldersInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty())
+    if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
         ClearItemsResultStore();
 
@@ -324,6 +327,7 @@ void MainWindow::startComparingFoldersInBackground()
         QObject::connect(thread, &QThread::started, worker, &DirComparator::process);
         //connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
         QObject::connect(worker, &DirComparator::finished, thread, &QThread::quit);
+        QObject::connect(thread, &QThread::finished, worker, &DirComparator::deleteLater);//From Off documentation
         QObject::connect(worker, &DirComparator::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::compareFoldersComplete);
@@ -332,6 +336,7 @@ void MainWindow::startComparingFoldersInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        isBackgroundThreadRunning = true;
     }
 }
 // END
@@ -382,6 +387,7 @@ void MainWindow::on_pushButton_Duplicate_Search_clicked()
     qDebug() << "on_pushButton_Duplicate_Search_clicked";
 #endif
     startDuplicateSearchInBackground();
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
 
 /*
@@ -420,6 +426,8 @@ void MainWindow::on_AboutAction_Triggered(bool checked)
 
 void MainWindow::finishedThread()
 {
+    isBackgroundThreadRunning = false;
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
     QMessageBox::information(this,
                              QString("DirWizard"),
                              QString("Task completed successfully!"));
@@ -429,6 +437,7 @@ void MainWindow::finishedThread()
 void MainWindow::on_pushButton_Compare_Folders_clicked()
 {
     startComparingFoldersInBackground();
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
 
 // Save To File
@@ -493,7 +502,7 @@ void MainWindow::startCalcHashesInBackground()
     qDebug() << "startCalcHashesInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty())
+    if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
         ClearItemsResultStore();
 
@@ -504,18 +513,21 @@ void MainWindow::startCalcHashesInBackground()
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &CalcAndSaveHash::process);
         QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
+        QObject::connect(thread, &QThread::finished, worker, &CalcAndSaveHash::deleteLater);//From Off documentation
         QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
         QObject::connect(this, &MainWindow::stopThread, worker, &CalcAndSaveHash::stop);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
         thread->start();
+        isBackgroundThreadRunning = true;
     }
 }
 
 void MainWindow::on_pushButton_Calc_Hashes_clicked()
 {
     startCalcHashesInBackground();
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
 
 /*
@@ -524,6 +536,7 @@ Checked Hashes
 void MainWindow::on_pushButton_Check_Hashes_clicked()
 {
     startCheckHashesInBackground();
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
 
 void MainWindow::startCheckHashesInBackground()
@@ -532,7 +545,7 @@ void MainWindow::startCheckHashesInBackground()
     qDebug() << "startCheckHashesInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty())
+    if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
         ClearItemsResultStore();
 
@@ -543,6 +556,7 @@ void MainWindow::startCheckHashesInBackground()
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &LoadAndCheckHash::process);
         QObject::connect(worker, &LoadAndCheckHash::finished, thread, &QThread::quit);
+        QObject::connect(thread, &QThread::finished, worker, &LoadAndCheckHash::deleteLater);//From Off documentation
         QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::compareFoldersComplete);
         QObject::connect(this, &MainWindow::stopThread, worker, &LoadAndCheckHash::stop);
@@ -550,6 +564,7 @@ void MainWindow::startCheckHashesInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        isBackgroundThreadRunning = true;
     }
 }
 
@@ -565,15 +580,16 @@ void MainWindow::on_pushButton_Check_Zip_clicked()
     qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
 #endif
     startCheckZipsInBackground();
+    setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
 
 void MainWindow::startCheckZipsInBackground()
 {
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "startCheckHashesInBackground";
+    qDebug() << "MainWindow::startCheckZipsInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty())
+    if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
         ClearItemsResultStore();
 
@@ -584,6 +600,7 @@ void MainWindow::startCheckZipsInBackground()
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &ZipWalkChecker::process);
         QObject::connect(worker, &ZipWalkChecker::finished, thread, &QThread::quit);
+        QObject::connect(thread, &QThread::finished, worker, &ZipWalkChecker::deleteLater);//From Off documentation
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::compareFoldersComplete);
         QObject::connect(this, &MainWindow::stopThread, worker, &ZipWalkChecker::stop);
@@ -591,5 +608,33 @@ void MainWindow::startCheckZipsInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        isBackgroundThreadRunning = true;
     }
 }
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+#ifdef MYPREFIX_DEBUG
+        qDebug() << "MainWindow::closeEvent";
+#endif
+    if (isBackgroundThreadRunning) {
+        emit stopThread();
+        QMessageBox::warning(this,
+                             "DirWizard",
+                             tr("Background process already running!\nTry to exit after task would be complete."));
+        event->ignore();
+    } else {
+        event->accept();
+    }
+}
+
+void MainWindow::setUiPushButtonsEnabled(bool flag)
+{
+    ui->pushButton_Calc_Hashes->setEnabled(flag);
+    ui->pushButton_Check_Hashes->setEnabled(flag);
+    ui->pushButton_Check_Zip->setEnabled(flag);
+    ui->pushButton_Compare_Folders->setEnabled(flag);
+    ui->pushButton_Duplicate_Search->setEnabled(flag);
+    ui->pushButton_Remove_Checked->setEnabled(flag);
+    ui->pushButton_Save_From_Table->setEnabled(flag);
+}
+
