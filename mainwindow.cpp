@@ -131,6 +131,9 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
+    itemsResult = new QList<HashFileInfoStruct>();
+    itemsResult->reserve(rowCount);
+
     QTableWidget *table = ui->tableWidget;
     table->clearContents();
     table->setColumnCount(columnCount);
@@ -144,6 +147,8 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     while(itemIt.hasNext())
     {
         file = itemIt.next();
+
+        itemsResult->append(file);
 
         text = QString("");
         tableItem = new QTableWidgetItem(text);
@@ -257,12 +262,16 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
 
+    itemsResult = new QList<HashFileInfoStruct>();
+    itemsResult->reserve(rowCount);
+
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
     int row = 0;
     while(itemIt.hasNext())
     {
         file = itemIt.next();
+        itemsResult->append(file);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
@@ -350,6 +359,7 @@ void MainWindow::on_pushButton_Duplicate_Search_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "on_pushButton_Duplicate_Search_clicked";
 #endif
+    ClearItemsResultStore();
     startDuplicateSearchInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
@@ -400,6 +410,7 @@ void MainWindow::finishedThread()
 
 void MainWindow::on_pushButton_Compare_Folders_clicked()
 {
+    ClearItemsResultStore();
     startComparingFoldersInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
@@ -486,6 +497,7 @@ void MainWindow::startCalcHashesInBackground()
 
 void MainWindow::on_pushButton_Calc_Hashes_clicked()
 {
+    ClearItemsResultStore();
     startCalcHashesInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
@@ -495,6 +507,7 @@ Checked Hashes
 */
 void MainWindow::on_pushButton_Check_Hashes_clicked()
 {
+    ClearItemsResultStore();
     startCheckHashesInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
@@ -535,6 +548,9 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
+    itemsResult = new QList<HashFileInfoStruct>();
+    itemsResult->reserve(rowCount);
+
     QTableWidget *table = ui->tableWidget;
     table->clearContents();
     table->setColumnCount(columnCount);
@@ -547,6 +563,8 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     while(itemIt.hasNext())
     {
         file = itemIt.next();
+
+        itemsResult->append(file);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
@@ -574,6 +592,7 @@ void MainWindow::on_pushButton_Check_Zip_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
 #endif
+    ClearItemsResultStore();
     startCheckZipsInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
 }
@@ -614,6 +633,9 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
+    itemsResult = new QList<HashFileInfoStruct>();
+    itemsResult->reserve(rowCount);
+
     QTableWidget *table = ui->tableWidget;
     table->clearContents();
     table->setColumnCount(columnCount);
@@ -626,6 +648,8 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     while(itemIt.hasNext())
     {
         file = itemIt.next();
+
+        itemsResult->append(file);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
