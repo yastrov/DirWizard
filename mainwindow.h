@@ -54,7 +54,6 @@ public:
     ~MainWindow();
 
 signals:
-    void stopThread();
 
 private slots:
     void on_pushButton_Add_Dir_clicked();
@@ -66,18 +65,21 @@ private slots:
     // Duplicate files search
     void showDuplicatesInTable(QList<HashFileInfoStruct> *items);
     // Comparing Folders
-    void compareFoldersComplete(QList<HashFileInfoStruct> *items);
+    void showUniqFilesInTable(QList<HashFileInfoStruct> *items);
     void finishedThread();
     void on_pushButton_Compare_Folders_clicked();
     void on_pushButton_Save_From_Table_clicked();
     void on_pushButton_Calc_Hashes_clicked();
     void on_pushButton_Check_Hashes_clicked();
+    void showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items);
     void on_pushButton_Check_Zip_clicked();
+    void showInvalidZipInTable(QList<HashFileInfoStruct> *items);
 
 private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
     bool isBackgroundThreadRunning;
+    QThread* thread;
     QList<HashFileInfoStruct> *itemsResult;
     // ComboBox
     void addItemToComboBox(QString text, int data);

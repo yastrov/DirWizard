@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QCryptographicHash>
 #include <QDir>
+#include <QThread>
 
 class LoadAndCheckHash : public HashDirWalker
 {

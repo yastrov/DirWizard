@@ -22,7 +22,6 @@ signals:
     void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
 
 public slots:
-    void stop();
     void process();
 };
 

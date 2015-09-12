@@ -6,6 +6,7 @@
 #include <QList>
 #include <QVector>
 #include <QDirIterator>
+#include <QThread>
 
 class DirWalker : public QObject
 {

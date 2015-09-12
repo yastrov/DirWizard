@@ -7,14 +7,6 @@ HashDirWalker::HashDirWalker(QCryptographicHash::Algorithm hash, QObject *parent
 
 }
 
-void HashDirWalker::stop()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "DuplicateFinder::stop";
- #endif
-    stopped = true;
-}
-
 QByteArray HashDirWalker::fileChecksum(const QString &fileName,
                                     QCryptographicHash &hash)
 {

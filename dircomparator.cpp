@@ -14,19 +14,19 @@ void DirComparator::process()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process";
 #endif
-    if(stopped)
+    if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
         return;
     }
     processFilesRecursively(rootDirs);
-    if(stopped)
+    if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
         return;
     }
     clearNoDuplicatedHashes();
-    if(stopped)
+    if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
         return;

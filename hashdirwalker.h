@@ -25,7 +25,7 @@ signals:
 
 
 public slots:
-    void stop();
+
 
 private:
 

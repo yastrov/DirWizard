@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     dirNameForFolderDialog(QDir::current().dirName()),
     isBackgroundThreadRunning(false),
+    thread(new QThread(this)),
     itemsResult(nullptr)
 {
     ui->setupUi(this);
@@ -121,11 +122,11 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     qDebug() << "showDuplicatesInTable";
 #endif
     QStringList horizontalHeader;
-    horizontalHeader.append("Remove?");
-    horizontalHeader.append("groupId");
-    horizontalHeader.append("Hash");
-    horizontalHeader.append("Size");
-    horizontalHeader.append("FileName");
+    horizontalHeader.append(tr("Remove?"));
+    horizontalHeader.append(tr("groupId"));
+    horizontalHeader.append(tr("Hash"));
+    horizontalHeader.append(tr("Size"));
+    horizontalHeader.append(tr("FileName"));
     int columnCount = horizontalHeader.count();
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
@@ -180,8 +181,6 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
-    ClearItemsResultStore();
-    itemsResult = items;
 }
 
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
@@ -215,9 +214,6 @@ void MainWindow::startDuplicateSearchInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
-        ClearItemsResultStore();
-
-        QThread* thread = new QThread;
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
@@ -230,7 +226,6 @@ void MainWindow::startDuplicateSearchInBackground()
         QObject::connect(worker, &DuplicateFinder::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(showDuplicatesInTable(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
-        QObject::connect(this, &MainWindow::stopThread, worker, &DuplicateFinder::stop);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -245,16 +240,13 @@ void MainWindow::startDuplicateSearchInBackground()
 /*
  *
 */
-void MainWindow::compareFoldersComplete(QList<HashFileInfoStruct> *items)
+void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
 {
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "compareFoldersComplete";
+    qDebug() << "showUniqFilesInTable";
 #endif
     QStringList horizontalHeader;
-    horizontalHeader.append("Remove?");
-    horizontalHeader.append("Hash");
-    horizontalHeader.append("Size");
-    horizontalHeader.append("FileName");
+    horizontalHeader.append(tr("File names for unique files"));
     int columnCount = horizontalHeader.count();
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
@@ -268,44 +260,20 @@ void MainWindow::compareFoldersComplete(QList<HashFileInfoStruct> *items)
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
     int row = 0;
-    QString text;
     while(itemIt.hasNext())
     {
         file = itemIt.next();
 
-        text = "";
-        tableItem = new QTableWidgetItem(text);
-        tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
-        tableItem->setCheckState(Qt::Unchecked);
-        tableItem->setData(Qt::UserRole, QVariant(file.fileName));
-        tableItem->setToolTip(file.fileName);
-        tableItem->setText(text);
-        table->setItem(row, 0, tableItem);
-
-
-        tableItem = new QTableWidgetItem(file.hash);
-        tableItem->setToolTip(file.fileName);
-        tableItem->setText(file.hash);
-        table->setItem(row, 1, tableItem);
-
-        text = QString("%1").arg(file.size);
-        tableItem = new QTableWidgetItem(text);
-        tableItem->setToolTip(file.fileName);
-        tableItem->setText(text);
-        table->setItem(row, 2, tableItem);
-
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
-        table->setItem(row, 3, tableItem);
+        table->setItem(row, 0, tableItem);
         row++;
     }
 
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
-    ClearItemsResultStore();
-    itemsResult = items;
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -316,9 +284,6 @@ void MainWindow::startComparingFoldersInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
-        ClearItemsResultStore();
-
-        QThread* thread = new QThread;
         DirComparator *worker = new DirComparator(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
@@ -330,8 +295,7 @@ void MainWindow::startComparingFoldersInBackground()
         QObject::connect(thread, &QThread::finished, worker, &DirComparator::deleteLater);//From Off documentation
         QObject::connect(worker, &DirComparator::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
-        QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::compareFoldersComplete);
-        QObject::connect(this, &MainWindow::stopThread, worker, &DirComparator::stop);
+        QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -408,7 +372,7 @@ void MainWindow::on_pushButton_Cancel_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "on_pushButton_Cancel_clicked";
 #endif
-    emit stopThread();
+    thread->requestInterruption();
 }
 
 void MainWindow::on_AboutAction_Triggered(bool checked)
@@ -504,9 +468,6 @@ void MainWindow::startCalcHashesInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
-        ClearItemsResultStore();
-
-        QThread* thread = new QThread;
         CalcAndSaveHash *worker = new CalcAndSaveHash(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
@@ -515,7 +476,6 @@ void MainWindow::startCalcHashesInBackground()
         QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &CalcAndSaveHash::deleteLater);//From Off documentation
         QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
-        QObject::connect(this, &MainWindow::stopThread, worker, &CalcAndSaveHash::stop);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -547,9 +507,6 @@ void MainWindow::startCheckHashesInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
-        ClearItemsResultStore();
-
-        QThread* thread = new QThread;
         LoadAndCheckHash *worker = new LoadAndCheckHash(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
@@ -558,8 +515,7 @@ void MainWindow::startCheckHashesInBackground()
         QObject::connect(worker, &LoadAndCheckHash::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &LoadAndCheckHash::deleteLater);//From Off documentation
         QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
-        QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::compareFoldersComplete);
-        QObject::connect(this, &MainWindow::stopThread, worker, &LoadAndCheckHash::stop);
+        QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::showInvalidHashFilesInTable);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -568,8 +524,47 @@ void MainWindow::startCheckHashesInBackground()
     }
 }
 
+void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::showInvalidHashFilesInTable";
+#endif
+    QStringList horizontalHeader;
+    horizontalHeader.append(tr("Files with other hashes"));
+    int columnCount = horizontalHeader.count();
+    int rowCount = items->count();
+    QTableWidgetItem* tableItem;
+
+    QTableWidget *table = ui->tableWidget;
+    table->clearContents();
+    table->setColumnCount(columnCount);
+    table->setRowCount(rowCount);
+    table->setHorizontalHeaderLabels(horizontalHeader);
+
+    QListIterator<HashFileInfoStruct> itemIt(*items);
+    HashFileInfoStruct file;
+    int row = 0;
+    while(itemIt.hasNext())
+    {
+        file = itemIt.next();
+
+        tableItem = new QTableWidgetItem(file.fileName);
+        tableItem->setToolTip(file.fileName);
+        tableItem->setText(file.fileName);
+        table->setItem(row, 0, tableItem);
+        row++;
+    }
+
+    QHeaderView* header = table->horizontalHeader();
+    header->setSectionResizeMode(QHeaderView::Stretch);
+    table->resizeColumnsToContents();
+}
+
 void MainWindow::ClearItemsResultStore()
 {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::ClearItemsResultStore";
+#endif
     if(itemsResult != nullptr)
         delete itemsResult;
 }
@@ -591,9 +586,6 @@ void MainWindow::startCheckZipsInBackground()
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !isBackgroundThreadRunning)
     {
-        ClearItemsResultStore();
-
-        QThread* thread = new QThread;
         ZipWalkChecker *worker = new ZipWalkChecker(nullptr);
 
         worker->setQDir(dirs);
@@ -602,8 +594,7 @@ void MainWindow::startCheckZipsInBackground()
         QObject::connect(worker, &ZipWalkChecker::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &ZipWalkChecker::deleteLater);//From Off documentation
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
-        QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::compareFoldersComplete);
-        QObject::connect(this, &MainWindow::stopThread, worker, &ZipWalkChecker::stop);
+        QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -612,12 +603,48 @@ void MainWindow::startCheckZipsInBackground()
     }
 }
 
+void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::showInvalidZipInTable";
+#endif
+    QStringList horizontalHeader;
+    horizontalHeader.append(tr("Invalid zip"));
+    int columnCount = horizontalHeader.count();
+    int rowCount = items->count();
+    QTableWidgetItem* tableItem;
+
+    QTableWidget *table = ui->tableWidget;
+    table->clearContents();
+    table->setColumnCount(columnCount);
+    table->setRowCount(rowCount);
+    table->setHorizontalHeaderLabels(horizontalHeader);
+
+    QListIterator<HashFileInfoStruct> itemIt(*items);
+    HashFileInfoStruct file;
+    int row = 0;
+    while(itemIt.hasNext())
+    {
+        file = itemIt.next();
+
+        tableItem = new QTableWidgetItem(file.fileName);
+        tableItem->setToolTip(file.fileName);
+        tableItem->setText(file.fileName);
+        table->setItem(row, 0, tableItem);
+        row++;
+    }
+
+    QHeaderView* header = table->horizontalHeader();
+    header->setSectionResizeMode(QHeaderView::Stretch);
+    table->resizeColumnsToContents();
+}
+
 void MainWindow::closeEvent(QCloseEvent *event) {
 #ifdef MYPREFIX_DEBUG
         qDebug() << "MainWindow::closeEvent";
 #endif
     if (isBackgroundThreadRunning) {
-        emit stopThread();
+        thread->requestInterruption();
         QMessageBox::warning(this,
                              "DirWizard",
                              tr("Background process already running!\nTry to exit after task would be complete."));

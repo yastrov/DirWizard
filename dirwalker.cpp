@@ -60,6 +60,8 @@ void DirWalker::processFilesRecursively(const QDir &rootDir) {
     QDirIterator it(rootDir, QDirIterator::Subdirectories);
     while(it.hasNext() && !stopped) {
         processFile(it.next());
+        if(QThread::currentThread()->isInterruptionRequested())
+        stopped=true;
     }
     if(stopped)
     {

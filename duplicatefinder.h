@@ -12,6 +12,7 @@
 #include <QVectorIterator>
 #include <QFileInfo>
 #include <QCryptographicHash>
+#include <QThread>
 #include <hashfileinfostruct.h>
 #include <hashdirwalker.h>
 #ifdef MYPREFIX_DEBUG

@@ -6,6 +6,7 @@
 #include <QCryptographicHash>
 #include "hashdirwalker.h"
 #include "hashfileinfostruct.h"
+#include <QThread>
 
 class CalcAndSaveHash : public HashDirWalker
 {

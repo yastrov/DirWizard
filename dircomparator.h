@@ -17,6 +17,7 @@
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
+#include <QThread>
 
 #define SizeForInnerVector 0
 

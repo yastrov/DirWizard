@@ -7,14 +7,6 @@ ZipWalkChecker::ZipWalkChecker(QObject *parent):
 
 }
 
-void ZipWalkChecker::stop()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "ZipWalkChecker::stop";
-#endif
-    stopped = true;
-}
-
 void ZipWalkChecker::process()
 {
 #ifdef MYPREFIX_DEBUG
