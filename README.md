@@ -14,6 +14,7 @@ No many programs for find duplicates files, and and even fewer programs to find 
 -  find unique files in folders
 -  calc hashes for files
 -  check hashes for files
+-  Check zip files, show files. It shows files that can not be opened, or hash sum does not correspond to the content.
 
 ## Technology
 -  QT 5 with QThreads, signals and slots, QTableWidget, QComboBox Widget, QListWidget.
