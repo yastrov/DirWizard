@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     ClearItemsResultStore();
+    if(thread != nullptr) delete thread;
     delete ui;
 }
 
