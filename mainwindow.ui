@@ -43,7 +43,7 @@
       <x>0</x>
       <y>0</y>
       <width>799</width>
-      <height>655</height>
+      <height>719</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -407,65 +407,30 @@
           </layout>
          </item>
          <item>
-          <widget class="QScrollArea" name="scrollArea">
+          <widget class="QTableWidget" name="tableWidget">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>780</width>
-             <height>230</height>
+             <height>206</height>
             </size>
            </property>
-           <property name="widgetResizable">
-            <bool>true</bool>
+           <property name="font">
+            <font>
+             <pointsize>12</pointsize>
+            </font>
            </property>
-           <widget class="QWidget" name="scrollAreaWidgetContents">
-            <property name="geometry">
-             <rect>
-              <x>0</x>
-              <y>0</y>
-              <width>780</width>
-              <height>211</height>
-             </rect>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>780</width>
-              <height>205</height>
-             </size>
-            </property>
-            <widget class="QTableWidget" name="tableWidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>780</width>
-               <height>206</height>
-              </rect>
-             </property>
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>780</width>
-               <height>206</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-             <property name="toolTip">
-              <string>Result table</string>
-             </property>
-             <property name="horizontalScrollBarPolicy">
-              <enum>Qt::ScrollBarAlwaysOn</enum>
-             </property>
-            </widget>
-           </widget>
+           <property name="toolTip">
+            <string>Result table</string>
+           </property>
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAlwaysOn</enum>
+           </property>
           </widget>
          </item>
          <item>
