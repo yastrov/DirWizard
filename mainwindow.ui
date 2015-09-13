@@ -325,6 +325,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_Calc_Hashes">
+               <property name="toolTip">
+                <string>Calc hashes and store to disk.</string>
+               </property>
                <property name="text">
                 <string>Calc Hashes</string>
                </property>
@@ -332,6 +335,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_Check_Hashes">
+               <property name="toolTip">
+                <string>Check hashes</string>
+               </property>
                <property name="text">
                 <string>Check Hashes</string>
                </property>
@@ -339,6 +345,9 @@
              </item>
              <item>
               <widget class="QPushButton" name="pushButton_Compare_Folders">
+               <property name="toolTip">
+                <string>Compare folders, find uniq files.</string>
+               </property>
                <property name="text">
                 <string>Compare Folders</string>
                </property>
