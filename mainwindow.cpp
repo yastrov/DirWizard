@@ -209,19 +209,18 @@ QList<QString> MainWindow::getCheckedFileNamesFormTable()
 */
 void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
 {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::tableWidgetItemChanged";
+#endif
     if(itemsResult == nullptr) return;
     if(itemsResult->isEmpty()) return;
-    int row = item->row();
-    QTableWidget *table = item->tableWidget();
-    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
-    QTableWidgetItem *itemN = table->takeItem(row, table->colorCount()-1);
-    QString fileName = itemN->text();
+    QString fileName = item->toolTip();
     QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
     HashFileInfoStruct strct;
     while(it.hasNext())
     {
         strct = it.next();
-        if(fileName.compare(strct.fileName) == 0)
+        if(fileName.compare(strct.fileName, Qt::CaseSensitive) == 0)
         {
             if(item->checkState() == Qt::Checked)
             strct.checked = true;
@@ -230,7 +229,6 @@ void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
             break;
         }
     }
-    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
 // END
 
@@ -379,15 +377,14 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
     if(itemsResult->isEmpty()) return;
     QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
     HashFileInfoStruct strct;
+    int removed = 0;
     while(it.hasNext())
     {
         strct = it.next();
         if(strct.checked)
         {
             if(QDir(strct.fileName).remove(strct.fileName)) {
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "MainWindow:::on_pushButton_Remove_Checked_clicked: File has been removed:" << strct.fileName;
-#endif
+                removed++;
                 it.remove();
             } else {
                 QMessageBox::warning(this,
@@ -396,6 +393,24 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
             }
         }
     }
+    QTableWidget *table = ui->tableWidget;
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    int rowCount = table->rowCount();
+    QTableWidgetItem *item;
+    QVector<int> qv;
+    qv.reserve(removed);
+    for(int row=0; row < rowCount; row++)
+    {
+        item = table->item(row, 0);
+        if( item->checkState() == Qt::Checked )
+        {
+            qv.append(row);
+        }
+    }
+    QVectorIterator<int> i(qv);
+    while(i.hasNext())
+        table->removeRow(i.next());
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     QMessageBox::information(this,
                              "DirWizard",
                              tr("Files have been deleted!"));
@@ -713,7 +728,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     {
         file = itemIt.next();
 
-        text = QString("");
+        text = "";
         tableItem = new QTableWidgetItem(text);
         tableItem->setText(text);
         tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
