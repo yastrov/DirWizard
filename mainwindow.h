@@ -56,6 +56,7 @@ public:
 signals:
 
 private slots:
+    void tableWidgetItemChanged(QTableWidgetItem * item);
     void on_pushButton_Add_Dir_clicked();
     void on_pushButton_Cancel_clicked();
     void on_pushButton_Remove_Checked_clicked();
@@ -90,8 +91,6 @@ private:
     QList<QDir> getElementsFromDirsListWidget();
     void addToDirListWidget(const QString &dirName);
     // TableWidget
-
-    QList<QString> getCheckedFileNamesFormTable();
     void initTableWidget();
     // Duplicate files search
     void startDuplicateSearchInBackground();

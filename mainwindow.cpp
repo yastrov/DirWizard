@@ -102,11 +102,11 @@ QCryptographicHash::Algorithm MainWindow::getCurrentHashAlgo()
 void MainWindow::initTableWidget()
 {
     QStringList horizontalHeader;
-    horizontalHeader.append("Remove?");
-    horizontalHeader.append("groupId");
-    horizontalHeader.append("Hash");
-    horizontalHeader.append("Size");
-    horizontalHeader.append("FileName");
+    horizontalHeader.append(tr("Remove?"));
+    horizontalHeader.append(tr("groupId"));
+    horizontalHeader.append(tr("Hash"));
+    horizontalHeader.append(tr("Size"));
+    horizontalHeader.append(tr("FileName"));
     int columnCount = horizontalHeader.count();
     int rowCount = 0;
     QTableWidget *table = ui->tableWidget;
@@ -131,15 +131,13 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
-    itemsResult = new QList<HashFileInfoStruct>();
-    itemsResult->reserve(rowCount);
-
     QTableWidget *table = ui->tableWidget;
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
-
+    itemsResult = items;
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
     int row = 0;
@@ -148,14 +146,14 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     {
         file = itemIt.next();
 
-        itemsResult->append(file);
-
-        text = QString("");
+        text = "";
         tableItem = new QTableWidgetItem(text);
         tableItem->setText(text);
         tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
-        tableItem->setCheckState(Qt::Unchecked);
-        tableItem->setData(Qt::UserRole, QVariant(file.fileName));
+        if(file.checked)
+            tableItem->setCheckState(Qt::Checked);
+        else
+            tableItem->setCheckState(Qt::Unchecked);
         tableItem->setToolTip(file.fileName);
         table->setItem(row, 0, tableItem);
 
@@ -182,12 +180,12 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
         table->setItem(row, 4, tableItem);
         row++;
     }
-
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
-
+/*
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
 {
 #ifdef MYPREFIX_DEBUG
@@ -207,6 +205,32 @@ QList<QString> MainWindow::getCheckedFileNamesFormTable()
         }
     }
     return result;
+}
+*/
+void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
+{
+    if(itemsResult == nullptr) return;
+    if(itemsResult->isEmpty()) return;
+    int row = item->row();
+    QTableWidget *table = item->tableWidget();
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QTableWidgetItem *itemN = table->takeItem(row, table->colorCount()-1);
+    QString fileName = itemN->text();
+    QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
+    HashFileInfoStruct strct;
+    while(it.hasNext())
+    {
+        strct = it.next();
+        if(fileName.compare(strct.fileName) == 0)
+        {
+            if(item->checkState() == Qt::Checked)
+            strct.checked = true;
+            else strct.checked = false;
+            it.setValue(strct);
+            break;
+        }
+    }
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
 // END
 
@@ -257,13 +281,13 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     QTableWidgetItem* tableItem;
 
     QTableWidget *table = ui->tableWidget;
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
 
-    itemsResult = new QList<HashFileInfoStruct>();
-    itemsResult->reserve(rowCount);
+    itemsResult=items;
 
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
@@ -271,7 +295,6 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     while(itemIt.hasNext())
     {
         file = itemIt.next();
-        itemsResult->append(file);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
@@ -283,6 +306,7 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -341,6 +365,7 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << ":on_pushButton_Remove_Checked_clicked";
 #endif
+    /*
     QList<QString> dirs = getCheckedFileNamesFormTable();
     if(!dirs.isEmpty())
     {
@@ -349,6 +374,31 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
         dir = it.next();
         QDir(dir).remove(dir);
     }
+    */
+    if(itemsResult == nullptr) return;
+    if(itemsResult->isEmpty()) return;
+    QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
+    HashFileInfoStruct strct;
+    while(it.hasNext())
+    {
+        strct = it.next();
+        if(strct.checked)
+        {
+            if(QDir(strct.fileName).remove(strct.fileName)) {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow:::on_pushButton_Remove_Checked_clicked: File has been removed:" << strct.fileName;
+#endif
+                it.remove();
+            } else {
+                QMessageBox::warning(this,
+                                     "DirWizard",
+                                     tr("Can't delete file: %1").arg(strct.fileName));
+            }
+        }
+    }
+    QMessageBox::information(this,
+                             "DirWizard",
+                             tr("Files have been deleted!"));
 }
 
 /*
@@ -543,15 +593,16 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     qDebug() << "MainWindow::showInvalidHashFilesInTable";
 #endif
     QStringList horizontalHeader;
+    horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Files with other hashes"));
     int columnCount = horizontalHeader.count();
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
-    itemsResult = new QList<HashFileInfoStruct>();
-    itemsResult->reserve(rowCount);
+    itemsResult=items;
 
     QTableWidget *table = ui->tableWidget;
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -560,22 +611,33 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
     int row = 0;
+    QString text;
     while(itemIt.hasNext())
     {
         file = itemIt.next();
 
-        itemsResult->append(file);
+        text = "";
+        tableItem = new QTableWidgetItem(text);
+        tableItem->setText(text);
+        tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
+        if(file.checked)
+            tableItem->setCheckState(Qt::Checked);
+        else
+            tableItem->setCheckState(Qt::Unchecked);
+        tableItem->setToolTip(file.fileName);
+        table->setItem(row, 0, tableItem);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
-        table->setItem(row, 0, tableItem);
+        table->setItem(row, 1, tableItem);
         row++;
     }
 
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
 
 void MainWindow::ClearItemsResultStore()
@@ -634,10 +696,10 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     int rowCount = items->count();
     QTableWidgetItem* tableItem;
 
-    itemsResult = new QList<HashFileInfoStruct>();
-    itemsResult->reserve(rowCount);
+    itemsResult = items;
 
     QTableWidget *table = ui->tableWidget;
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -646,18 +708,19 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     QListIterator<HashFileInfoStruct> itemIt(*items);
     HashFileInfoStruct file;
     int row = 0;
+    QString text;
     while(itemIt.hasNext())
     {
         file = itemIt.next();
-
-        itemsResult->append(file);
 
         text = QString("");
         tableItem = new QTableWidgetItem(text);
         tableItem->setText(text);
         tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
-        tableItem->setCheckState(Qt::Unchecked);
-        tableItem->setData(Qt::UserRole, QVariant(file.fileName));
+        if(file.checked)
+            tableItem->setCheckState(Qt::Checked);
+        else
+            tableItem->setCheckState(Qt::Unchecked);
         tableItem->setToolTip(file.fileName);
         table->setItem(row, 0, tableItem);
 
@@ -671,6 +734,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
+    QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -698,4 +762,3 @@ void MainWindow::setUiPushButtonsEnabled(bool flag)
     ui->pushButton_Remove_Checked->setEnabled(flag);
     ui->pushButton_Save_From_Table->setEnabled(flag);
 }
-
