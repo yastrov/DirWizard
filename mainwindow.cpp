@@ -525,7 +525,7 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
         {
             QMessageBox::StandardButton reply = QMessageBox::question(this,
                                                                       "DirWizard",
-                                                                      tr("Overwrite?\nFile already exists!"),
+                                                                      tr("File already exists!\nOverwrite?"),
                                                                       QMessageBox::Yes|QMessageBox::No);
             if (reply == QMessageBox::No)
             {
