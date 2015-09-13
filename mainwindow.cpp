@@ -628,6 +628,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     qDebug() << "MainWindow::showInvalidZipInTable";
 #endif
     QStringList horizontalHeader;
+    horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Invalid zip"));
     int columnCount = horizontalHeader.count();
     int rowCount = items->count();
@@ -650,6 +651,15 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
         file = itemIt.next();
 
         itemsResult->append(file);
+
+        text = QString("");
+        tableItem = new QTableWidgetItem(text);
+        tableItem->setText(text);
+        tableItem->setFlags(tableItem->flags() | Qt::ItemIsUserCheckable);
+        tableItem->setCheckState(Qt::Unchecked);
+        tableItem->setData(Qt::UserRole, QVariant(file.fileName));
+        tableItem->setToolTip(file.fileName);
+        table->setItem(row, 0, tableItem);
 
         tableItem = new QTableWidgetItem(file.fileName);
         tableItem->setToolTip(file.fileName);

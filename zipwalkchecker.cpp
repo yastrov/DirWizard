@@ -47,6 +47,7 @@ void ZipWalkChecker::processFile(const QString &fileName)
             HashFileInfoStruct fs;
             fs.fileName = fileName;
             fs.size = fInfo.size();
+            fs.checked = true;
             itemsList->append(fs);
         }
         if(qzip.isOpen())

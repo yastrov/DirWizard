@@ -95,6 +95,7 @@ void LoadAndCheckHash::processFile(const QString &fileName)
                 HashFileInfoStruct strct;
                 strct.hash = hashStrFromFile;
                 strct.fileName = fileName;
+                strct.checked = true;
                 strct.size = 0;
                 itemsList->append(strct);
             }
@@ -132,6 +133,7 @@ bool LoadAndCheckHash::checkHash(const QString &fileName,
             HashFileInfoStruct strct;
             strct.hash = hashFromFile;
             strct.fileName = fileName;
+            strct.checked = true;
             strct.size = QFileInfo(fileName).size();
             itemsList->append(strct);
         }
