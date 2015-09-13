@@ -453,7 +453,7 @@ void MainWindow::on_pushButton_Cancel_clicked()
 void MainWindow::on_AboutAction_Triggered(bool checked)
 {
     QMessageBox::about(this,
-                       QString("About DirWizard"),
+                       tr("About DirWizard"),
                        tr("<h2>DirWizard</h2>"
                           "<p>Written by Yuriy (Yuri) Astrov<br/>"
                           "Based on QT 5<br/>"
@@ -468,8 +468,8 @@ void MainWindow::finishedThread()
     isBackgroundThreadRunning = false;
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
     QMessageBox::information(this,
-                             QString("DirWizard"),
-                             QString("Task completed successfully!"));
+                             "DirWizard",
+                             tr("Task completed successfully!"));
 }
 
 
@@ -493,9 +493,9 @@ void MainWindow::saveItemsToFile(const QString &fileName)
         QString delimeter = "\t";
         QString endOfLine = "\n";
 
-        out << QString("%Group ID") << delimeter;
-        out << QString("Size") << delimeter;
-        out << QString("Hash") << delimeter << QString("FileName");
+        out << tr("Group ID") << delimeter;
+        out << tr("Size") << delimeter;
+        out << tr("Hash") << delimeter << tr("FileName");
         out << endOfLine;
 
         QListIterator<HashFileInfoStruct> it(*itemsResult);
@@ -513,15 +513,18 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
 {
     if(itemsResult != nullptr)
     {
-    QString fileName = QFileDialog::getSaveFileName(this, QString("Save File"),
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save File"),
                                      QDir::homePath(),
-                                     QString("Text files (*.txt)") );
+                                     "Text files (*.txt)");
     if(!fileName.isNull() && !fileName.isEmpty())
     {
         QFileInfo qF(fileName);
         if(qF.exists())
         {
-            QMessageBox::StandardButton reply = QMessageBox::question(this, "File already exists!", "Overwrite?",
+            QMessageBox::StandardButton reply = QMessageBox::question(this,
+                                                                      "DirWizard",
+                                                                      tr("Overwrite?\nFile already exists!"),
                                                                       QMessageBox::Yes|QMessageBox::No);
             if (reply == QMessageBox::No)
             {
