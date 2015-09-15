@@ -20,7 +20,6 @@ release {
 }
 
 CONFIG += c++11
-LFLAGS = -static-libgcc -static-libstdc++ -s
 
 win32: {
     INCLUDEPATH += C:/Qt/zlib-1.2.8
