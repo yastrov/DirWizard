@@ -79,12 +79,12 @@ void LoadAndCheckHash::processFile(const QString &fileName)
 #ifdef MYPREFIX_DEBUG
         qDebug() << "LoadAndCheckHash::processFile File non exists: " << origFileName;
 #endif
+            origFileName = QDir::toNativeSeparators(fInfo.path()) + QDir::separator() + fInfo.completeBaseName();
             if(QFileInfo(origFileName).exists())
             {
 #ifdef MYPREFIX_DEBUG
         qDebug() << "LoadAndCheckHash::processFile File Exists: " << origFileName;
 #endif
-                origFileName = QDir::toNativeSeparators(fInfo.path()) + QDir::separator() + fInfo.completeBaseName();
                 checkHash(origFileName, hashStrFromFile);
             }
             else
