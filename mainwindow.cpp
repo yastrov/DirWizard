@@ -53,7 +53,7 @@ QList<QDir> MainWindow::getElementsFromDirsListWidget()
     }
 
     QListWidget *list = ui->listWidget;
-    for(int i=0; i < count; i++)
+    for(int i=0; i < count; ++i)
     {
         item = list->item(i);
         dir = QDir(item->data(Qt::UserRole).toString());
@@ -179,7 +179,7 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
         table->setItem(row, 4, tableItem);
-        row++;
+        ++row;
     }
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
@@ -299,7 +299,7 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
         table->setItem(row, 0, tableItem);
-        row++;
+        ++row;
     }
 
     QHeaderView* header = table->horizontalHeader();
@@ -385,7 +385,7 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
         if(strct.checked)
         {
             if(QDir(strct.fileName).remove(strct.fileName)) {
-                removed++;
+                ++removed;
                 it.remove();
             } else {
                 QMessageBox::warning(this,
@@ -400,7 +400,7 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
     QTableWidgetItem *item;
     QVector<int> qv;
     qv.reserve(removed);
-    for(int row=0; row < rowCount; row++)
+    for(int row=0; row < rowCount; ++row)
     {
         item = table->item(row, 0);
         if( item->checkState() == Qt::Checked )
@@ -650,7 +650,7 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
         table->setItem(row, 1, tableItem);
-        row++;
+        ++row;
     }
 
     QHeaderView* header = table->horizontalHeader();
@@ -747,7 +747,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
         tableItem->setToolTip(file.fileName);
         tableItem->setText(file.fileName);
         table->setItem(row, 0, tableItem);
-        row++;
+        ++row;
     }
 
     QHeaderView* header = table->horizontalHeader();

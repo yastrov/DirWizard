@@ -203,7 +203,7 @@ QList<HashFileInfoStruct> * DuplicateFinder::reduceToResult()
            result->append(s);
            checked = true;
        }
-       groupId++;
+       ++groupId;
     }
     hashByHash.clear();
 #ifdef MYPREFIX_DEBUG
