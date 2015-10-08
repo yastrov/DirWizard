@@ -15,6 +15,7 @@
 #include <QComboBox>
 #include <QStringList>
 #include <QTableWidgetItem>
+#include <QHeaderView>
 #include <QFileInfo>
 #include <QList>
 #include <QVector>
@@ -57,6 +58,7 @@ signals:
 
 private slots:
     void tableWidgetItemChanged(QTableWidgetItem * item);
+    void tableWidget_header_clicked(int column);
     void on_pushButton_Add_Dir_clicked();
     void on_pushButton_Cancel_clicked();
     void on_pushButton_Remove_Checked_clicked();

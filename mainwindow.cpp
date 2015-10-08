@@ -134,6 +134,7 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::disconnect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -185,6 +186,8 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 /*
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
@@ -281,6 +284,7 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::disconnect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -306,6 +310,8 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -622,6 +628,7 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::disconnect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -657,6 +664,8 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::ClearItemsResultStore()
@@ -719,6 +728,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::disconnect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->clearContents();
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
@@ -754,6 +764,8 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -780,4 +792,13 @@ void MainWindow::setUiPushButtonsEnabled(bool flag)
     ui->pushButton_Duplicate_Search->setEnabled(flag);
     ui->pushButton_Remove_Checked->setEnabled(flag);
     ui->pushButton_Save_From_Table->setEnabled(flag);
+}
+
+void MainWindow::tableWidget_header_clicked(int column) {
+    Qt::SortOrder order = ui->tableWidget->horizontalHeader()->sortIndicatorOrder();
+    ui->tableWidget->horizontalHeader()->setSortIndicatorShown(true);
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "MainWindow::tableWidget_header_clicked: " << static_cast<int>(order);
+#endif
+    ui->tableWidget->sortItems(column, order);
 }
