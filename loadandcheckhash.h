@@ -15,7 +15,7 @@ public:
     QStringList getFilterExtention(const QCryptographicHash::Algorithm &algoEnum);
 
 protected:
-    void processFile(const QString &fileName);
+    void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 private:
     QCryptographicHash::Algorithm algo;

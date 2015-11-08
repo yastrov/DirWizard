@@ -16,7 +16,7 @@ public:
 
 private:
     QList<HashFileInfoStruct> *itemsList;
-    void processFile(const QString &fileName);
+    void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 signals:
     void finishedWData(QList<HashFileInfoStruct> *items = nullptr);

@@ -26,7 +26,7 @@ class DuplicateFinder : public HashDirWalker
     Q_OBJECT
 public:
     DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
-    void processFile(const QString &fileName);
+    void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 private:
     QHash<qint64, QVector<HashFileInfoStruct> > hashBySize;

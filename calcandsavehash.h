@@ -16,7 +16,7 @@ public:
     QString getHashFileExtention(QCryptographicHash::Algorithm algoEnum);
 
 protected:
-    void processFile(const QString &fileName);
+    void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 private:
     QString hashFileExtention;
