@@ -97,7 +97,7 @@ void LoadAndCheckHash::processFile(const QString &fileName)
                 strct.fileName = fileName;
                 strct.checked = true;
                 strct.size = 0;
-                itemsList->append(strct);
+                itemsList->append(std::move(strct));
             }
         }
     }

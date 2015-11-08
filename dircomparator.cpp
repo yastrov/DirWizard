@@ -122,7 +122,7 @@ QList<HashFileInfoStruct> * DirComparator::reduceToResult()
        QMutableVectorIterator<HashFileInfoStruct> vIt( vect);
        while(vIt.hasNext())
        {
-           result->append(vIt.next());
+           result->append(std::move(vIt.next()));
        }
     }
     hashByHash.clear();

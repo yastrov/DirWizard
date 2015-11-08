@@ -200,7 +200,7 @@ QList<HashFileInfoStruct> * DuplicateFinder::reduceToResult()
            s = vIt.next();
            s.groupID = groupId;
            s.checked = checked;
-           result->append(s);
+           result->append(std::move(s));
            checked = true;
        }
        ++groupId;
