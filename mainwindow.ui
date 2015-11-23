@@ -54,6 +54,9 @@
             <property name="toolTip">
              <string>Add folder</string>
             </property>
+            <property name="statusTip">
+             <string>Add folder to path list.</string>
+            </property>
             <property name="text">
              <string>+</string>
             </property>
@@ -68,6 +71,9 @@
             </property>
             <property name="toolTip">
              <string>Remove selected folder</string>
+            </property>
+            <property name="statusTip">
+             <string>Remove folder from path list.</string>
             </property>
             <property name="text">
              <string>-</string>
@@ -116,6 +122,9 @@
           </property>
           <property name="toolTip">
            <string>Folders for processing</string>
+          </property>
+          <property name="statusTip">
+           <string>Path list: every path in list will be processed.</string>
           </property>
          </widget>
         </item>
@@ -179,6 +188,9 @@
           <property name="toolTip">
            <string>Choose Hash Algorithm</string>
           </property>
+          <property name="statusTip">
+           <string>Choose hash algorithm. All files compare by hash sum.</string>
+          </property>
          </widget>
         </item>
         <item row="1" column="0">
@@ -203,6 +215,9 @@
           <property name="toolTip">
            <string>Filter for files: use space for delimeter</string>
           </property>
+          <property name="statusTip">
+           <string>Filter for files: use space for delimeter. For example: '.zip .png'</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -222,6 +237,9 @@
           <property name="toolTip">
            <string>Start duplicate search</string>
           </property>
+          <property name="statusTip">
+           <string>Start duplicate files search</string>
+          </property>
           <property name="text">
            <string>Start Dupl Find</string>
           </property>
@@ -231,6 +249,9 @@
          <widget class="QPushButton" name="pushButton_Calc_Hashes">
           <property name="toolTip">
            <string>Calc hashes and store to disk.</string>
+          </property>
+          <property name="statusTip">
+           <string>Calc hash sum for each file in folders and  and save to disk.</string>
           </property>
           <property name="text">
            <string>Calc Hashes</string>
@@ -242,6 +263,9 @@
           <property name="toolTip">
            <string>Check hashes</string>
           </property>
+          <property name="statusTip">
+           <string>Check files in folders by hashes.</string>
+          </property>
           <property name="text">
            <string>Check Hashes</string>
           </property>
@@ -252,6 +276,9 @@
           <property name="toolTip">
            <string>Compare folders, find uniq files.</string>
           </property>
+          <property name="statusTip">
+           <string>Compare folders and find uniq files.</string>
+          </property>
           <property name="text">
            <string>Compare Folders</string>
           </property>
@@ -261,6 +288,9 @@
          <widget class="QPushButton" name="pushButton_Check_Zip">
           <property name="toolTip">
            <string>Check ZIP archives</string>
+          </property>
+          <property name="statusTip">
+           <string>Check ZIP archives. Show invalid or bad ZIP archives.</string>
           </property>
           <property name="text">
            <string>Check ZIP</string>
@@ -276,6 +306,9 @@
           </property>
           <property name="toolTip">
            <string>Cancel current process</string>
+          </property>
+          <property name="statusTip">
+           <string>Cancel current process.</string>
           </property>
           <property name="text">
            <string>Cancel</string>
@@ -335,6 +368,9 @@
         <property name="toolTip">
          <string>Result table</string>
         </property>
+        <property name="statusTip">
+         <string>Table with results.</string>
+        </property>
         <property name="horizontalScrollBarPolicy">
          <enum>Qt::ScrollBarAlwaysOn</enum>
         </property>
@@ -358,6 +394,9 @@
           <property name="toolTip">
            <string>Remove elements, where are you make  check</string>
           </property>
+          <property name="statusTip">
+           <string>Remove checked files from disk, not from result table.</string>
+          </property>
           <property name="text">
            <string>Remove checked</string>
           </property>
@@ -372,6 +411,9 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
+           <string>Save items from table to file.</string>
+          </property>
+          <property name="statusTip">
            <string>Save items from table to file.</string>
           </property>
           <property name="text">
@@ -397,10 +439,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>layoutWidget</zorder>
-   <zorder>gridLayoutWidget</zorder>
-   <zorder>pushButton_Save_From_Table</zorder>
-   <zorder>pushButton_Remove_Checked</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -431,6 +469,9 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+   <property name="statusTip">
+    <string>About this program.</string>
    </property>
   </action>
  </widget>
