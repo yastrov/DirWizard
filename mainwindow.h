@@ -108,7 +108,7 @@ private:
     void startCheckZipsInBackground();
 
 protected:
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
 };
 
 #endif // MAINWINDOW_H

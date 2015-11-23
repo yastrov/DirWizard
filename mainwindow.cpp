@@ -523,7 +523,7 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save File"),
                                      QDir::homePath(),
-                                     "Text files (*.txt)");
+                                     tr("Text files (*.txt)"));
     if(!fileName.isNull() && !fileName.isEmpty())
     {
         QFileInfo qF(fileName);
