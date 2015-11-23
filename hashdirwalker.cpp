@@ -1,10 +1,19 @@
 #include "hashdirwalker.h"
+#ifdef MYPREFIX_DEBUG
+#include <QDebug>
+#endif
 
 HashDirWalker::HashDirWalker(QCryptographicHash::Algorithm hash, QObject *parent):
     DirWalker(parent),
     hashAlgo(new QCryptographicHash(hash))
 {
 
+}
+HashDirWalker::~HashDirWalker()
+{
+    if(hashAlgo) {
+        delete hashAlgo;
+    }
 }
 
 QByteArray HashDirWalker::fileChecksum(const QString &fileName,

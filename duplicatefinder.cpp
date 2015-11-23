@@ -1,4 +1,7 @@
 #include "duplicatefinder.h"
+#ifdef MYPREFIX_DEBUG
+#include <QDebug>
+#endif
 
 DuplicateFinder::DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *parent) :
     HashDirWalker(hash, parent),
@@ -6,6 +9,13 @@ DuplicateFinder::DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *pa
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::constructor";
+#endif
+}
+
+DuplicateFinder::~DuplicateFinder()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "DuplicateFinder::~DuplicateFinder";
 #endif
 }
 

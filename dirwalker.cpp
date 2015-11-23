@@ -1,9 +1,19 @@
 #include "dirwalker.h"
+#ifdef MYPREFIX_DEBUG
+#include <QDebug>
+#endif
 
 DirWalker::DirWalker(QObject *parent) : QObject(parent),
     stopped(false)
 {
 
+}
+
+DirWalker::~DirWalker()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "DirWalker::~DirWalker";
+#endif
 }
 
 void DirWalker::setQDir(const QDir &rootDir)

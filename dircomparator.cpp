@@ -9,6 +9,13 @@ DirComparator::DirComparator(QCryptographicHash::Algorithm hash, QObject *parent
 #endif
 }
 
+DirComparator::~DirComparator()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug() << "DirComparator::~DirComparator";
+#endif
+}
+
 void DirComparator::process()
 {
 #ifdef MYPREFIX_DEBUG

@@ -26,6 +26,7 @@ class DirComparator : public HashDirWalker
      Q_OBJECT
 public:
     DirComparator(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
+    virtual ~DirComparator();
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 private:

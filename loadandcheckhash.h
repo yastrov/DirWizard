@@ -12,6 +12,7 @@ class LoadAndCheckHash : public HashDirWalker
     Q_OBJECT
 public:
     LoadAndCheckHash(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
+    virtual ~ LoadAndCheckHash();
     QStringList getFilterExtention(const QCryptographicHash::Algorithm &algoEnum);
 
 protected:

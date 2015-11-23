@@ -7,6 +7,11 @@ CalcAndSaveHash::CalcAndSaveHash(QCryptographicHash::Algorithm hash, QObject *pa
 
 }
 
+CalcAndSaveHash::~CalcAndSaveHash()
+{
+
+}
+
 void CalcAndSaveHash::process()
 {
 #ifdef MYPREFIX_DEBUG

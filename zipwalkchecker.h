@@ -13,6 +13,7 @@ class ZipWalkChecker : public DirWalker
     Q_OBJECT
 public:
     explicit ZipWalkChecker(QObject *parent = nullptr);
+    virtual ~ZipWalkChecker();
 
 private:
     QList<HashFileInfoStruct> *itemsList;

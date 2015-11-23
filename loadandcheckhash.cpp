@@ -7,6 +7,10 @@ LoadAndCheckHash::LoadAndCheckHash(QCryptographicHash::Algorithm hash, QObject *
 {
 
 }
+LoadAndCheckHash::~ LoadAndCheckHash()
+{
+
+}
 
 void LoadAndCheckHash::process()
 {
