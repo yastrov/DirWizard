@@ -115,6 +115,9 @@ void MainWindow::initTableWidget()
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
+    // Set alternating row colors from now to future.
+    table->setAlternatingRowColors(true);
+    table->setStyleSheet("alternate-background-color: grey;background-color: white;");
 }
 
 void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
@@ -429,8 +432,12 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
 void MainWindow::on_pushButton_Duplicate_Search_clicked()
 {
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "on_pushButton_Duplicate_Search_clicked";
+    qDebug() << __PRETTY_FUNCTION__ << "\n";
+    qDebug() << "QThread: " << thread << "\n";
 #endif
+    if (isBackgroundThreadRunning) {
+        thread->wait();
+    }
     ClearItemsResultStore();
     startDuplicateSearchInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
@@ -482,6 +489,13 @@ void MainWindow::finishedThread()
 
 void MainWindow::on_pushButton_Compare_Folders_clicked()
 {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << __PRETTY_FUNCTION__ << "\n";
+    qDebug() << "QThread: " << thread << "\n";
+#endif
+    if (isBackgroundThreadRunning) {
+        thread->wait();
+    }
     ClearItemsResultStore();
     startComparingFoldersInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
@@ -572,6 +586,13 @@ void MainWindow::startCalcHashesInBackground()
 
 void MainWindow::on_pushButton_Calc_Hashes_clicked()
 {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << __PRETTY_FUNCTION__ << "\n";
+    qDebug() << "QThread: " << thread << "\n";
+#endif
+    if (isBackgroundThreadRunning) {
+        thread->wait();
+    }
     ClearItemsResultStore();
     startCalcHashesInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
@@ -582,6 +603,13 @@ Checked Hashes
 */
 void MainWindow::on_pushButton_Check_Hashes_clicked()
 {
+#ifdef MYPREFIX_DEBUG
+    qDebug() << __PRETTY_FUNCTION__ << "\n";
+    qDebug() << "QThread: " << thread << "\n";
+#endif
+    if (isBackgroundThreadRunning) {
+        thread->wait();
+    }
     ClearItemsResultStore();
     startCheckHashesInBackground();
     setUiPushButtonsEnabled(!isBackgroundThreadRunning);
@@ -671,7 +699,7 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
 void MainWindow::ClearItemsResultStore()
 {
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "MainWindow::ClearItemsResultStore";
+    qDebug() << "MainWindow::ClearItemsResultStore\n";
 #endif
     if(itemsResult != nullptr)
         delete itemsResult;
