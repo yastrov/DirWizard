@@ -24,7 +24,7 @@ private:
     void saveHashToFile(const QString &fileName, const QString &hashData);
 
 signals:
-    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
+    void finishedWData(QSharedPointer<QList<HashFileInfoStruct>> itemsPtr);
 
 public slots:
     void process();

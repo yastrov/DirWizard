@@ -20,7 +20,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    ClearItemsResultStore();
     delete ui;
 }
 
@@ -118,7 +117,7 @@ void MainWindow::initTableWidget()
     table->setStyleSheet("alternate-background-color: grey;background-color: white;");
 }
 
-void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
+void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "showDuplicatesInTable";
@@ -130,7 +129,7 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     horizontalHeader.append(tr("Size"));
     horizontalHeader.append(tr("FileName"));
     int columnCount = horizontalHeader.count();
-    int rowCount = items->count();
+    const int rowCount = itemsPtr.data()->count();
     QTableWidgetItem* tableItem;
 
     QTableWidget *table = ui->tableWidget;
@@ -140,8 +139,8 @@ void MainWindow::showDuplicatesInTable(QList<HashFileInfoStruct> *items)
     table->setColumnCount(columnCount);
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
-    itemsResult = items;
-    QListIterator<HashFileInfoStruct> itemIt(*items);
+    itemsResult = itemsPtr;
+    QListIterator<HashFileInfoStruct> itemIt(*itemsPtr.data());
     HashFileInfoStruct file;
     int row = 0;
     QString text;
@@ -218,9 +217,9 @@ void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
     qDebug() << "MainWindow::tableWidgetItemChanged";
 #endif
     if(itemsResult == nullptr) return;
-    if(itemsResult->isEmpty()) return;
+    //if(itemsResult->isEmpty()) return;
     QString fileName = item->toolTip();
-    QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
+    QMutableListIterator<HashFileInfoStruct> it(*itemsResult.data());
     HashFileInfoStruct strct;
     while(it.hasNext())
     {
@@ -273,7 +272,7 @@ void MainWindow::startDuplicateSearchInBackground()
 /*
  *
 */
-void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
+void MainWindow::showUniqFilesInTable(QSharedPtrListHFIS itemsPtr)
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "showUniqFilesInTable";
@@ -281,7 +280,7 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     QStringList horizontalHeader;
     horizontalHeader.append(tr("File names for unique files"));
     int columnCount = horizontalHeader.count();
-    int rowCount = items->count();
+    const int rowCount = itemsPtr.data()->count();
     QTableWidgetItem* tableItem;
 
     QTableWidget *table = ui->tableWidget;
@@ -292,9 +291,9 @@ void MainWindow::showUniqFilesInTable(QList<HashFileInfoStruct> *items)
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
 
-    itemsResult=items;
-
-    QListIterator<HashFileInfoStruct> itemIt(*items);
+    itemsResult=itemsPtr;
+qDebug() << "Num of unique" << itemsPtr.data()->count();
+    QListIterator<HashFileInfoStruct> itemIt(*itemsPtr.data());
     HashFileInfoStruct file;
     int row = 0;
     while(itemIt.hasNext())
@@ -382,8 +381,8 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
     }
     */
     if(itemsResult == nullptr) return;
-    if(itemsResult->isEmpty()) return;
-    QMutableListIterator<HashFileInfoStruct> it(*itemsResult);
+    //if(itemsResult->isEmpty()) return;
+    QMutableListIterator<HashFileInfoStruct> it(*itemsResult.data());
     HashFileInfoStruct strct;
     int removed = 0;
     while(it.hasNext())
@@ -436,7 +435,7 @@ void MainWindow::on_pushButton_Duplicate_Search_clicked()
     if (thread->isRunning()) {
         thread->wait();
     }
-    ClearItemsResultStore();
+    //ClearItemsResultStore();
     startDuplicateSearchInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -478,7 +477,7 @@ void MainWindow::on_AboutAction_Triggered(bool checked)
 
 void MainWindow::finishedThread()
 {
-    setUiPushButtonsEnabled(!thread->isRunning());
+    setUiPushButtonsEnabled(true);
     QMessageBox::information(this,
                              "DirWizard",
                              tr("Task completed successfully!"));
@@ -494,7 +493,7 @@ void MainWindow::on_pushButton_Compare_Folders_clicked()
     if (thread->isRunning()) {
         thread->wait();
     }
-    ClearItemsResultStore();
+    //ClearItemsResultStore();
     startComparingFoldersInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -590,7 +589,6 @@ void MainWindow::on_pushButton_Calc_Hashes_clicked()
     if (thread->isRunning()) {
         thread->wait();
     }
-    ClearItemsResultStore();
     startCalcHashesInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -607,7 +605,6 @@ void MainWindow::on_pushButton_Check_Hashes_clicked()
     if (thread->isRunning()) {
         thread->wait();
     }
-    ClearItemsResultStore();
     startCheckHashesInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -636,7 +633,7 @@ void MainWindow::startCheckHashesInBackground()
     }
 }
 
-void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
+void MainWindow::showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr)
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::showInvalidHashFilesInTable";
@@ -645,10 +642,10 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Files with other hashes"));
     int columnCount = horizontalHeader.count();
-    int rowCount = items->count();
+    const int rowCount = itemsPtr.data()->count();
     QTableWidgetItem* tableItem;
 
-    itemsResult=items;
+    itemsResult=itemsPtr;
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
@@ -658,7 +655,7 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
 
-    QListIterator<HashFileInfoStruct> itemIt(*items);
+    QListIterator<HashFileInfoStruct> itemIt(*itemsPtr.data());
     HashFileInfoStruct file;
     int row = 0;
     QString text;
@@ -692,21 +689,12 @@ void MainWindow::showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
-void MainWindow::ClearItemsResultStore()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "MainWindow::ClearItemsResultStore\n";
-#endif
-    if(itemsResult != nullptr)
-        delete itemsResult;
-}
-
 void MainWindow::on_pushButton_Check_Zip_clicked()
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
 #endif
-    ClearItemsResultStore();
+    //ClearItemsResultStore();
     startCheckZipsInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -717,7 +705,7 @@ void MainWindow::startCheckZipsInBackground()
     qDebug() << "MainWindow::startCheckZipsInBackground";
 #endif
     QList<QDir> dirs = getElementsFromDirsListWidget();
-    if(!dirs.isEmpty() && !isBackthread->isRunning())
+    if(!dirs.isEmpty() && !thread->isRunning())
     {
         ZipWalkChecker *worker = new ZipWalkChecker(nullptr);
 
@@ -735,7 +723,7 @@ void MainWindow::startCheckZipsInBackground()
     }
 }
 
-void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
+void MainWindow::showInvalidZipInTable(QSharedPtrListHFIS itemsPtr)
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::showInvalidZipInTable";
@@ -744,10 +732,10 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Invalid zip"));
     int columnCount = horizontalHeader.count();
-    int rowCount = items->count();
+    const int rowCount = itemsPtr.data()->count();
     QTableWidgetItem* tableItem;
 
-    itemsResult = items;
+    itemsResult = itemsPtr;
 
     QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
@@ -757,7 +745,7 @@ void MainWindow::showInvalidZipInTable(QList<HashFileInfoStruct> *items)
     table->setRowCount(rowCount);
     table->setHorizontalHeaderLabels(horizontalHeader);
 
-    QListIterator<HashFileInfoStruct> itemIt(*items);
+    QListIterator<HashFileInfoStruct> itemIt(*itemsPtr.data());
     HashFileInfoStruct file;
     int row = 0;
     QString text;

@@ -66,24 +66,23 @@ private slots:
     void on_pushButton_Remove_Dir_clicked();
     void on_AboutAction_Triggered(bool checked);
     // Duplicate files search
-    void showDuplicatesInTable(QList<HashFileInfoStruct> *items);
+    void showDuplicatesInTable(QSharedPtrListHFIS itemsPtr);
     // Comparing Folders
-    void showUniqFilesInTable(QList<HashFileInfoStruct> *items);
+    void showUniqFilesInTable(QSharedPtrListHFIS itemsPtr);
     void finishedThread();
     void on_pushButton_Compare_Folders_clicked();
     void on_pushButton_Save_From_Table_clicked();
     void on_pushButton_Calc_Hashes_clicked();
     void on_pushButton_Check_Hashes_clicked();
-    void showInvalidHashFilesInTable(QList<HashFileInfoStruct> *items);
+    void showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr);
     void on_pushButton_Check_Zip_clicked();
-    void showInvalidZipInTable(QList<HashFileInfoStruct> *items);
+    void showInvalidZipInTable(QSharedPtrListHFIS itemsPtr);
 
 private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
-    bool isBackgroundThreadRunning;
     QThread* thread;
-    QList<HashFileInfoStruct> *itemsResult;
+    QSharedPtrListHFIS itemsResult;
     // ComboBox
     void addItemToComboBox(QString text, int data);
     void initHashComboBoxWidget();
@@ -100,7 +99,6 @@ private:
     void startComparingFoldersInBackground();
     // Other
     void saveItemsToFile(const QString &fileName);
-    void ClearItemsResultStore();
     void setUiPushButtonsEnabled(bool flag);
     // Calc hashes
     void startCalcHashesInBackground();

@@ -2,9 +2,13 @@
 #include <QApplication>
 #include <QFileInfo>
 #include <QCoreApplication>
+#include "hashfileinfostruct.h"
+#include <QSharedPointer>
 
 int main(int argc, char *argv[])
 {
+    qRegisterMetaType<QSharedPointer<QList<HashFileInfoStruct>>>("QSharedPointer<QList<HashFileInfoStruct>>");
+    qRegisterMetaType<QSharedPtrListHFIS>("QSharedPtrListHFIS");
     QStringList paths = QCoreApplication::libraryPaths();
     paths.append(".");
     paths.append("platforms");

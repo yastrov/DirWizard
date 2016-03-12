@@ -1,6 +1,7 @@
 #ifndef HASHFILEINFOSTRUCT
 #define HASHFILEINFOSTRUCT
 #include <QString>
+#include <QSharedPointer>
 
 typedef struct {
     //QFileInfo i;
@@ -10,5 +11,7 @@ typedef struct {
     uint groupID;
     qint64 size;
 } HashFileInfoStruct;
+
+typedef QSharedPointer<QList<HashFileInfoStruct>> QSharedPtrListHFIS;
 
 #endif // HASHFILEINFOSTRUCT

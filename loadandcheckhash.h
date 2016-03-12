@@ -20,13 +20,13 @@ protected:
 
 private:
     QCryptographicHash::Algorithm algo;
-    QList<HashFileInfoStruct> *itemsList;
+    QSharedPtrListHFIS itemsList;
     QString hashFileExtention;
     void LoadHashFromFile(const QString &fileName, const QString &hashData);
     bool checkHash(const QString &fileName, const QString &hashFromFile);
 
 signals:
-    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
+    void finishedWData(QSharedPtrListHFIS itemsPtr);
 
 public slots:
     void process();

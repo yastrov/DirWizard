@@ -41,11 +41,12 @@ void DirComparator::process()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process::reduceToResult";
 #endif
-    QList<HashFileInfoStruct> *items = reduceToResult();
+    reduceToResult();
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process::emit";
 #endif
-    emit finishedWData(items);
+    qDebug() << "Num f uniq: "<<result.data()->count();
+    emit finishedWData(result);
     emit finished();
 }
 
@@ -107,16 +108,16 @@ void DirComparator::clearNoDuplicatedHashes()
     }
 }
 
-QList<HashFileInfoStruct> * DirComparator::reduceToResult()
+void DirComparator::reduceToResult()
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DirComparator::reduceToResult";
 #endif
-    QList<HashFileInfoStruct> *result = new QList<HashFileInfoStruct>();
+    result = QSharedPtrListHFIS(new QList<HashFileInfoStruct>());
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DirComparator::reduceToResult:: reserve memory for result";
 #endif
-    result->reserve(resultCount);
+    result.data()->reserve(resultCount);
 
     QList<QString> keys = hashByHash.keys();
     QListIterator<QString> it(keys);
@@ -129,12 +130,11 @@ QList<HashFileInfoStruct> * DirComparator::reduceToResult()
        QMutableVectorIterator<HashFileInfoStruct> vIt( vect);
        while(vIt.hasNext())
        {
-           result->append(std::move(vIt.next()));
+           result.data()->append(std::move(vIt.next()));
        }
     }
     hashByHash.clear();
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DirComparator::reduceToResult:: return result";
 #endif
-    return result;
 }

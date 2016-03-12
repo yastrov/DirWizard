@@ -56,11 +56,12 @@ void DuplicateFinder::process()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process::reduceToResult";
 #endif
-    QList<HashFileInfoStruct> *items = reduceToResult();
+    reduceToResult();
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process::emit";
+    qDebug() << "Num of duplacates: "<<result.data()->count();
 #endif
-    emit finishedWData(items);
+    emit finishedWData(result);
     emit finished();
 }
 
@@ -181,16 +182,16 @@ void DuplicateFinder::clearNoDuplicatedHashes()
     }
 }
 
-QList<HashFileInfoStruct> * DuplicateFinder::reduceToResult()
+void DuplicateFinder::reduceToResult()
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::reduceToResult";
 #endif
-    QList<HashFileInfoStruct> *result = new QList<HashFileInfoStruct>();
+    result = QSharedPtrListHFIS(new QList<HashFileInfoStruct>());
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::reduceToResult:: reserve memory for result";
 #endif
-    result->reserve(resultCount);
+    result.data()->reserve(resultCount);
 
     QList<QString> keys = hashByHash.keys();
     QListIterator<QString> it(keys);
@@ -210,7 +211,7 @@ QList<HashFileInfoStruct> * DuplicateFinder::reduceToResult()
            s = vIt.next();
            s.groupID = groupId;
            s.checked = checked;
-           result->append(std::move(s));
+           result.data()->append(std::move(s));
            checked = true;
        }
        ++groupId;
@@ -219,5 +220,4 @@ QList<HashFileInfoStruct> * DuplicateFinder::reduceToResult()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::reduceToResult:: return result";
 #endif
-    return result;
 }

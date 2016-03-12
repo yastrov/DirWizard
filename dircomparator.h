@@ -35,10 +35,11 @@ private:
     void clearNoDuplicatedSize();
     void makeHashByHashes();
     void clearNoDuplicatedHashes();
-    QList<HashFileInfoStruct> * reduceToResult();
+    void reduceToResult();
+    QSharedPtrListHFIS result;
 
 signals:
-    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
+    void finishedWData(QSharedPtrListHFIS itemsPtr);
 
 public slots:
     void process();

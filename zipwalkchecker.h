@@ -16,11 +16,12 @@ public:
     virtual ~ZipWalkChecker();
 
 private:
-    QList<HashFileInfoStruct> *itemsList;
+    QSharedPtrListHFIS itemsList;
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;
+    QSharedPtrListHFIS result;
 
 signals:
-    void finishedWData(QList<HashFileInfoStruct> *items = nullptr);
+    void finishedWData(QSharedPtrListHFIS itemsPtr);
 
 public slots:
     void process();
