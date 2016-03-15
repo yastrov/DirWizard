@@ -105,8 +105,8 @@ void DuplicateFinder::clearNoDuplicatedSize()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::clearNoDuplicatedSize";
 #endif
-    qint64 key;
 #ifdef HASH_OV_VECT
+    qint64 key;
     QVector<HashFileInfoStruct> vect;
     QList<qint64> keys = hashBySize.keys();
     QListIterator<qint64> it(keys);
@@ -125,7 +125,7 @@ void DuplicateFinder::clearNoDuplicatedSize()
     QListIterator<qint64> it(hashBySize.keys());
     while(it.hasNext())
     {
-       key = it.next();
+       const qint64 &key = it.next();
        if(hashBySize.count(key) < 2) {
            hashBySize.remove(key);
        }
@@ -194,9 +194,9 @@ void DuplicateFinder::clearNoDuplicatedHashes()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
 #endif
-    QString key;
     QList<QString> keys = hashByHash.keys();
 #ifdef HASH_OV_VECT
+    QString key;
     QMutableListIterator<QString> it(keys);
     QVector<HashFileInfoStruct> vect;
     int count;
@@ -218,7 +218,7 @@ void DuplicateFinder::clearNoDuplicatedHashes()
     QListIterator<QString> it(keys);
     while(it.hasNext())
     {
-       key = it.next();
+       const QString &key = it.next();
        int count = hashByHash.count(key);
        if(count < 2) {
            hashByHash.remove(key);
@@ -241,10 +241,10 @@ void DuplicateFinder::reduceToResult()
     result.data()->reserve(resultCount);
     HashFileInfoStruct s;
     int groupId = 0;
-    QString key;
     bool checked = false;
     QList<QString> keys = hashByHash.keys();
 #ifdef HASH_OV_VECT
+    QString key;
     QListIterator<QString> it(keys);
     QVector<HashFileInfoStruct> vect;
     while(it.hasNext())
@@ -265,10 +265,10 @@ void DuplicateFinder::reduceToResult()
     }
 #else
     QList<HashFileInfoStruct> * const list = result.data();
-    QMutableListIterator<QString> it(keys);
+    QListIterator<QString> it(keys);
     while(it.hasNext())
     {
-        key = it.next();
+        const QString &key = it.next();
         checked = false;
         QList<HashFileInfoStruct> values = hashByHash.values(key);
         QMutableListIterator<HashFileInfoStruct> vIt(values);

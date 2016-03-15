@@ -30,7 +30,7 @@ public:
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 private:
-    QHash<QString, QVector<HashFileInfoStruct> > hashByHash;
+    QMultiHash<QString, HashFileInfoStruct> hashByHash;
     int resultCount;
     void clearNoDuplicatedSize();
     void makeHashByHashes();

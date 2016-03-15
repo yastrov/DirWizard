@@ -68,16 +68,7 @@ void DirComparator::processFile(const QString &fileName)
             st.size = fInfo.size();
             st.checked = false;
             st.hash = QString(qb);
-            if(hashByHash.contains(st.hash))
-            {
-                hashByHash[st.hash].append(st);
-            }
-            else
-            {
-                QVector<HashFileInfoStruct> v(SizeForInnerVector);
-                v.append(st);
-                hashByHash[st.hash] = v;
-            }
+            hashByHash.insert(st.hash, st);
         }
     }
 }
@@ -88,21 +79,15 @@ void DirComparator::clearNoDuplicatedHashes()
     qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
 #endif
     QList<QString> keys = hashByHash.keys();
-    QMutableListIterator<QString> it(keys);
-    QString key;
-    QVector<HashFileInfoStruct> vect;
-    int count;
+    //QString key;
+    QListIterator<QString> it(keys);
     while(it.hasNext())
     {
-       key = it.next();
-       vect = hashByHash[key];
-       count = vect.count();
-       if(count > 1)
-       {
+       const QString &key = it.next();
+       int count = hashByHash.count(key);
+       if(count > 1) {
            hashByHash.remove(key);
-       }
-       else
-       {
+       } else {
            resultCount += count;
        }
     }
@@ -118,20 +103,17 @@ void DirComparator::reduceToResult()
     qDebug() << "DirComparator::reduceToResult:: reserve memory for result";
 #endif
     result.data()->reserve(resultCount);
-
-    QList<QString> keys = hashByHash.keys();
-    QListIterator<QString> it(keys);
-    QString key;
-    QVector<HashFileInfoStruct> vect;
-    while(it.hasNext())
-    {
-       key = it.next();
-       vect = hashByHash[key];
-       QMutableVectorIterator<HashFileInfoStruct> vIt( vect);
-       while(vIt.hasNext())
-       {
-           result.data()->append(std::move(vIt.next()));
-       }
+    HashFileInfoStruct s;
+    QList<HashFileInfoStruct> * const list = result.data();
+    int groupId = 0;
+    QList<HashFileInfoStruct> values = hashByHash.values();
+    QMutableListIterator<HashFileInfoStruct> it(values);
+    while(it.hasNext()){
+        s = it.next();
+        s.groupID = groupId;
+        s.checked = false;
+        list->append(std::move(s));
+        ++groupId;
     }
     hashByHash.clear();
 #ifdef MYPREFIX_DEBUG
