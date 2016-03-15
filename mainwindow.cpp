@@ -1,12 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "duplicatestablemodel.h"
+#include "filelisttablemodel.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dirNameForFolderDialog(QDir::current().dirName()),
-    thread(new QThread(this)),
-    itemsResult(nullptr)
+    thread(new QThread(this))
 {
     ui->setupUi(this);
     initDirsListWidget();
@@ -99,6 +100,7 @@ QCryptographicHash::Algorithm MainWindow::getCurrentHashAlgo()
 // Table Widget
 void MainWindow::initTableWidget()
 {
+#ifdef TABLEWIDGET_NO_MODEL
     QStringList horizontalHeader;
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("groupId"));
@@ -109,12 +111,16 @@ void MainWindow::initTableWidget()
     int rowCount = 0;
     QTableWidget *table = ui->tableWidget;
     table->clearContents();
-    table->setColumnCount(columnCount);
-    table->setRowCount(rowCount);
-    table->setHorizontalHeaderLabels(horizontalHeader);
-    // Set alternating row colors from now to future.
-    table->setAlternatingRowColors(true);
-    table->setStyleSheet("alternate-background-color: grey;background-color: white;");
+        table->setColumnCount(columnCount);
+        table->setRowCount(rowCount);
+        table->setHorizontalHeaderLabels(horizontalHeader);
+        // Set alternating row colors from now to future.
+        table->setAlternatingRowColors(true);
+        table->setStyleSheet("alternate-background-color: grey;background-color: white;");
+#else
+    //QTableView *table = ui->tableView;
+    ;
+#endif
 }
 
 void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
@@ -122,6 +128,7 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
 #ifdef MYPREFIX_DEBUG
     qDebug() << "showDuplicatesInTable";
 #endif
+#ifdef TABLEWIDGET_NO_MODEL
     QStringList horizontalHeader;
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("groupId"));
@@ -182,11 +189,22 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
         table->setItem(row, 4, tableItem);
         ++row;
     }
+    QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
+    QObject::disconnect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     QHeaderView* header = table->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+#else
+    QTableView *table = ui->tableView;
+    if(table->model() != nullptr)
+        table->model()->deleteLater();
+    DuplicatesTableModel *model = new DuplicatesTableModel(itemsPtr, this);
+    table->setModel(model);
+    table->setSortingEnabled(true);
+    table->sortByColumn(DuplicatesTableModel::Column::groupId);
+#endif
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 /*
@@ -211,13 +229,14 @@ QList<QString> MainWindow::getCheckedFileNamesFormTable()
     return result;
 }
 */
+#ifdef TABLEWIDGET_NO_MODEL
 void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::tableWidgetItemChanged";
 #endif
     if(itemsResult == nullptr) return;
-    //if(itemsResult->isEmpty()) return;
+    if(itemsResult->isEmpty()) return;
     QString fileName = item->toolTip();
     QMutableListIterator<HashFileInfoStruct> it(*itemsResult.data());
     HashFileInfoStruct strct;
@@ -234,6 +253,7 @@ void MainWindow::tableWidgetItemChanged(QTableWidgetItem * item)
         }
     }
 }
+#endif
 // END
 
 // Duplicate Files Search
@@ -277,6 +297,7 @@ void MainWindow::showUniqFilesInTable(QSharedPtrListHFIS itemsPtr)
 #ifdef MYPREFIX_DEBUG
     qDebug() << "showUniqFilesInTable";
 #endif
+#ifdef TABLEWIDGET_NO_MODEL
     QStringList horizontalHeader;
     horizontalHeader.append(tr("File names for unique files"));
     int columnCount = horizontalHeader.count();
@@ -312,6 +333,16 @@ qDebug() << "Num of unique" << itemsPtr.data()->count();
     table->resizeColumnsToContents();
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#else
+    QTableView *table = ui->tableView;
+    if(table->model() != nullptr)
+        table->model()->deleteLater();
+    FileListTableModel *model = new FileListTableModel(itemsPtr, this);
+    table->setModel(model);
+    table->setSortingEnabled(true);
+    table->sortByColumn(FileListTableModel::Column::fileName);
+#endif
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
@@ -365,11 +396,13 @@ void MainWindow::on_pushButton_Add_Dir_clicked()
 /*
  * Remove Seleccted item from TableWidget
  */
+
 void MainWindow::on_pushButton_Remove_Checked_clicked()
 {
 #ifdef MYPREFIX_DEBUG
     qDebug() << ":on_pushButton_Remove_Checked_clicked";
 #endif
+#ifdef TABLEWIDGET_NO_MODEL
     /*
     QList<QString> dirs = getCheckedFileNamesFormTable();
     if(!dirs.isEmpty())
@@ -400,7 +433,7 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
             }
         }
     }
-    QTableWidget *table = ui->tableWidget;
+    /*QTableWidget *table = ui->tableWidget;
     QObject::disconnect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     int rowCount = table->rowCount();
     QTableWidgetItem *item;
@@ -421,7 +454,13 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
     QMessageBox::information(this,
                              "DirWizard",
                              tr("Files have been deleted!"));
+*/
+#else
+    if(ui->tableView->model()!=nullptr)
+    qobject_cast<BaseTableModel*>(ui->tableView->model())->removeCheckedFunc();
+#endif
 }
+
 
 /*
  * Slot for Start Duplicate file Search in background (other function)
@@ -499,6 +538,7 @@ void MainWindow::on_pushButton_Compare_Folders_clicked()
 }
 
 // Save To File
+#ifdef TABLEWIDGET_NO_MODEL
 void MainWindow::saveItemsToFile(const QString &fileName)
 {
     QFile file(fileName);
@@ -526,15 +566,24 @@ void MainWindow::saveItemsToFile(const QString &fileName)
         file.close();
     }
 }
+#endif
 
 void MainWindow::on_pushButton_Save_From_Table_clicked()
 {
-    if(itemsResult != nullptr)
-    {
+#ifdef TABLEWIDGET_NO_MODEL
+    if(itemsResult.isNull())
+        return;
+#endif
+    QString filter = "Text files (*.txt)";
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save File"),
                                      QDir::homePath(),
-                                     tr("Text files (*.txt)"));
+                                     "Text files (*.txt)",
+                                     &filter, QFileDialog::DontUseNativeDialog);
+#ifdef MYPREFIX_DEBUG
+    qDebug() << __PRETTY_FUNCTION__ << "\n";
+    qDebug() << "File: " << fileName << "\n";
+#endif
     if(!fileName.isNull() && !fileName.isEmpty())
     {
         QFileInfo qF(fileName);
@@ -549,8 +598,13 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
                 return;
             }
         }
+#ifdef TABLEWIDGET_NO_MODEL
         saveItemsToFile(fileName);
-    }
+#else
+        //emit saveModelDataToFile(fileName); But error with it.
+        if(ui->tableView->model()!=nullptr)
+        qobject_cast<BaseTableModel*>(ui->tableView->model())->saveToFileFunc(fileName);
+#endif
     }
 }
 
@@ -638,6 +692,7 @@ void MainWindow::showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr)
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::showInvalidHashFilesInTable";
 #endif
+#ifdef TABLEWIDGET_NO_MODEL
     QStringList horizontalHeader;
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Files with other hashes"));
@@ -687,6 +742,16 @@ void MainWindow::showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr)
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#else
+    QTableView *table = ui->tableView;
+    if(table->model() != nullptr)
+        table->model()->deleteLater();
+    FileListTableModel *model = new FileListTableModel(itemsPtr, this);
+    table->setModel(model);
+    table->setSortingEnabled(true);
+    table->sortByColumn(FileListTableModel::Column::fileName);
+#endif
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::on_pushButton_Check_Zip_clicked()
@@ -694,7 +759,6 @@ void MainWindow::on_pushButton_Check_Zip_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
 #endif
-    //ClearItemsResultStore();
     startCheckZipsInBackground();
     setUiPushButtonsEnabled(!thread->isRunning());
 }
@@ -728,11 +792,12 @@ void MainWindow::showInvalidZipInTable(QSharedPtrListHFIS itemsPtr)
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::showInvalidZipInTable";
 #endif
+#ifdef TABLEWIDGET_NO_MODEL
     QStringList horizontalHeader;
     horizontalHeader.append(tr("Remove?"));
     horizontalHeader.append(tr("Invalid zip"));
     int columnCount = horizontalHeader.count();
-    const int rowCount = itemsPtr.data()->count();
+    const int rowCount = itemsPtr->count();
     QTableWidgetItem* tableItem;
 
     itemsResult = itemsPtr;
@@ -777,6 +842,16 @@ void MainWindow::showInvalidZipInTable(QSharedPtrListHFIS itemsPtr)
     QObject::connect(table, &QTableWidget::itemChanged, this, &MainWindow::tableWidgetItemChanged);
     QObject::connect(table->horizontalHeader(), &QHeaderView::sectionClicked, this, &MainWindow::tableWidget_header_clicked);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+#else
+    QTableView *table = ui->tableView;
+    if(table->model() != nullptr)
+        table->model()->deleteLater();
+    FileListTableModel *model = new FileListTableModel(itemsPtr, this);
+    table->setModel(model);
+    table->setSortingEnabled(true);
+    table->sortByColumn(FileListTableModel::Column::fileName);
+#endif
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -808,6 +883,7 @@ void MainWindow::setUiPushButtonsEnabled(bool flag)
     ui->pushButton_Save_From_Table->setEnabled(flag);
 }
 
+#ifdef TABLEWIDGET_NO_MODEL
 void MainWindow::tableWidget_header_clicked(int column) {
     Qt::SortOrder order = ui->tableWidget->horizontalHeader()->sortIndicatorOrder();
     ui->tableWidget->horizontalHeader()->setSortIndicatorShown(true);
@@ -816,3 +892,4 @@ void MainWindow::tableWidget_header_clicked(int column) {
 #endif
     ui->tableWidget->sortItems(column, order);
 }
+#endif

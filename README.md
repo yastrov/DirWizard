@@ -34,6 +34,10 @@ QObject -> DirWalker -> HashDirWalker
                 |
                 |-----> ZipWalkChecker
 
+QAbstractTableModel -> BaseTableModel -> DuplicatesTableModel
+                            |
+                            |----------> FileListTableModel
+
 ## Windows build instruction
 I used MinGW 4.9.2 32 bit version. (From qt-opensource-windows-x86-mingw492-5.5.0 package.)  
 Download zlib (for example [zlib128.zip](http://zlib.net/zlib128.zip) ) and extract to C:\Qt\zlib-1.2.8 :

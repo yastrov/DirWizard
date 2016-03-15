@@ -346,36 +346,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>780</width>
-          <height>206</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-        <property name="toolTip">
-         <string>Result table</string>
-        </property>
-        <property name="statusTip">
-         <string>Table with results.</string>
-        </property>
-        <property name="horizontalScrollBarPolicy">
-         <enum>Qt::ScrollBarAlwaysOn</enum>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -435,6 +405,36 @@
          </spacer>
         </item>
        </layout>
+      </item>
+      <item row="2" column="0">
+       <widget class="QTableView" name="tableView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>780</width>
+          <height>206</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="toolTip">
+         <string>Result table</string>
+        </property>
+        <property name="statusTip">
+         <string>Table with results.</string>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOn</enum>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

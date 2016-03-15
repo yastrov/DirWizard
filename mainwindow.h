@@ -55,10 +55,13 @@ public:
     ~MainWindow();
 
 signals:
+    void saveModelDataToFile(QString filename);
 
 private slots:
+#ifdef TABLEWIDGET_NO_MODEL
     void tableWidgetItemChanged(QTableWidgetItem * item);
     void tableWidget_header_clicked(int column);
+#endif
     void on_pushButton_Add_Dir_clicked();
     void on_pushButton_Cancel_clicked();
     void on_pushButton_Remove_Checked_clicked();
@@ -82,7 +85,9 @@ private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
     QThread* thread;
+#ifdef TABLEWIDGET_NO_MODEL
     QSharedPtrListHFIS itemsResult;
+#endif
     // ComboBox
     void addItemToComboBox(QString text, int data);
     void initHashComboBoxWidget();

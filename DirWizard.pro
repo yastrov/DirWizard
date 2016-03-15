@@ -44,7 +44,10 @@ SOURCES += main.cpp\
     dircomparator.cpp \
     calcandsavehash.cpp \
     loadandcheckhash.cpp \
-    zipwalkchecker.cpp
+    zipwalkchecker.cpp \
+    basetablemodel.cpp \
+    duplicatestablemodel.cpp \
+    filelisttablemodel.cpp
 
 HEADERS  += mainwindow.h \
     dirwalker.h \
@@ -54,7 +57,10 @@ HEADERS  += mainwindow.h \
     dircomparator.h \
     calcandsavehash.h \
     loadandcheckhash.h \
-    zipwalkchecker.h
+    zipwalkchecker.h \
+    basetablemodel.h \
+    duplicatestablemodel.h \
+    filelisttablemodel.h
 
 FORMS    += mainwindow.ui
 
