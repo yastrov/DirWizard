@@ -102,6 +102,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
         if(index.column() == Column::checked) {
             return item.checked==true ? Qt::Checked : Qt::Unchecked;
         }
+        return QVariant();
     }
     case Qt::ToolTipRole: {
         switch (index.column()) {
