@@ -9,10 +9,6 @@ int main(int argc, char *argv[])
 {
     qRegisterMetaType<QSharedPointer<QList<HashFileInfoStruct>>>("QSharedPointer<QList<HashFileInfoStruct>>");
     qRegisterMetaType<QSharedPtrListHFIS>("QSharedPtrListHFIS");
-    QStringList paths = QCoreApplication::libraryPaths();
-    paths.append(".");
-    paths.append("platforms");
-    QCoreApplication::setLibraryPaths(paths);
 
     QApplication a(argc, argv);
     a.setApplicationVersion(APP_VERSION);
