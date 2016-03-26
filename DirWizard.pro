@@ -36,6 +36,14 @@ win32-msvc: {
     LIBS += C:/Qt/quazip-0.7.1/quazip/release/quazip.lib
 }
 
+unix: {
+    LIBS+=-L/usr/local/zlib/lib -lz
+    INCLUDEPATH+=/usr/local/zlib/include
+
+    LIBS += -L/usr/local/quazip-0.7.1/quazip/release -lquazip
+    INCLUDEPATH += /usr/local/quazip-0.7.1
+}
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     dirwalker.cpp \
@@ -69,6 +77,8 @@ VERSION = 0.0.0.1
 QMAKE_TARGET_PRODUCT = DirWizard
 QMAKE_TARGET_DESCRIPTION = "Program for find duplicates or unique files, calculate and check hashes."
 QMAKE_TARGET_COPYRIGHT = (c) Yuriy Astrov
+# RC_ICONS = myappico.ico
+# RC_FILE = myapp.rc
 GITHUB_URL = "https://github.com/yastrov/DirWizard"
 
 DEFINES += \
