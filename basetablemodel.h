@@ -21,21 +21,11 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     bool removeRow(int row, const QModelIndex&);
     bool removeRows(int row, int count, const QModelIndex&);
-    virtual void saveToFileFunc(const QString &fileName);
+    virtual void saveToFileFunc(const QString &fileName) const;
     virtual void removeCheckedFunc();
 public slots:
-    void saveToFile(QString fileName)
-    {
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "BaseTableModel::saveToFile";
-#endif
-        saveToFile(fileName);
-    }
-    void removeChecked(bool checked=false)
-    {
-        Q_UNUSED(checked)
-        removeChecked();
-    }
+    void saveToFile(QString fileName);
+    void removeChecked(bool checked=false);
 protected:
     QSharedPtrListHFIS items;
 };

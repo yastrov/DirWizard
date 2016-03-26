@@ -28,7 +28,7 @@ bool BaseTableModel::removeRows(int row, int count, const QModelIndex&)
 }
 
 
-void BaseTableModel::saveToFileFunc(const QString &fileName)
+void BaseTableModel::saveToFileFunc(const QString &fileName) const
 {
     QFile file(fileName);
     if(file.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -77,4 +77,18 @@ void BaseTableModel::removeCheckedFunc()
         }
         ++row;
     }
+}
+
+//Slots
+void BaseTableModel::saveToFile(QString fileName)
+{
+#ifdef MYPREFIX_DEBUG
+qDebug() << "BaseTableModel::saveToFile";
+#endif
+    saveToFileFunc(fileName);
+}
+void BaseTableModel::removeChecked(bool checked)
+{
+    Q_UNUSED(checked)
+    removeChecked();
 }
