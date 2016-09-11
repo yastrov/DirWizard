@@ -15,6 +15,9 @@ public:
     explicit ZipWalkChecker(QObject *parent = nullptr);
     virtual ~ZipWalkChecker();
 
+protected:
+    void processFilesRecursively(const QDir &rootDir) Q_DECL_OVERRIDE;
+
 private:
     QSharedPtrListHFIS itemsList;
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;

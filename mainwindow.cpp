@@ -168,6 +168,20 @@ QList<QString> MainWindow::getCheckedFileNamesFormTable()
 */
 // END
 
+void MainWindow::callBeforeBackgrowndWorkerStarted()
+{
+    ui->progressBar->setVisible(true);
+    ui->progressBar->setValue(ui->progressBar->minimum());
+    ui->progressBar->setStatusTip("");
+#ifdef Q_OS_WIN32
+    if(progressWinExtra != nullptr) {
+        progressWinExtra->setMinimum(0);
+        progressWinExtra->setVisible(true);
+    }
+#endif
+
+}
+
 // Duplicate Files Search
 void MainWindow::startDuplicateSearchInBackground()
 {
@@ -179,14 +193,7 @@ void MainWindow::startDuplicateSearchInBackground()
     {
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
         worker->setQDir(dirs);
-        ui->progressBar->setVisible(true);
-        ui->progressBar->setValue(ui->progressBar->minimum());
-        ui->progressBar->setStatusTip("");
-#ifdef Q_OS_WIN32
-        progressWinExtra->setMinimum(0);
-        progressWinExtra->setVisible(true);
-#endif
-
+        callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         //connect(thread, SIGNAL(started()), worker, SLOT(process()));
         QObject::connect(thread, &QThread::started, worker, &DuplicateFinder::process);
@@ -250,8 +257,8 @@ void MainWindow::startComparingFoldersInBackground()
     if(!dirs.isEmpty() && !thread->isRunning())
     {
         DirComparator *worker = new DirComparator(getCurrentHashAlgo(), nullptr);
-
         worker->setQDir(dirs);
+        callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         //connect(thread, SIGNAL(started()), worker, SLOT(process()));
         QObject::connect(thread, &QThread::started, worker, &DirComparator::process);
@@ -261,6 +268,20 @@ void MainWindow::startComparingFoldersInBackground()
         QObject::connect(worker, &DirComparator::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
+        connect(worker, &DirComparator::sayTotalFiles, this, [=](quint64 count){
+            ui->progressBar->setMaximum(count);
+            progressWinExtra->setMaximum(count);
+        });
+
+        connect(worker, &DirComparator::currentProcessedFiles, this, [=](quint64 count){
+            ui->progressBar->setValue(count);
+#ifdef Q_OS_WIN32
+            progressWinExtra->setValue(count);
+#endif
+            const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
+            ui->progressBar->setStatusTip(s);
+            ui->statusBar->showMessage(s);
+        });
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -360,6 +381,7 @@ void MainWindow::finishedThread()
     if(progressWinExtra != nullptr)
         progressWinExtra->setVisible(false);
 #endif
+    ui->progressBar->setVisible(false);
     setUiPushButtonsEnabled(true);
     QMessageBox::information(this,
                              "DirWizard",
@@ -525,14 +547,28 @@ void MainWindow::startCheckZipsInBackground()
     if(!dirs.isEmpty() && !thread->isRunning())
     {
         ZipWalkChecker *worker = new ZipWalkChecker(nullptr);
-
         worker->setQDir(dirs);
+        callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &ZipWalkChecker::process);
         QObject::connect(worker, &ZipWalkChecker::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &ZipWalkChecker::deleteLater);//From Off documentation
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
+        connect(worker, &ZipWalkChecker::sayTotalFiles, this, [=](quint64 count){
+            ui->progressBar->setMaximum(count);
+            progressWinExtra->setMaximum(count);
+        });
+
+        connect(worker, &ZipWalkChecker::currentProcessedFiles, this, [=](quint64 count){
+            ui->progressBar->setValue(count);
+#ifdef Q_OS_WIN32
+            progressWinExtra->setValue(count);
+#endif
+            const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
+            ui->progressBar->setStatusTip(s);
+            ui->statusBar->showMessage(s);
+        });
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif

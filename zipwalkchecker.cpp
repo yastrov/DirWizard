@@ -27,7 +27,8 @@ void ZipWalkChecker::process()
         current.setNameFilters(filters);
         it.setValue(current);
     }
-    processFilesRecursively(rootDirs);
+    DirWalker::processFilesRecursively(rootDirs);
+    emit currentProcessedFiles(total_files);
     emit finishedWData(itemsList);
     emit finished();
 }
@@ -58,4 +59,30 @@ void ZipWalkChecker::processFile(const QString &fileName)
         if(qzip.isOpen())
             qzip.close();
     }
+    ++processed_files;
+    if(processed_files %10 == 0)
+        emit currentProcessedFiles(processed_files);
 }
+
+void ZipWalkChecker::processFilesRecursively(const QDir &rootDir) {
+    // Calc number of all files
+    QDirIterator it0(rootDir, QDirIterator::Subdirectories);
+    while(it0.hasNext() && !stopped) {
+        it0.next();
+        ++total_files;
+        if(QThread::currentThread()->isInterruptionRequested())
+            stopped=true;
+    }
+    emit sayTotalFiles(total_files);
+    QDirIterator it(rootDir, QDirIterator::Subdirectories);
+    while(it.hasNext() && !stopped) {
+        processFile(it.next());
+        if(QThread::currentThread()->isInterruptionRequested())
+        stopped=true;
+    }
+    if(stopped)
+    {
+        emit finished();
+    }
+}
+

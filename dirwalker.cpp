@@ -79,3 +79,15 @@ void DirWalker::processFilesRecursively(const QDir &rootDir) {
         emit finished();
     }
 }
+
+void DirWalker::setFilters(const QStringList &filters)
+{
+    QDir current;
+    QMutableListIterator<QDir> it(rootDirs);
+    while(it.hasNext())
+    {
+        current = it.next();
+        current.setNameFilters(filters);
+        it.setValue(current);
+    }
+}
