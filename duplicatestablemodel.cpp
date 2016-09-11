@@ -9,7 +9,7 @@ const int MaxColumns = 5;
 QColor firstColor = QColor(Qt::white);
 QColor secondColor = QColor(Qt::green);
 
-QString getFileName(const QString &path)
+QString getFileNameShort(const QString &path)
 {
 #ifdef NATIVE_PATH_SEP
     QString fname = QDir::toNativeSeparators(path);
@@ -71,7 +71,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
         QStyleOptionComboBox option;
         switch (index.column()) {
         case Column::checked: option.currentText = QString(""); break;
-        case Column::fileName: option.currentText = getFileName(item.fileName); break;
+        case Column::fileName: option.currentText = getFileNameShort(item.fileName); break;
         case Column::hash: option.currentText = item.hash; break;
         case Column::groupId: option.currentText = item.groupID; break;
         case Column::size: option.currentText = QString::number(item.size); break;
@@ -88,7 +88,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole: {
         switch (index.column()) {
         case Column::checked: return QVariant();
-        case Column::fileName: return getFileName(item.fileName);
+        case Column::fileName: return getFileNameShort(item.fileName);
         case Column::hash: return item.hash;
         case Column::groupId: return item.groupID;
         case Column::size: return item.size;
@@ -188,4 +188,14 @@ void DuplicatesTableModel::sort(int column, Qt::SortOrder order)
     if(order != Qt::AscendingOrder)
         std::reverse(items->begin(), items->end());
     emit dataChanged(QModelIndex(), QModelIndex());
+}
+
+QString DuplicatesTableModel::getFileName(const QModelIndex &index) const
+{
+    if (!index.isValid() ||
+            index.row() < 0 || index.row() >= items->count() ||
+            index.column() < 0 || index.column() >= MaxColumns)
+        return "";
+    const HashFileInfoStruct &item = items->at(index.row());
+    return item.fileName;
 }

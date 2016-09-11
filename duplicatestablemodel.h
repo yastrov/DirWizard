@@ -25,6 +25,8 @@ public:
                        int=Qt::EditRole) { return false; }
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
     enum Column {checked, fileName, hash, groupId, size};
+
+    QString getFileName(const QModelIndex &index) const Q_DECL_OVERRIDE;
 };
 
 #endif // DUPLICATESTABLEMODEL_H

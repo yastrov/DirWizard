@@ -45,6 +45,8 @@
 #include <QMimeData>
 #include <QDragEnterEvent>
 
+#include <QProcess>
+
 namespace Ui {
 class MainWindow;
 }
@@ -83,6 +85,8 @@ private slots:
     void showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr);
     void on_pushButton_Check_Zip_clicked();
     void showInvalidZipInTable(QSharedPtrListHFIS itemsPtr);
+    // Custom popup menu for TableView
+    void createCustomPopupMenuForTableView(const QPoint &pos);
 
 private:
     Ui::MainWindow *ui;

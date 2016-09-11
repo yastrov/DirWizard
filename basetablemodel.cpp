@@ -92,3 +92,8 @@ void BaseTableModel::removeChecked(bool checked)
     Q_UNUSED(checked)
     removeChecked();
 }
+
+QString BaseTableModel::getFileName(const QModelIndex &index) const {
+    Q_UNUSED(index)
+    return "";
+}

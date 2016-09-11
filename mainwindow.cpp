@@ -121,9 +121,13 @@ void MainWindow::initTableWidget()
         table->setAlternatingRowColors(true);
         table->setStyleSheet("alternate-background-color: grey;background-color: white;");
 #else
-    //QTableView *table = ui->tableView;
-    ;
+    QTableView *table = ui->tableView;
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
+    table->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(table, &QTableView::customContextMenuRequested, this, &MainWindow::createCustomPopupMenuForTableView);
 #endif
+
 }
 
 void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
@@ -923,3 +927,36 @@ void MainWindow::dropEvent(QDropEvent *e)
     }
 }
 // Drag Drop END
+
+// Custom popup menu for Table View
+void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
+{
+    const QTableView *table = ui->tableView;
+    QMenu *menu = new QMenu(this);
+    QAction *openFolder = new QAction(tr("Open Folder with selected file"), this);
+    connect(openFolder, &QAction::triggered, [=](){
+        const QModelIndexList indexList = table->selectionModel()->selectedIndexes();
+        QString dir;
+        BaseTableModel *model = qobject_cast<BaseTableModel *>(table->model());
+        foreach (QModelIndex index, indexList) {
+            dir = model->getFileName(index);
+        }
+        QStringList commands;
+        #if defined(Q_OS_WIN)
+        commands<< "explorer.exe /select,\"" << QDir::toNativeSeparators(dir) <<"\"";
+        QProcess::startDetached(commands.join(""));
+        #elif defined(Q_OS_MAC)
+        QStringList scriptArgs;
+        scriptArgs << QLatin1String("-e")
+                   << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
+                      .arg(dir);
+        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+        scriptArgs.clear();
+        scriptArgs << QLatin1String("-e")
+                   << QLatin1String("tell application \"Finder\" to activate");
+        QProcess::execute("/usr/bin/osascript", scriptArgs);
+        #endif
+    });
+    menu->addAction(openFolder);
+    menu->popup(table->viewport()->mapToGlobal(pos));
+}

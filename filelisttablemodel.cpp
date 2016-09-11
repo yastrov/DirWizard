@@ -7,7 +7,7 @@
 namespace {
 const int MaxColumns = 3;
 
-QString getFileName(const QString &path)
+QString getFileNameShort(const QString &path)
 {
 #ifdef NATIVE_PATH_SEP
     QString fname = QDir::toNativeSeparators(path);
@@ -57,7 +57,7 @@ QVariant FileListTableModel::data(const QModelIndex &index, int role) const
     case Qt::SizeHintRole: {
         QStyleOptionComboBox option;
         switch (index.column()) {
-        case Column::fileName: option.currentText = getFileName(item.fileName); break;
+        case Column::fileName: option.currentText = getFileNameShort(item.fileName); break;
         case Column::hash: option.currentText = item.hash; break;
         case Column::size: option.currentText = QString::number(item.size); break;
         default: Q_ASSERT(false);
@@ -72,7 +72,7 @@ QVariant FileListTableModel::data(const QModelIndex &index, int role) const
     }
     case Qt::DisplayRole: {
         switch (index.column()) {
-        case Column::fileName: return getFileName(item.fileName);
+        case Column::fileName: return getFileNameShort(item.fileName);
         case Column::hash: return item.hash;
         case Column::size: return item.size;
         default: Q_ASSERT(false);
@@ -137,5 +137,16 @@ void FileListTableModel::sort(int column, Qt::SortOrder order)
     if(order != Qt::AscendingOrder)
         std::reverse(items->begin(), items->end());
     emit dataChanged(QModelIndex(), QModelIndex());
+}
+
+
+QString FileListTableModel::getFileName(const QModelIndex &index) const
+{
+    if (!index.isValid() ||
+            index.row() < 0 || index.row() >= items->count() ||
+            index.column() < 0 || index.column() >= MaxColumns)
+        return "";
+    const HashFileInfoStruct &item = items->at(index.row());
+    return item.fileName;
 }
 

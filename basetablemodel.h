@@ -23,6 +23,7 @@ public:
     bool removeRows(int row, int count, const QModelIndex&);
     virtual void saveToFileFunc(const QString &fileName) const;
     virtual void removeCheckedFunc();
+    virtual QString getFileName(const QModelIndex &index) const;
 public slots:
     void saveToFile(QString fileName);
     void removeChecked(bool checked=false);
