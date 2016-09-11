@@ -20,6 +20,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Drag and Drop
     setAcceptDrops(true);
+    // Progress Bar
+    ui->progressBar->setVisible(false);
+    // Win Extras
+#ifdef Q_OS_WIN32
+    buttonWinExtra = new QWinTaskbarButton(this);
+    buttonWinExtra->setWindow(windowHandle());
+//    buttonWinExtra->setOverlayIcon(QIcon(":/loading.png"));
+    progressWinExtra = buttonWinExtra->progress();
+    progressWinExtra->setVisible(false);
+#endif
+}
+
+void MainWindow::showEvent(QShowEvent *e)
+{
+#ifdef Q_OS_WIN32
+    buttonWinExtra->setWindow(windowHandle());
+#endif
+
+    e->accept();
 }
 
 MainWindow::~MainWindow()
@@ -123,6 +142,7 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
     table->setSortingEnabled(true);
     table->sortByColumn(DuplicatesTableModel::Column::groupId);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    table->resizeColumnsToContents();
 }
 /*
 QList<QString> MainWindow::getCheckedFileNamesFormTable()
@@ -158,8 +178,15 @@ void MainWindow::startDuplicateSearchInBackground()
     if(!dirs.isEmpty() && !thread->isRunning())
     {
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
-
         worker->setQDir(dirs);
+        ui->progressBar->setVisible(true);
+        ui->progressBar->setValue(ui->progressBar->minimum());
+        ui->progressBar->setStatusTip("");
+#ifdef Q_OS_WIN32
+        progressWinExtra->setMinimum(0);
+        progressWinExtra->setVisible(true);
+#endif
+
         worker->moveToThread(thread);
         //connect(thread, SIGNAL(started()), worker, SLOT(process()));
         QObject::connect(thread, &QThread::started, worker, &DuplicateFinder::process);
@@ -171,6 +198,21 @@ void MainWindow::startDuplicateSearchInBackground()
         QObject::connect(worker, &DuplicateFinder::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(showDuplicatesInTable(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
+
+        connect(worker, &DuplicateFinder::sayTotalFiles, this, [=](quint64 count){
+            ui->progressBar->setMaximum(count);
+            progressWinExtra->setMaximum(count);
+        });
+
+        connect(worker, &DuplicateFinder::currentProcessedFiles, this, [=](quint64 count){
+            ui->progressBar->setValue(count);
+#ifdef Q_OS_WIN32
+            progressWinExtra->setValue(count);
+#endif
+            const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
+            ui->progressBar->setStatusTip(s);
+            ui->statusBar->showMessage(s);
+        });
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -314,6 +356,10 @@ void MainWindow::on_AboutAction_Triggered(bool checked)
 
 void MainWindow::finishedThread()
 {
+#ifdef Q_OS_WIN32
+    if(progressWinExtra != nullptr)
+        progressWinExtra->setVisible(false);
+#endif
     setUiPushButtonsEnabled(true);
     QMessageBox::information(this,
                              "DirWizard",

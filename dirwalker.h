@@ -23,6 +23,8 @@ public:
 
 protected:
     bool stopped;
+    quint64 total_files;
+    quint64 processed_files;
     void processFilesRecursively(const QDir &rootDir);
     void processFilesRecursively(const QList<QDir> &rootDirs);
     void processFilesRecursively(const QVector<QDir> &rootDirs);
@@ -31,6 +33,8 @@ protected:
 
 signals:
     void finished();
+    void sayTotalFiles(quint64 total_files);
+    void currentProcessedFiles(quint64 count);
 
 public slots:
 };

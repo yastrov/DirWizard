@@ -30,6 +30,7 @@ void DuplicateFinder::process()
         return;
     }
     processFilesRecursively(rootDirs);
+    emit sayTotalFiles(total_files);
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
@@ -61,6 +62,7 @@ void DuplicateFinder::process()
     qDebug() << "DuplicateFinder::process::emit";
     qDebug() << "Num of duplacates: "<<result.data()->count();
 #endif
+    emit currentProcessedFiles(total_files);
     emit finishedWData(result);
     emit finished();
 }
@@ -127,6 +129,7 @@ void DuplicateFinder::clearNoDuplicatedSize()
     {
        const qint64 &key = it.next();
        if(hashBySize.count(key) < 2) {
+           ++processed_files;
            hashBySize.remove(key);
        }
     }
@@ -184,6 +187,9 @@ void DuplicateFinder::makeHashByHashes()
                hashByHash.insert(s.hash, s);
            }
        }
+       ++processed_files;
+       if(processed_files %10 == 0)
+           emit currentProcessedFiles(processed_files);
     }
 #endif
     hashBySize.clear();

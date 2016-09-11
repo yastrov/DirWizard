@@ -4,7 +4,7 @@
 #endif
 
 DirWalker::DirWalker(QObject *parent) : QObject(parent),
-    stopped(false)
+    stopped(false), total_files(0), processed_files(0)
 {
 
 }
@@ -70,6 +70,7 @@ void DirWalker::processFilesRecursively(const QDir &rootDir) {
     QDirIterator it(rootDir, QDirIterator::Subdirectories);
     while(it.hasNext() && !stopped) {
         processFile(it.next());
+        ++total_files;
         if(QThread::currentThread()->isInterruptionRequested())
         stopped=true;
     }

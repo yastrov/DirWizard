@@ -46,6 +46,8 @@
 #include <QDragEnterEvent>
 
 #include <QProcess>
+#include <QWinTaskbarButton>
+#include <QWinTaskbarProgress>
 
 namespace Ui {
 class MainWindow;
@@ -88,6 +90,10 @@ private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
     QThread* thread;
+#ifdef Q_OS_WIN32
+    QWinTaskbarButton *buttonWinExtra;
+    QWinTaskbarProgress *progressWinExtra;
+#endif
     // ComboBox
     void addItemToComboBox(QString text, int data);
     void initHashComboBoxWidget();
@@ -116,6 +122,7 @@ private:
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *e);
 };
 
 #endif // MAINWINDOW_H
