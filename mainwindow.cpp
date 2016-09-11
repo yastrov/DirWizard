@@ -17,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->pushButton_Calc_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
     //QObject::connect(ui->pushButton_Check_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
     //QObject::connect(ui->pushButton_Check_Zip, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Zip_clicked);
+
+    // Drag and Drop
+    setAcceptDrops(true);
 }
 
 MainWindow::~MainWindow()
@@ -893,3 +896,30 @@ void MainWindow::tableWidget_header_clicked(int column) {
     ui->tableWidget->sortItems(column, order);
 }
 #endif
+
+// Drag Drop START
+void MainWindow::dragEnterEvent(QDragEnterEvent *e)
+{
+    if (e->mimeData()->hasUrls()) {
+        e->acceptProposedAction();
+    }
+    QMainWindow::dragEnterEvent(e);
+}
+
+void MainWindow::dropEvent(QDropEvent *e)
+{
+    #ifdef MYPREFIX_DEBUG
+    for(const QString &format: e->mimeData()->formats()){
+        qDebug()<<format<<"\n";
+    }
+    #endif
+    // Check destination widget
+    const QRect widgetRect = ui->listWidget->geometry();
+    if(!widgetRect.contains(e->pos()))
+        return;
+    // Add file/folder
+    for(const QUrl &url: e->mimeData()->urls()) {
+        addToDirListWidget(url.toLocalFile());
+    }
+}
+// Drag Drop END

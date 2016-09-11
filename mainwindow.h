@@ -42,6 +42,9 @@
 #include "loadandcheckhash.h"
 #include "zipwalkchecker.h"
 
+#include <QMimeData>
+#include <QDragEnterEvent>
+
 namespace Ui {
 class MainWindow;
 }
@@ -109,6 +112,10 @@ private:
     void startCalcHashesInBackground();
     void startCheckHashesInBackground();
     void startCheckZipsInBackground();
+
+    // Drag Drop
+    void dragEnterEvent(QDragEnterEvent *e) Q_DECL_OVERRIDE;
+    void dropEvent(QDropEvent *e) Q_DECL_OVERRIDE;
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
