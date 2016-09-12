@@ -220,30 +220,42 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_Filter">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
+        <item row="1" column="1">
+         <widget class="QPushButton" name="useFiltersBtn">
+          <property name="toolTip">
+           <string>Push to use file filters.</string>
+          </property>
+          <property name="statusTip">
+           <string>Push to use file filters.</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton:checked{ background-color:rgb(1, 39, 255); }
+</string>
           </property>
           <property name="text">
-           <string>Filter:</string>
+           <string>Use filters</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="lineEdit_Filter">
-          <property name="font">
-           <font>
-            <pointsize>12</pointsize>
-           </font>
-          </property>
+        <item row="2" column="1">
+         <widget class="QPushButton" name="setFiltersBtn">
           <property name="toolTip">
-           <string>Filter for files: use space for delimeter</string>
+           <string>Push to change file filters</string>
           </property>
           <property name="statusTip">
-           <string>Filter for files: use space for delimeter. For example: '.zip .png'</string>
+           <string>Push to change file filters</string>
+          </property>
+          <property name="text">
+           <string>Set filters</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

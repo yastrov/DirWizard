@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     progressWinExtra = buttonWinExtra->progress();
     progressWinExtra->setVisible(false);
 #endif
+    fileFilters <<"*";
 }
 
 void MainWindow::showEvent(QShowEvent *e)
@@ -54,32 +55,20 @@ void MainWindow::initDirsListWidget()
 
 QList<QDir> MainWindow::getElementsFromDirsListWidget()
 {
-    int count = ui->listWidget->count();
+    const int count = ui->listWidget->count();
     QListWidgetItem *item;
     QList<QDir> dirList;
     dirList.reserve(count);
     QDir dir;
-
-    QString filterS = ui->lineEdit_Filter->text();
-    QStringList qsl;
-    if(!filterS.isNull() && !filterS.isEmpty())
-    {
-        qsl = filterS.split(QRegExp("\\s"));
-#ifdef MYPREFIX_DEBUG
-        QStringListIterator i(qsl);
-        while(i.hasNext())
-            qDebug()<< i.next();
-#endif
-    }
 
     QListWidget *list = ui->listWidget;
     for(int i=0; i < count; ++i)
     {
         item = list->item(i);
         dir = QDir(item->data(Qt::UserRole).toString());
-        if(!qsl.empty()){
-            dir.setNameFilters(qsl);
-        }
+        /* Now it works in Backgrownd workers
+        dir.setNameFilters(qsl);
+        */
         dirList.append(dir);
     }
     return dirList;
@@ -193,6 +182,7 @@ void MainWindow::startDuplicateSearchInBackground()
     {
         DuplicateFinder *worker = new DuplicateFinder(getCurrentHashAlgo(), nullptr);
         worker->setQDir(dirs);
+        if(useFilters()) worker->setFilters(fileFilters);
         callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         //connect(thread, SIGNAL(started()), worker, SLOT(process()));
@@ -258,6 +248,7 @@ void MainWindow::startComparingFoldersInBackground()
     {
         DirComparator *worker = new DirComparator(getCurrentHashAlgo(), nullptr);
         worker->setQDir(dirs);
+        if(useFilters()) worker->setFilters(fileFilters);
         callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         //connect(thread, SIGNAL(started()), worker, SLOT(process()));
@@ -449,6 +440,7 @@ void MainWindow::startCalcHashesInBackground()
         CalcAndSaveHash *worker = new CalcAndSaveHash(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
+        if(useFilters()) worker->setFilters(fileFilters);
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &CalcAndSaveHash::process);
         QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
@@ -501,6 +493,7 @@ void MainWindow::startCheckHashesInBackground()
         LoadAndCheckHash *worker = new LoadAndCheckHash(getCurrentHashAlgo(), nullptr);
 
         worker->setQDir(dirs);
+        if(useFilters()) worker->setFilters(fileFilters);
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &LoadAndCheckHash::process);
         QObject::connect(worker, &LoadAndCheckHash::finished, thread, &QThread::quit);
@@ -679,4 +672,19 @@ void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
     });
     menu->addAction(openFolder);
     menu->popup(table->viewport()->mapToGlobal(pos));
+}
+
+bool MainWindow::useFilters() const
+{
+    return ui->useFiltersBtn->isChecked();
+}
+
+void MainWindow::on_setFiltersBtn_clicked()
+{
+    FiltersDialog f;
+    f.setActiveFilters(fileFilters);
+    if(f.exec() == QDialog::Accepted){
+        qDebug()<<"Hey, true";
+        fileFilters = f.getActiveFilters();
+    }
 }

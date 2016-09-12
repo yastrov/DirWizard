@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     zipwalkchecker.cpp \
     basetablemodel.cpp \
     duplicatestablemodel.cpp \
-    filelisttablemodel.cpp
+    filelisttablemodel.cpp \
+    filtersdialog.cpp
 
 HEADERS  += mainwindow.h \
     dirwalker.h \
@@ -70,7 +71,8 @@ HEADERS  += mainwindow.h \
     zipwalkchecker.h \
     basetablemodel.h \
     duplicatestablemodel.h \
-    filelisttablemodel.h
+    filelisttablemodel.h \
+    filtersdialog.h
 
 FORMS    += mainwindow.ui
 

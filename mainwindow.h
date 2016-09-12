@@ -46,8 +46,11 @@
 #include <QDragEnterEvent>
 
 #include <QProcess>
+#ifdef Q_OS_WIN32
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
+#endif
+#include "filtersdialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -86,10 +89,13 @@ private slots:
     // Custom popup menu for TableView
     void createCustomPopupMenuForTableView(const QPoint &pos);
 
+    void on_setFiltersBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString dirNameForFolderDialog;
     QThread* thread;
+    QStringList fileFilters;
 #ifdef Q_OS_WIN32
     QWinTaskbarButton *buttonWinExtra;
     QWinTaskbarProgress *progressWinExtra;
@@ -121,6 +127,8 @@ private:
     void dropEvent(QDropEvent *e) Q_DECL_OVERRIDE;
 
     void callBeforeBackgrowndWorkerStarted();
+    // Filters
+    bool useFilters() const;
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
