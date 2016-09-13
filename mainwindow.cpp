@@ -2,6 +2,11 @@
 #include "ui_mainwindow.h"
 #include "duplicatestablemodel.h"
 #include "filelisttablemodel.h"
+#include <limits>
+
+namespace CONSTANTS {
+    const quint64 MAX_INT = static_cast<qint64>(std::numeric_limits<int>::max());
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -133,28 +138,6 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     table->resizeColumnsToContents();
 }
-/*
-QList<QString> MainWindow::getCheckedFileNamesFormTable()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "getCheckedFileNamesFormTable";
-#endif
-    QList<QString> result;
-    int rowCount = ui->tableWidget->rowCount();
-    QTableWidgetItem *item;
-    QTableWidget *table = ui->tableWidget;
-    for(int row=0; row<rowCount; row++)
-    {
-        item = table->item(row, 0);
-        if( item->checkState() == Qt::Checked )
-        {
-            QVariant data = item->data(Qt::UserRole);
-            result.append(data.toString());
-        }
-    }
-    return result;
-}
-*/
 // END
 
 void MainWindow::callBeforeBackgrowndWorkerStarted()
@@ -197,11 +180,13 @@ void MainWindow::startDuplicateSearchInBackground()
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
 
         connect(worker, &DuplicateFinder::sayTotalFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
         connect(worker, &DuplicateFinder::currentProcessedFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32
             progressWinExtra->setValue(count);
@@ -260,11 +245,13 @@ void MainWindow::startComparingFoldersInBackground()
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
         connect(worker, &DirComparator::sayTotalFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
         connect(worker, &DirComparator::currentProcessedFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32
             progressWinExtra->setValue(count);
@@ -549,11 +536,13 @@ void MainWindow::startCheckZipsInBackground()
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
         connect(worker, &ZipWalkChecker::sayTotalFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
         connect(worker, &ZipWalkChecker::currentProcessedFiles, this, [=](quint64 count){
+            if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32
             progressWinExtra->setValue(count);
