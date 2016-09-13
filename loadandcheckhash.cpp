@@ -26,7 +26,10 @@ void LoadAndCheckHash::process()
         current.setNameFilters(qsl);
         it.setValue(current);
     }
+    calcTotalFiles();
+    emit sayTotalFiles(total_files);
     processFilesRecursively(rootDirs);
+    emit currentProcessedFiles(processed_files);
     emit finishedWData(itemsList);
     emit finished();
 }
@@ -36,7 +39,7 @@ void LoadAndCheckHash::processFile(const QString &fileName)
     if(fileName.isEmpty() || fileName.isNull())
         return;
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "LoadAndCheckHash::processFile";
+    qDebug() << "LoadAndCheckHash::processFile:" << fileName;
 #endif
     QFileInfo fInfo(fileName);
     QString hashStrFromFile,
@@ -145,3 +148,4 @@ bool LoadAndCheckHash::checkHash(const QString &fileName,
     }
     else return false;
 }
+

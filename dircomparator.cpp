@@ -26,7 +26,9 @@ void DirComparator::process()
         emit finished();
         return;
     }
-    HashDirWalker::processFilesRecursively(rootDirs);
+    calcTotalFiles();
+    emit sayTotalFiles(total_files);
+    DirWalker::processFilesRecursively(rootDirs);
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
@@ -44,8 +46,8 @@ void DirComparator::process()
     reduceToResult();
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::process::emit";
+    qDebug() << "Num of uniq: "<< result.data()->count();
 #endif
-    qDebug() << "Num f uniq: "<<result.data()->count();
     emit currentProcessedFiles(total_files);
     emit finishedWData(result);
     emit finished();
@@ -125,24 +127,3 @@ void DirComparator::reduceToResult()
 #endif
 }
 
-void DirComparator::processFilesRecursively(const QDir &rootDir) {
-    // Calc number of all files
-    QDirIterator it0(rootDir, QDirIterator::Subdirectories);
-    while(it0.hasNext() && !stopped) {
-        it0.next();
-        ++total_files;
-        if(QThread::currentThread()->isInterruptionRequested())
-            stopped=true;
-    }
-    emit sayTotalFiles(total_files);
-    QDirIterator it(rootDir, QDirIterator::Subdirectories);
-    while(it.hasNext() && !stopped) {
-        processFile(it.next());
-        if(QThread::currentThread()->isInterruptionRequested())
-        stopped=true;
-    }
-    if(stopped)
-    {
-        emit finished();
-    }
-}

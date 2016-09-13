@@ -16,7 +16,6 @@ public:
     virtual ~ZipWalkChecker();
 
 protected:
-    void processFilesRecursively(const QDir &rootDir) Q_DECL_OVERRIDE;
 
 private:
     QSharedPtrListHFIS itemsList;

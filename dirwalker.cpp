@@ -70,13 +70,31 @@ void DirWalker::processFilesRecursively(const QDir &rootDir) {
     QDirIterator it(rootDir, QDirIterator::Subdirectories);
     while(it.hasNext() && !stopped) {
         processFile(it.next());
-        ++total_files;
         if(QThread::currentThread()->isInterruptionRequested())
         stopped=true;
     }
     if(stopped)
     {
         emit finished();
+    }
+}
+
+void DirWalker::calcTotalFiles()
+{
+    QListIterator<QDir> it0(rootDirs);
+    while(it0.hasNext()) {
+        const QDir &dir = it0.next();
+        QDirIterator it(dir, QDirIterator::Subdirectories);
+        while(it.hasNext() && !stopped) {
+            ++total_files;
+            it.next();
+            if(QThread::currentThread()->isInterruptionRequested())
+            stopped=true;
+        }
+        if(stopped)
+        {
+            emit finished();
+        }
     }
 }
 

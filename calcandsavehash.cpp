@@ -17,7 +17,10 @@ void CalcAndSaveHash::process()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "CalcAndSaveHash::process";
 #endif
-    processFilesRecursively(rootDirs);
+    calcTotalFiles();
+    emit sayTotalFiles(total_files);
+    DirWalker::processFilesRecursively(rootDirs);
+    emit currentProcessedFiles(processed_files);
     emit finished();
 }
 
@@ -26,7 +29,7 @@ void CalcAndSaveHash::processFile(const QString &fileName)
     if(fileName.isEmpty() || fileName.isNull())
         return;
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "CalcAndSaveHash::processFile";
+    qDebug() << "CalcAndSaveHash::processFile: " << fileName;
 #endif
     QFileInfo fInfo(fileName);
     QString hashStr;
@@ -37,6 +40,7 @@ void CalcAndSaveHash::processFile(const QString &fileName)
         {
             saveHashToFile(fileName, QString(qb));
         }
+        ++processed_files;
     }
 }
 
@@ -76,3 +80,4 @@ void CalcAndSaveHash::saveHashToFile(const QString &fileName, const QString &has
     }
 #endif
 }
+

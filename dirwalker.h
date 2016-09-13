@@ -31,6 +31,7 @@ protected:
     void processFilesRecursively(const QVector<QDir> &rootDirs);
     QList<QDir> rootDirs;
     virtual void processFile(const QString &fileName) = 0;
+    void calcTotalFiles();
 
 signals:
     void finished();

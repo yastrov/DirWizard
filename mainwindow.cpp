@@ -245,12 +245,18 @@ void MainWindow::startComparingFoldersInBackground()
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
         connect(worker, &DirComparator::sayTotalFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Total files: " << count;
+#endif
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
         connect(worker, &DirComparator::currentProcessedFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Current processed files: " << count;
+#endif
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32
@@ -428,11 +434,34 @@ void MainWindow::startCalcHashesInBackground()
 
         worker->setQDir(dirs);
         if(useFilters()) worker->setFilters(fileFilters);
+        callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &CalcAndSaveHash::process);
         QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &CalcAndSaveHash::deleteLater);//From Off documentation
         QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
+        connect(worker, &CalcAndSaveHash::sayTotalFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+                    qDebug() << "Total files: " << count;
+#endif
+                    if(count > CONSTANTS::MAX_INT) return;
+                    ui->progressBar->setMaximum(count);
+                    progressWinExtra->setMaximum(count);
+                });
+
+        connect(worker, &CalcAndSaveHash::currentProcessedFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+                    qDebug() << "Current processed files: " << count;
+#endif
+                    if(count > CONSTANTS::MAX_INT) return;
+                    ui->progressBar->setValue(count);
+        #ifdef Q_OS_WIN32
+                    progressWinExtra->setValue(count);
+        #endif
+                    const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
+                    ui->progressBar->setStatusTip(s);
+                    ui->statusBar->showMessage(s);
+                });
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -481,12 +510,35 @@ void MainWindow::startCheckHashesInBackground()
 
         worker->setQDir(dirs);
         if(useFilters()) worker->setFilters(fileFilters);
+        callBeforeBackgrowndWorkerStarted();
         worker->moveToThread(thread);
         QObject::connect(thread, &QThread::started, worker, &LoadAndCheckHash::process);
         QObject::connect(worker, &LoadAndCheckHash::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &LoadAndCheckHash::deleteLater);//From Off documentation
         QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::showInvalidHashFilesInTable);
+        connect(worker, &LoadAndCheckHash::sayTotalFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Total files: " << count;
+#endif
+            if(count > CONSTANTS::MAX_INT) return;
+            ui->progressBar->setMaximum(count);
+            progressWinExtra->setMaximum(count);
+        });
+
+        connect(worker, &LoadAndCheckHash::currentProcessedFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Current processed files: " << count;
+#endif
+            if(count > CONSTANTS::MAX_INT) return;
+            ui->progressBar->setValue(count);
+#ifdef Q_OS_WIN32
+            progressWinExtra->setValue(count);
+#endif
+            const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
+            ui->progressBar->setStatusTip(s);
+            ui->statusBar->showMessage(s);
+        });
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -536,12 +588,18 @@ void MainWindow::startCheckZipsInBackground()
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
         connect(worker, &ZipWalkChecker::sayTotalFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Total files: " << count;
+#endif
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
         connect(worker, &ZipWalkChecker::currentProcessedFiles, this, [=](quint64 count){
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "Current processed files: " << count;
+#endif
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32

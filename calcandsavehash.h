@@ -13,7 +13,7 @@ class CalcAndSaveHash : public HashDirWalker
     Q_OBJECT
 public:
     CalcAndSaveHash(QCryptographicHash::Algorithm hash, QObject *parent = nullptr);
-    ~CalcAndSaveHash();
+    virtual ~CalcAndSaveHash();
     QString getHashFileExtention(QCryptographicHash::Algorithm algoEnum);
 
 protected:

@@ -30,7 +30,6 @@ public:
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;
 
 protected:
-    void processFilesRecursively(const QDir &rootDir) Q_DECL_OVERRIDE;
 
 private:
     QMultiHash<QString, HashFileInfoStruct> hashByHash;

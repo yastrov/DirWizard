@@ -29,8 +29,9 @@ void DuplicateFinder::process()
         emit finished();
         return;
     }
-    processFilesRecursively(rootDirs);
+    calcTotalFiles();
     emit sayTotalFiles(total_files);
+    processFilesRecursively(rootDirs);
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
