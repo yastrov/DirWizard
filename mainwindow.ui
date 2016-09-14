@@ -514,12 +514,35 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>About</string>
     </property>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuCommands">
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="title">
+     <string>Commands</string>
+    </property>
+    <addaction name="actionStart_Dupl_Find"/>
+    <addaction name="actionCompare_Folders"/>
+    <addaction name="separator"/>
+    <addaction name="actionCheck_ZIP"/>
+    <addaction name="separator"/>
+    <addaction name="actionCalc_Hashes"/>
+    <addaction name="actionCheck_Hashes"/>
+   </widget>
    <addaction name="menuAbout"/>
+   <addaction name="menuCommands"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -536,6 +559,91 @@
    </property>
    <property name="statusTip">
     <string>About this program.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionStart_Dupl_Find">
+   <property name="text">
+    <string>Start Dupl Find</string>
+   </property>
+   <property name="toolTip">
+    <string>Start duplicate search</string>
+   </property>
+   <property name="statusTip">
+    <string>Start duplicate files search</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCompare_Folders">
+   <property name="text">
+    <string>Compare Folders</string>
+   </property>
+   <property name="toolTip">
+    <string>Compare folders, find uniq files.</string>
+   </property>
+   <property name="statusTip">
+    <string>Compare folders and find uniq files.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCheck_ZIP">
+   <property name="text">
+    <string>Check ZIP</string>
+   </property>
+   <property name="toolTip">
+    <string>Check ZIP archives</string>
+   </property>
+   <property name="statusTip">
+    <string>Check ZIP archives. Show invalid or bad ZIP archives.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCheck_Hashes">
+   <property name="text">
+    <string>Check Hashes</string>
+   </property>
+   <property name="toolTip">
+    <string>Check hashes</string>
+   </property>
+   <property name="statusTip">
+    <string>Check files in folders by hashes.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionCalc_Hashes">
+   <property name="text">
+    <string>Calc Hashes</string>
+   </property>
+   <property name="toolTip">
+    <string>Calc hashes and store to disk.</string>
+   </property>
+   <property name="statusTip">
+    <string>Calc hash sum for each file in folders and  and save to disk.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
  </widget>

@@ -35,7 +35,11 @@ MainWindow::MainWindow(QWidget *parent) :
     progressWinExtra = buttonWinExtra->progress();
     progressWinExtra->setVisible(false);
 #endif
-    fileFilters <<"*";
+    connect(ui->actionStart_Dupl_Find, &QAction::triggered, this, &MainWindow::on_pushButton_Duplicate_Search_clicked);
+    connect(ui->actionCompare_Folders, &QAction::triggered, this, &MainWindow::on_pushButton_Compare_Folders_clicked);
+    connect(ui->actionCheck_ZIP, &QAction::triggered, this, &MainWindow::on_pushButton_Check_Zip_clicked);
+    connect(ui->actionCalc_Hashes, &QAction::triggered, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
+    connect(ui->actionCheck_Hashes, &QAction::triggered, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
 }
 
 void MainWindow::showEvent(QShowEvent *e)
@@ -658,6 +662,7 @@ void MainWindow::setUiPushButtonsEnabled(bool flag)
     ui->pushButton_Duplicate_Search->setEnabled(flag);
     ui->pushButton_Remove_Checked->setEnabled(flag);
     ui->pushButton_Save_From_Table->setEnabled(flag);
+    ui->menuCommands->setEnabled(flag);
 }
 
 // Drag Drop START
