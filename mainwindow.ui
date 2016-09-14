@@ -40,6 +40,9 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
+      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="1" column="2">
@@ -107,25 +110,15 @@
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
          </layout>
         </item>
         <item row="1" column="1">
          <widget class="QListWidget" name="listWidget">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -133,13 +126,13 @@
           <property name="minimumSize">
            <size>
             <width>200</width>
-            <height>130</height>
+            <height>90</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>16777215</width>
-            <height>16777215</height>
+            <height>16770</height>
            </size>
           </property>
           <property name="font">
@@ -152,6 +145,9 @@
           </property>
           <property name="statusTip">
            <string>Path list: every path in list will be processed. You can Drag&amp;Drop folder to here.</string>
+          </property>
+          <property name="resizeMode">
+           <enum>QListView::Fixed</enum>
           </property>
          </widget>
         </item>
@@ -176,22 +172,12 @@
        </layout>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QFormLayout" name="formLayout">
+       <layout class="QGridLayout" name="formLayout">
         <property name="sizeConstraint">
          <enum>QLayout::SetMinimumSize</enum>
+        </property>
+        <property name="leftMargin">
+         <number>8</number>
         </property>
         <item row="0" column="0">
          <widget class="QLabel" name="label_Hash">
@@ -259,14 +245,7 @@
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,0,1,1,1,1,0">
-        <property name="sizeConstraint">
-         <enum>QLayout::SetMaximumSize</enum>
-        </property>
-        <item>
+        <item row="0" column="2">
          <widget class="QPushButton" name="pushButton_Duplicate_Search">
           <property name="font">
            <font>
@@ -284,59 +263,7 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Calc_Hashes">
-          <property name="toolTip">
-           <string>Calc hashes and store to disk.</string>
-          </property>
-          <property name="statusTip">
-           <string>Calc hash sum for each file in folders and  and save to disk.</string>
-          </property>
-          <property name="text">
-           <string>Calc Hashes</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Check_Hashes">
-          <property name="toolTip">
-           <string>Check hashes</string>
-          </property>
-          <property name="statusTip">
-           <string>Check files in folders by hashes.</string>
-          </property>
-          <property name="text">
-           <string>Check Hashes</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Compare_Folders">
-          <property name="toolTip">
-           <string>Compare folders, find uniq files.</string>
-          </property>
-          <property name="statusTip">
-           <string>Compare folders and find uniq files.</string>
-          </property>
-          <property name="text">
-           <string>Compare Folders</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton_Check_Zip">
-          <property name="toolTip">
-           <string>Check ZIP archives</string>
-          </property>
-          <property name="statusTip">
-           <string>Check ZIP archives. Show invalid or bad ZIP archives.</string>
-          </property>
-          <property name="text">
-           <string>Check ZIP</string>
-          </property>
-         </widget>
-        </item>
-        <item>
+        <item row="1" column="2">
          <widget class="QPushButton" name="pushButton_Cancel">
           <property name="font">
            <font>
@@ -353,19 +280,6 @@
            <string>Cancel</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>
@@ -396,7 +310,7 @@
         <property name="minimumSize">
          <size>
           <width>780</width>
-          <height>206</height>
+          <height>256</height>
          </size>
         </property>
         <property name="font">

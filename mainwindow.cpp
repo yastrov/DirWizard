@@ -19,9 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
     initHashComboBoxWidget();
     initTableWidget();
     QObject::connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::on_AboutAction_Triggered);
-    QObject::connect(ui->pushButton_Calc_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
-    //QObject::connect(ui->pushButton_Check_Hashes, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
-    //QObject::connect(ui->pushButton_Check_Zip, &QPushButton::clicked, this, &MainWindow::on_pushButton_Check_Zip_clicked);
 
     // Drag and Drop
     setAcceptDrops(true);
@@ -655,10 +652,6 @@ void MainWindow::closeEvent(QCloseEvent *event) {
 
 void MainWindow::setUiPushButtonsEnabled(bool flag)
 {
-    ui->pushButton_Calc_Hashes->setEnabled(flag);
-    ui->pushButton_Check_Hashes->setEnabled(flag);
-    ui->pushButton_Check_Zip->setEnabled(flag);
-    ui->pushButton_Compare_Folders->setEnabled(flag);
     ui->pushButton_Duplicate_Search->setEnabled(flag);
     ui->pushButton_Remove_Checked->setEnabled(flag);
     ui->pushButton_Save_From_Table->setEnabled(flag);
