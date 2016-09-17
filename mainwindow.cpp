@@ -136,7 +136,7 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
     table->setModel(model);
     table->setSortingEnabled(true);
     table->sortByColumn(DuplicatesTableModel::Column::groupId);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     table->resizeColumnsToContents();
 }
 // END
@@ -221,7 +221,7 @@ void MainWindow::showUniqFilesInTable(QSharedPtrListHFIS itemsPtr)
     table->setModel(model);
     table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -559,7 +559,7 @@ void MainWindow::showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr)
     table->setModel(model);
     table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::on_pushButton_Check_Zip_clicked()
@@ -629,7 +629,7 @@ void MainWindow::showInvalidZipInTable(QSharedPtrListHFIS itemsPtr)
     table->setModel(model);
     table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
