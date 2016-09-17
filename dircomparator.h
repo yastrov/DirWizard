@@ -18,6 +18,7 @@
 #include <QDebug>
 #endif
 #include <QThread>
+#include "constants.h"
 
 #define SizeForInnerVector 0
 

@@ -18,6 +18,7 @@
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
+#include "constants.h"
 
 #define SizeForInnerVector 0
 

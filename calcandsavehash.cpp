@@ -19,7 +19,7 @@ void CalcAndSaveHash::process()
 #endif
     calcTotalFiles();
     emit sayTotalFiles(total_files);
-    DirWalker::processFilesRecursively(rootDirs);
+    DirWalker::processFilesRecursively();
     emit currentProcessedFiles(processed_files);
     emit finished();
 }
@@ -33,14 +33,17 @@ void CalcAndSaveHash::processFile(const QString &fileName)
 #endif
     QFileInfo fInfo(fileName);
     QString hashStr;
+    QByteArray qb;
     if( fInfo.isFile() && fInfo.isReadable() )
     {
-        QByteArray qb = fileChecksum(fileName, hashAlgo);
+        qb = fileChecksum(fileName, hashAlgo);
         if(!qb.isNull() && !qb.isEmpty())
         {
             saveHashToFile(fileName, QString(qb));
         }
         ++processed_files;
+        if(processed_files % SAY_PROGRESS_EVERY == 0)
+            emit currentProcessedFiles(processed_files);
     }
 }
 

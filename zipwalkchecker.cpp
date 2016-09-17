@@ -29,7 +29,7 @@ void ZipWalkChecker::process()
     }
     calcTotalFiles();
     emit sayTotalFiles(total_files);
-    DirWalker::processFilesRecursively(rootDirs);
+    DirWalker::processFilesRecursively();
     emit currentProcessedFiles(processed_files);
     emit finishedWData(itemsList);
     emit finished();
@@ -62,7 +62,7 @@ void ZipWalkChecker::processFile(const QString &fileName)
             qzip.close();
     }
     ++processed_files;
-    if(processed_files %10 == 0)
+    if(processed_files % SAY_PROGRESS_EVERY == 0)
         emit currentProcessedFiles(processed_files);
 }
 

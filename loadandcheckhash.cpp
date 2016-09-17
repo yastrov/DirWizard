@@ -28,7 +28,7 @@ void LoadAndCheckHash::process()
     }
     calcTotalFiles();
     emit sayTotalFiles(total_files);
-    processFilesRecursively(rootDirs);
+    processFilesRecursively();
     emit currentProcessedFiles(processed_files);
     emit finishedWData(itemsList);
     emit finished();
@@ -48,13 +48,16 @@ void LoadAndCheckHash::processFile(const QString &fileName)
     {
 
         QFile file(fileName);
+        QString line;
+        QByteArray bline;
+        QStringList qsl;
         if (file.open(QFile::ReadOnly | QIODevice::Text)) {
             while (!file.atEnd())
             {
-                QByteArray bline = file.readLine();
-                QString line = QString::fromUtf8(bline);
+                bline = file.readLine();
+                line = QString::fromUtf8(bline);
 
-                QStringList qsl = line.split(" *");
+                qsl = line.split(" *");
                 if(qsl.size() == 2)
                 {
                     hashStrFromFile = qsl[0];
@@ -107,6 +110,9 @@ void LoadAndCheckHash::processFile(const QString &fileName)
                 itemsList.data()->append(std::move(strct));
             }
         }
+        ++processed_files;
+        if(processed_files % SAY_PROGRESS_EVERY == 0)
+            emit currentProcessedFiles(processed_files);
     }
 }
 

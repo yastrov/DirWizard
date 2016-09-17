@@ -7,6 +7,7 @@
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
+#include "constants.h"
 
 class ZipWalkChecker : public DirWalker
 {

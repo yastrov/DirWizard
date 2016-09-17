@@ -24,45 +24,57 @@ void DirWalker::setQDir(const QDir &rootDir)
 void DirWalker::setQDir(const QList<QDir> &rootDirs)
 {
     this->rootDirs = QList<QDir>(rootDirs);
+    QMutableListIterator<QDir> it(this->rootDirs);
+    while(it.hasNext()){
+        QDir &dir = it.next();
+        dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDot | QDir::NoDotDot| QDir::NoSymLinks);
+    }
 }
 
 void DirWalker::setQDir(const QVector<QDir> &rootDirs)
 {
     this->rootDirs = QList<QDir>(rootDirs.toList());
+    QMutableListIterator<QDir> it(this->rootDirs);
+    while(it.hasNext()){
+    QDir &dir = it.next();
+    dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDot | QDir::NoDotDot| QDir::NoSymLinks);
+    }
 }
 
 void DirWalker::setQDir(const QString &rootDir)
 {
-    rootDirs.append(QDir(rootDir));
+    QDir dir = QDir(rootDir);
+    dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDot | QDir::NoDotDot| QDir::NoSymLinks);
+    rootDirs.append(dir);
 }
 
-void DirWalker::setQDir(const QList<QString> &rootDirs)
+void DirWalker::setQDir(const QStringList &rootDirs)
 {
     QListIterator<QString> it (rootDirs);
-    while(it.hasNext())
-        this->rootDirs.append(QDir(it.next()));
+    QDir dir;
+    while(it.hasNext()) {
+        dir = QDir(it.next());
+        dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDot | QDir::NoDotDot| QDir::NoSymLinks);
+        this->rootDirs.append(dir);
+    }
 }
 
 void DirWalker::setQDir(const QVector<QString> &rootDirs)
 {
     QVectorIterator<QString> it (rootDirs);
-    while(it.hasNext())
-        this->rootDirs.append(QDir(it.next()));
+    QDir dir;
+    while(it.hasNext()) {
+        dir = QDir(it.next());
+        dir.setFilter(QDir::Files | QDir::Dirs | QDir::NoDot | QDir::NoDotDot| QDir::NoSymLinks);
+        this->rootDirs.append(dir);
+    }
 }
 
-void DirWalker::processFilesRecursively(const QList<QDir> &rootDirs)
+void DirWalker::processFilesRecursively()
 {
     QListIterator<QDir> i(rootDirs);
-    while (i.hasNext())
-        processFilesRecursively(i.next());
-}
-
-void DirWalker::processFilesRecursively(const QVector<QDir> &rootDirs)
-{
-    QVectorIterator<QDir> i(rootDirs);
-    while (i.hasNext())
-    {
-        processFilesRecursively(i.next());
+    while (i.hasNext()) {
+       processFilesRecursively(i.next());
     }
 }
 

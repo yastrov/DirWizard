@@ -31,7 +31,7 @@ void DuplicateFinder::process()
     }
     calcTotalFiles();
     emit sayTotalFiles(total_files);
-    processFilesRecursively(rootDirs);
+    processFilesRecursively();
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
@@ -73,14 +73,11 @@ void DuplicateFinder::processFile(const QString &fileName)
     if(fileName.isEmpty() || fileName.isNull())
         return;
 #ifdef MYPREFIX_DEBUG
-    qDebug() << "DuplicateFinder::processFile";
+    qDebug() << "DuplicateFinder::processFile "<<fileName;
 #endif
     QFileInfo fInfo(fileName);
     if(fInfo.isFile() && fInfo.isReadable())
     {
-        QByteArray qb = fileChecksum(fileName, hashAlgo);
-        if(!qb.isNull() && !qb.isEmpty())
-        {
             HashFileInfoStruct st;
             st.fileName = fileName;
             st.size = fInfo.size();
@@ -99,7 +96,6 @@ void DuplicateFinder::processFile(const QString &fileName)
 #else
             hashBySize.insert(st.size, st);
 #endif
-        }
     }
 }
 
@@ -176,20 +172,21 @@ void DuplicateFinder::makeHashByHashes()
 #else
     QList<HashFileInfoStruct> qList = hashBySize.values();
     QMutableListIterator<HashFileInfoStruct> qListIt(qList);
+    QByteArray qb;
     while(qListIt.hasNext())
     {
        s = qListIt.next();
-       QByteArray qb = fileChecksum(s.fileName, hashAlgo);
+       qb = fileChecksum(s.fileName, hashAlgo);
        if(!qb.isNull() && !qb.isEmpty())
        {
            s.hash = QString(qb);
-           if(!s.hash.isEmpty() && s.size > 0)
+           if(!s.hash.isEmpty())
            {
                hashByHash.insert(s.hash, s);
            }
        }
        ++processed_files;
-       if(processed_files %10 == 0)
+       if(processed_files % SAY_PROGRESS_EVERY == 0)
            emit currentProcessedFiles(processed_files);
     }
 #endif
@@ -201,10 +198,9 @@ void DuplicateFinder::clearNoDuplicatedHashes()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
 #endif
-    QList<QString> keys = hashByHash.keys();
 #ifdef HASH_OV_VECT
     QString key;
-    QMutableListIterator<QString> it(keys);
+    QMutableListIterator<QString> it(hashByHash.keys());
     QVector<HashFileInfoStruct> vect;
     int count;
     while(it.hasNext())
@@ -222,11 +218,12 @@ void DuplicateFinder::clearNoDuplicatedHashes()
        }
     }
 #else
-    QListIterator<QString> it(keys);
+    QSetIterator<QString> it(hashByHash.keys().toSet());
+    int count;
     while(it.hasNext())
     {
        const QString &key = it.next();
-       int count = hashByHash.count(key);
+       count = hashByHash.count(key);
        if(count < 2) {
            hashByHash.remove(key);
        } else {
@@ -249,8 +246,8 @@ void DuplicateFinder::reduceToResult()
     HashFileInfoStruct s;
     int groupId = 0;
     bool checked = false;
-    QList<QString> keys = hashByHash.keys();
 #ifdef HASH_OV_VECT
+    QList<QString> keys = hashByHash.keys();
     QString key;
     QListIterator<QString> it(keys);
     QVector<HashFileInfoStruct> vect;
@@ -272,7 +269,7 @@ void DuplicateFinder::reduceToResult()
     }
 #else
     QList<HashFileInfoStruct> * const list = result.data();
-    QListIterator<QString> it(keys);
+    QSetIterator<QString> it(hashByHash.keys().toSet());
     while(it.hasNext())
     {
         const QString &key = it.next();

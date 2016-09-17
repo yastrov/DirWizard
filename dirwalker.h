@@ -18,7 +18,7 @@ public:
     void setQDir(const QList<QDir> &rootDirs);
     void setQDir(const QVector<QDir> &rootDirs);
     void setQDir(const QString &rootDir);
-    void setQDir(const QList<QString> &rootDirs);
+    void setQDir(const QStringList &rootDirs);
     void setQDir(const QVector<QString> &rootDirs);
     void setFilters(const QStringList &filters);
 
@@ -27,8 +27,7 @@ protected:
     quint64 total_files;
     quint64 processed_files;
     virtual void processFilesRecursively(const QDir &rootDir);
-    void processFilesRecursively(const QList<QDir> &rootDirs);
-    void processFilesRecursively(const QVector<QDir> &rootDirs);
+    void processFilesRecursively();
     QList<QDir> rootDirs;
     virtual void processFile(const QString &fileName) = 0;
     void calcTotalFiles();

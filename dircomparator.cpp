@@ -28,7 +28,7 @@ void DirComparator::process()
     }
     calcTotalFiles();
     emit sayTotalFiles(total_files);
-    DirWalker::processFilesRecursively(rootDirs);
+    DirWalker::processFilesRecursively();
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
@@ -84,13 +84,13 @@ void DirComparator::clearNoDuplicatedHashes()
     #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
 #endif
-    QList<QString> keys = hashByHash.keys();
     //QString key;
-    QListIterator<QString> it(keys);
+    QSetIterator<QString> it(hashByHash.keys().toSet());
+    int count;
     while(it.hasNext())
     {
        const QString &key = it.next();
-       int count = hashByHash.count(key);
+       count = hashByHash.count(key);
        if(count > 1) {
            hashByHash.remove(key);
        } else {

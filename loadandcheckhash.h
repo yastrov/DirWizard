@@ -6,6 +6,7 @@
 #include <QCryptographicHash>
 #include <QDir>
 #include <QThread>
+#include "constants.h"
 
 class LoadAndCheckHash : public HashDirWalker
 {

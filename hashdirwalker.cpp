@@ -40,7 +40,7 @@ QByteArray HashDirWalker::fileChecksum(const QString &fileName,
 {
     hash->reset();
 #ifdef MYPREFIX_DEBUG
-    qDebug() << fileName;
+    qDebug() <<"HashDirWalker::fileChecksum "<< fileName;
 #endif
     QFile file(fileName);
         if (file.open(QFile::ReadOnly)) {

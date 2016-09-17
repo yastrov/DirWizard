@@ -7,6 +7,7 @@
 #include "hashdirwalker.h"
 #include "hashfileinfostruct.h"
 #include <QThread>
+#include "constants.h"
 
 class CalcAndSaveHash : public HashDirWalker
 {
