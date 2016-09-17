@@ -72,7 +72,8 @@ HEADERS  += mainwindow.h \
     basetablemodel.h \
     duplicatestablemodel.h \
     filelisttablemodel.h \
-    filtersdialog.h
+    filtersdialog.h \
+    constants.h
 
 FORMS    += mainwindow.ui
 

@@ -1,0 +1,6 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+#define SAY_PROGRESS_EVERY 10
+
+#endif // CONSTANTS_H
