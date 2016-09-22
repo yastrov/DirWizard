@@ -345,10 +345,10 @@
            </font>
           </property>
           <property name="toolTip">
-           <string>Remove elements, where are you make  check</string>
+           <string>Remove elements, where are you make check from disk</string>
           </property>
           <property name="statusTip">
-           <string>Remove checked files from disk, not from result table.</string>
+           <string>Remove checked elements from disk.</string>
           </property>
           <property name="text">
            <string>Remove checked</string>
@@ -455,8 +455,25 @@
     <addaction name="actionCalc_Hashes"/>
     <addaction name="actionCheck_Hashes"/>
    </widget>
-   <addaction name="menuAbout"/>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionOpen"/>
+    <addaction name="actionSaveAs"/>
+   </widget>
+   <widget class="QMenu" name="menuWork_with_results">
+    <property name="title">
+     <string>Work with results</string>
+    </property>
+    <addaction name="actionClear_all_flags"/>
+    <addaction name="actionRemove_checked"/>
+    <addaction name="actionSelect_files_in_concrete_folder"/>
+   </widget>
+   <addaction name="menuFile"/>
    <addaction name="menuCommands"/>
+   <addaction name="menuWork_with_results"/>
+   <addaction name="menuAbout"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -558,6 +575,58 @@
     <font>
      <pointsize>12</pointsize>
     </font>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open saved duplicates file list.</string>
+   </property>
+   <property name="statusTip">
+    <string>Open saved duplicates file list.</string>
+   </property>
+  </action>
+  <action name="actionSaveAs">
+   <property name="text">
+    <string>Save results from table to file.</string>
+   </property>
+   <property name="toolTip">
+    <string>Save results as duplicates files list from table to file.</string>
+   </property>
+   <property name="statusTip">
+    <string>Save results from table to file.</string>
+   </property>
+  </action>
+  <action name="actionClear_all_flags">
+   <property name="text">
+    <string>Clear all selection flags.</string>
+   </property>
+   <property name="statusTip">
+    <string>Clear all selection flags.</string>
+   </property>
+  </action>
+  <action name="actionRemove_checked">
+   <property name="text">
+    <string>Remove checked</string>
+   </property>
+   <property name="iconText">
+    <string>Remove checked elements from disk.</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove elements, where are you make check from disk</string>
+   </property>
+   <property name="statusTip">
+    <string>Remove checked elements from disk</string>
+   </property>
+  </action>
+  <action name="actionSelect_files_in_concrete_folder">
+   <property name="text">
+    <string>Mark files in concrete folder as checked.</string>
+   </property>
+   <property name="statusTip">
+    <string>Mark files in concrete folder as checked.</string>
    </property>
   </action>
  </widget>

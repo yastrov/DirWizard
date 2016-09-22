@@ -37,6 +37,51 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionCheck_ZIP, &QAction::triggered, this, &MainWindow::on_pushButton_Check_Zip_clicked);
     connect(ui->actionCalc_Hashes, &QAction::triggered, this, &MainWindow::on_pushButton_Calc_Hashes_clicked);
     connect(ui->actionCheck_Hashes, &QAction::triggered, this, &MainWindow::on_pushButton_Check_Hashes_clicked);
+
+    connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::on_pushButton_Save_From_Table_clicked);
+    connect(ui->actionOpen, &QAction::triggered, this, [this]{
+        QTableView * const table = ui->tableView;
+        QString filter = "Text files (*.txt)";
+        const QString fileName = QFileDialog::getOpenFileName(this,
+                                                            tr("Open File"),
+                                             QDir::homePath(),
+                                             "Text files (*.txt)",
+                                             &filter, QFileDialog::DontUseNativeDialog);
+            if(!fileName.isNull() && !fileName.isEmpty())
+            {
+                if(table->model() != nullptr) {
+                    table->model()->deleteLater();
+                }
+                DuplicatesTableModel *model = new DuplicatesTableModel(this);
+                model->loadFromFileFunc(fileName);
+                table->setModel(model);
+                table->setSortingEnabled(true);
+                table->sortByColumn(DuplicatesTableModel::Column::groupId);
+                table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+                table->resizeColumnsToContents();
+            }
+    });
+    connect(ui->actionRemove_checked, &QAction::triggered, this, &MainWindow::on_pushButton_Remove_Checked_clicked);
+    connect(ui->actionSelect_files_in_concrete_folder, &QAction::triggered, this, [this](){
+        const QString dirName = QFileDialog::getExistingDirectory(this, tr("Choose Directory"),
+                                                     dirNameForFolderDialog,
+                                                     QFileDialog::ShowDirsOnly
+                                                     | QFileDialog::DontResolveSymlinks);
+        if(!dirName.isEmpty() && !dirName.isNull())
+        {
+            QTableView * const table = ui->tableView;
+            if(table->model()==nullptr) {
+                return;
+            }
+            qobject_cast<BaseTableModel*>(table->model())->selectFilesInFolder(dirName);
+        }
+    });
+    connect(ui->actionClear_all_flags, &QAction::triggered, this, [this](){
+        if(ui->tableView->model()==nullptr) {
+            return;
+        }
+        qobject_cast<BaseTableModel*>(ui->tableView->model())->unselectAll();
+    });
 }
 
 void MainWindow::showEvent(QShowEvent *e)
@@ -180,13 +225,13 @@ void MainWindow::startDuplicateSearchInBackground()
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(showDuplicatesInTable(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
 
-        connect(worker, &DuplicateFinder::sayTotalFiles, this, [=](quint64 count){
+        connect(worker, &DuplicateFinder::sayTotalFiles, this, [this](quint64 count){
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setMaximum(count);
             progressWinExtra->setMaximum(count);
         });
 
-        connect(worker, &DuplicateFinder::currentProcessedFiles, this, [=](quint64 count){
+        connect(worker, &DuplicateFinder::currentProcessedFiles, this, [this](quint64 count){
             if(count > CONSTANTS::MAX_INT) return;
             ui->progressBar->setValue(count);
 #ifdef Q_OS_WIN32
@@ -245,7 +290,7 @@ void MainWindow::startComparingFoldersInBackground()
         QObject::connect(worker, &DirComparator::finished, this, &MainWindow::finishedThread);
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
-        connect(worker, &DirComparator::sayTotalFiles, this, [=](quint64 count){
+        connect(worker, &DirComparator::sayTotalFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Total files: " << count;
 #endif
@@ -254,7 +299,7 @@ void MainWindow::startComparingFoldersInBackground()
             progressWinExtra->setMaximum(count);
         });
 
-        connect(worker, &DirComparator::currentProcessedFiles, this, [=](quint64 count){
+        connect(worker, &DirComparator::currentProcessedFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Current processed files: " << count;
 #endif
@@ -393,7 +438,7 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
     QString filter = "Text files (*.txt)";
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save File"),
-                                     QDir::homePath(),
+                                     QDir::homePath()+"/results.txt",
                                      "Text files (*.txt)",
                                      &filter, QFileDialog::DontUseNativeDialog);
 #ifdef MYPREFIX_DEBUG
@@ -441,7 +486,7 @@ void MainWindow::startCalcHashesInBackground()
         QObject::connect(worker, &CalcAndSaveHash::finished, thread, &QThread::quit);
         QObject::connect(thread, &QThread::finished, worker, &CalcAndSaveHash::deleteLater);//From Off documentation
         QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
-        connect(worker, &CalcAndSaveHash::sayTotalFiles, this, [=](quint64 count){
+        connect(worker, &CalcAndSaveHash::sayTotalFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
                     qDebug() << "Total files: " << count;
 #endif
@@ -450,7 +495,7 @@ void MainWindow::startCalcHashesInBackground()
                     progressWinExtra->setMaximum(count);
                 });
 
-        connect(worker, &CalcAndSaveHash::currentProcessedFiles, this, [=](quint64 count){
+        connect(worker, &CalcAndSaveHash::currentProcessedFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
                     qDebug() << "Current processed files: " << count;
 #endif
@@ -518,7 +563,7 @@ void MainWindow::startCheckHashesInBackground()
         QObject::connect(thread, &QThread::finished, worker, &LoadAndCheckHash::deleteLater);//From Off documentation
         QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::showInvalidHashFilesInTable);
-        connect(worker, &LoadAndCheckHash::sayTotalFiles, this, [=](quint64 count){
+        connect(worker, &LoadAndCheckHash::sayTotalFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Total files: " << count;
 #endif
@@ -527,7 +572,7 @@ void MainWindow::startCheckHashesInBackground()
             progressWinExtra->setMaximum(count);
         });
 
-        connect(worker, &LoadAndCheckHash::currentProcessedFiles, this, [=](quint64 count){
+        connect(worker, &LoadAndCheckHash::currentProcessedFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Current processed files: " << count;
 #endif
@@ -588,7 +633,7 @@ void MainWindow::startCheckZipsInBackground()
         QObject::connect(thread, &QThread::finished, worker, &ZipWalkChecker::deleteLater);//From Off documentation
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
-        connect(worker, &ZipWalkChecker::sayTotalFiles, this, [=](quint64 count){
+        connect(worker, &ZipWalkChecker::sayTotalFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Total files: " << count;
 #endif
@@ -597,7 +642,7 @@ void MainWindow::startCheckZipsInBackground()
             progressWinExtra->setMaximum(count);
         });
 
-        connect(worker, &ZipWalkChecker::currentProcessedFiles, this, [=](quint64 count){
+        connect(worker, &ZipWalkChecker::currentProcessedFiles, this, [this](quint64 count){
 #ifdef MYPREFIX_DEBUG
             qDebug() << "Current processed files: " << count;
 #endif
@@ -656,6 +701,8 @@ void MainWindow::setUiPushButtonsEnabled(bool flag)
     ui->pushButton_Remove_Checked->setEnabled(flag);
     ui->pushButton_Save_From_Table->setEnabled(flag);
     ui->menuCommands->setEnabled(flag);
+    ui->menuFile->setEnabled(flag);
+    ui->menuWork_with_results->setEnabled(flag);
 }
 
 // Drag Drop START
@@ -691,17 +738,19 @@ void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
     const QTableView *table = ui->tableView;
     QMenu *menu = new QMenu(this);
     QAction *openFolder = new QAction(tr("Open Folder with selected file"), this);
-    connect(openFolder, &QAction::triggered, [=](){
+    connect(openFolder, &QAction::triggered, this, [this](){
+        const QTableView *table = ui->tableView;
         if(table->model() == nullptr) return;
         const QModelIndexList indexList = table->selectionModel()->selectedIndexes();
         QString dir;
         const BaseTableModel *model = qobject_cast<BaseTableModel *>(table->model());
-        foreach (QModelIndex index, indexList) {
+        for(const QModelIndex &index: indexList) {
             dir = model->getFileName(index);
         }
         QStringList commands;
         #if defined(Q_OS_WIN)
-        commands<< "explorer.exe /select,\"" << QDir::toNativeSeparators(dir) <<"\"";
+        commands<< "explorer.exe /select, \"" << QDir::toNativeSeparators(dir) <<"\"";
+        qDebug()<<commands.join("");
         QProcess::startDetached(commands.join(""));
         #elif defined(Q_OS_MAC)
         QStringList scriptArgs;
@@ -729,7 +778,6 @@ void MainWindow::on_setFiltersBtn_clicked()
     FiltersDialog f;
     f.setActiveFilters(fileFilters);
     if(f.exec() == QDialog::Accepted){
-        qDebug()<<"Hey, true";
         fileFilters = f.getActiveFilters();
     }
 }

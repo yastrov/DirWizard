@@ -11,6 +11,8 @@ class DuplicatesTableModel : public BaseTableModel
 public:
     explicit DuplicatesTableModel(QSharedPtrListHFIS content, QObject *parent=nullptr)
         : BaseTableModel(content, parent) {}
+    explicit DuplicatesTableModel(QObject *parent=nullptr)
+        : BaseTableModel(parent) {}
     virtual ~DuplicatesTableModel() {}
     QVariant data(const QModelIndex &index,
                   int role=Qt::DisplayRole) const Q_DECL_OVERRIDE;

@@ -17,13 +17,18 @@ class BaseTableModel : public QAbstractTableModel
 public:
     explicit BaseTableModel(QSharedPtrListHFIS content, QObject *parent=nullptr)
         : QAbstractTableModel(parent), items(content) {}
+    explicit BaseTableModel(QObject *parent=nullptr)
+        : QAbstractTableModel(parent), items() {}
     virtual ~BaseTableModel() {}
     Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
     bool removeRow(int row, const QModelIndex&);
     bool removeRows(int row, int count, const QModelIndex&);
     virtual void saveToFileFunc(const QString &fileName) const;
+    virtual void loadFromFileFunc(const QString &fileName);
     virtual void removeCheckedFunc();
     virtual QString getFileName(const QModelIndex &index) const;
+    virtual void unselectAll();
+    void selectFilesInFolder(const QString &dirName);
 public slots:
     void saveToFile(QString fileName);
     void removeChecked(bool checked=false);
