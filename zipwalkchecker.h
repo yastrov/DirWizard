@@ -4,10 +4,14 @@
 #include "dirwalker.h"
 #include "hashfileinfostruct.h"
 #include <quazip/quazip.h>
+#include <quazip/quazipfile.h>
+#include <quazip/quazipfileinfo.h>
+#include <quazip/quacrc32.h>
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
 #include "constants.h"
+#include <QLinkedList>
 
 class ZipWalkChecker : public DirWalker
 {
@@ -19,9 +23,11 @@ public:
 protected:
 
 private:
-    QSharedPtrListHFIS itemsList;
+    QLinkedList<HashFileInfoStruct> tempList;
     void processFile(const QString &fileName) Q_DECL_OVERRIDE;
     QSharedPtrListHFIS result;
+    const static qint64 bufferSize=4096;
+    char buffer[bufferSize];
 
 signals:
     void finishedWData(QSharedPtrListHFIS itemsPtr);
