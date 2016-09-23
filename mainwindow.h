@@ -90,6 +90,8 @@ private slots:
     void createCustomPopupMenuForTableView(const QPoint &pos);
 
     void on_setFiltersBtn_clicked();
+    void on_maximum_files_for_progress_received(quint64 count);
+    void on_current_processed_files_for_progress_received(quint64 count);
 
 private:
     Ui::MainWindow *ui;
