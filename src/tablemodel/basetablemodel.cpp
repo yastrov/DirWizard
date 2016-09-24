@@ -83,6 +83,10 @@ void BaseTableModel::loadFromFileFunc(const QString &fileName)
             }
         }
         const int newItemsCount = in.readLine().toInt();
+        if(newItemsCount == 0) {
+            file.close();
+            return;
+        }
         in.readLine(); //Pass header string
         items.data()->reserve(newItemsCount);
         QList<HashFileInfoStruct> * const list = items.data();
