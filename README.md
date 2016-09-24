@@ -9,18 +9,22 @@ Program with GUI for work with files: find unique, duplicates, calck and check h
 No many programs for find duplicates files, and and even fewer programs to find unique files or automatically check hashes from multiple files. I fixed it:).
 
 ## Features
+-  support many hash functions (MD5, SHA1, SHA256, SHA512, SHA3 256, SHA3 512)
 -  work with many folders
--  find duplicates files
+-  find duplicates files and remove
 -  find unique files in folders
 -  calc hashes for files
 -  check hashes for files
+-  find empty folders and remove
 -  Check zip files, show files. It shows files that can not be opened, or hash sum does not correspond to the content.
+
+In Windows 10 start with admin rights, if you want to remove some things.
 
 ## Technology
 -  QT 5 with QThreads, signals and slots, QTableWidget, QComboBox Widget, QListWidget.
 -  QT Creator
 -  c++ with some features from c++11
--  qt-opensource-windows-x86-mingw492-5.5.0
+-  qt-opensource-windows-x86-mingw530-5.7.0
 
 ## Class Hierarchy
 
@@ -33,10 +37,12 @@ QObject -> DirWalker -> HashDirWalker
                 |           |->LoadAndCheckHash
                 |
                 |-----> ZipWalkChecker
+                |-----> EmptyDirFinder
 
 QAbstractTableModel -> BaseTableModel -> DuplicatesTableModel
                             |
                             |----------> FileListTableModel
+                            |----------> EmptyFolderTableModel
 
 QDialog -> FiltersDialog
 
