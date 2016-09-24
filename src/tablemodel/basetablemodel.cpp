@@ -68,6 +68,10 @@ void BaseTableModel::loadFromFileFunc(const QString &fileName)
     QFile file(fileName);
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
+        if(file.size() == 0) {
+            file.close();
+            return;
+        }
         QTextStream in(&file);
         in.setCodec("UTF-8");
         if(items.isNull()) {
@@ -85,6 +89,10 @@ void BaseTableModel::loadFromFileFunc(const QString &fileName)
         QStringList lineList;
         while(!in.atEnd()) {
             lineList = in.readLine().split(delimeter);
+            if(lineList.size() < 4) {
+                file.close();
+                return;
+            }
             HashFileInfoStruct strct;
             strct.groupID = lineList[0].toUInt();
             strct.size = lineList[1].toLong();
@@ -93,6 +101,7 @@ void BaseTableModel::loadFromFileFunc(const QString &fileName)
             strct.checked = false;
             list->append(strct);
         }
+        file.close();
         beginInsertRows(QModelIndex(),0,newItemsCount);
         insertRows(0, newItemsCount);
         endInsertRows();
