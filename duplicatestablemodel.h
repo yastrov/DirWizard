@@ -4,6 +4,10 @@
 #include "basetablemodel.h"
 #include <QFontMetrics>
 #include <QStyleOptionComboBox>
+#include <QApplication>
+#ifdef MYPREFIX_DEBUG
+#include <QDebug>
+#endif
 
 class DuplicatesTableModel : public BaseTableModel
 {

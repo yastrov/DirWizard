@@ -12,7 +12,7 @@ class DirWalker : public QObject
 {
     Q_OBJECT
 public:
-    explicit DirWalker(QObject *parent = 0);
+    explicit DirWalker(QObject *parent = nullptr);
     virtual ~DirWalker();
     void setQDir(const QDir &rootDir);
     void setQDir(const QList<QDir> &rootDirs);

@@ -50,7 +50,11 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 #endif
+#include "duplicatestablemodel.h"
+#include "filelisttablemodel.h"
 #include "filtersdialog.h"
+#include "emptydirfinder.h"
+#include "emptyfoldertablemodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -103,7 +107,7 @@ private:
     QWinTaskbarProgress *progressWinExtra;
 #endif
     // ComboBox
-    void addItemToComboBox(QString text, int data);
+    void addItemToComboBox(const QString &text, int data);
     void initHashComboBoxWidget();
     QCryptographicHash::Algorithm getCurrentHashAlgo();
     // ListWidget

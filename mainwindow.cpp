@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "duplicatestablemodel.h"
-#include "filelisttablemodel.h"
 #include <limits>
 
 namespace CONSTANTS {
@@ -146,7 +144,7 @@ void MainWindow::initHashComboBoxWidget()
     addItemToComboBox(QString("Sha3_512"), QCryptographicHash::Sha3_512);
 }
 
-void MainWindow::addItemToComboBox(QString text, int data)
+void MainWindow::addItemToComboBox(const QString &text, int data)
 {
     ui->comboBox->addItem(text, QVariant(data));
 }
@@ -206,6 +204,9 @@ void MainWindow::startDuplicateSearchInBackground()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "startDuplicateSearchInBackground";
 #endif
+    if (thread->isRunning()) {
+        thread->wait();
+    }
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !thread->isRunning())
     {
@@ -232,6 +233,7 @@ void MainWindow::startDuplicateSearchInBackground()
 #endif
         thread->start();
     }
+    setUiPushButtonsEnabled(false);
 }
 
 // End
@@ -260,6 +262,9 @@ void MainWindow::startComparingFoldersInBackground()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "startComparingFoldersInBackground";
 #endif
+    if (thread->isRunning()) {
+        thread->wait();
+    }
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !thread->isRunning())
     {
@@ -282,6 +287,7 @@ void MainWindow::startComparingFoldersInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        setUiPushButtonsEnabled(false);
     }
 }
 // END
@@ -328,12 +334,7 @@ void MainWindow::on_pushButton_Duplicate_Search_clicked()
     qDebug() << __PRETTY_FUNCTION__ << "\n";
     qDebug() << "QThread: " << thread << "\n";
 #endif
-    if (thread->isRunning()) {
-        thread->wait();
-    }
-    //ClearItemsResultStore();
     startDuplicateSearchInBackground();
-    setUiPushButtonsEnabled(!thread->isRunning());
 }
 
 /*
@@ -391,12 +392,7 @@ void MainWindow::on_pushButton_Compare_Folders_clicked()
     qDebug() << __PRETTY_FUNCTION__ << "\n";
     qDebug() << "QThread: " << thread << "\n";
 #endif
-    if (thread->isRunning()) {
-        thread->wait();
-    }
-    //ClearItemsResultStore();
     startComparingFoldersInBackground();
-    setUiPushButtonsEnabled(!thread->isRunning());
 }
 
 void MainWindow::on_pushButton_Save_From_Table_clicked()
@@ -439,6 +435,9 @@ void MainWindow::startCalcHashesInBackground()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "startCalcHashesInBackground";
 #endif
+    if (thread->isRunning()) {
+        thread->wait();
+    }
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !thread->isRunning())
     {
@@ -458,6 +457,7 @@ void MainWindow::startCalcHashesInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        setUiPushButtonsEnabled(false);
     }
 }
 
@@ -467,11 +467,7 @@ void MainWindow::on_pushButton_Calc_Hashes_clicked()
     qDebug() << __PRETTY_FUNCTION__ << "\n";
     qDebug() << "QThread: " << thread << "\n";
 #endif
-    if (thread->isRunning()) {
-        thread->wait();
-    }
     startCalcHashesInBackground();
-    setUiPushButtonsEnabled(!thread->isRunning());
 }
 
 /*
@@ -483,11 +479,7 @@ void MainWindow::on_pushButton_Check_Hashes_clicked()
     qDebug() << __PRETTY_FUNCTION__ << "\n";
     qDebug() << "QThread: " << thread << "\n";
 #endif
-    if (thread->isRunning()) {
-        thread->wait();
-    }
     startCheckHashesInBackground();
-    setUiPushButtonsEnabled(!thread->isRunning());
 }
 
 void MainWindow::startCheckHashesInBackground()
@@ -495,6 +487,9 @@ void MainWindow::startCheckHashesInBackground()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "startCheckHashesInBackground";
 #endif
+    if (thread->isRunning()) {
+        thread->wait();
+    }
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !thread->isRunning())
     {
@@ -515,6 +510,7 @@ void MainWindow::startCheckHashesInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        setUiPushButtonsEnabled(false);
     }
 }
 
@@ -539,7 +535,6 @@ void MainWindow::on_pushButton_Check_Zip_clicked()
     qDebug() << "MainWindow::on_pushButton_Check_Zip_clicked";
 #endif
     startCheckZipsInBackground();
-    setUiPushButtonsEnabled(!thread->isRunning());
 }
 
 void MainWindow::startCheckZipsInBackground()
@@ -547,6 +542,9 @@ void MainWindow::startCheckZipsInBackground()
 #ifdef MYPREFIX_DEBUG
     qDebug() << "MainWindow::startCheckZipsInBackground";
 #endif
+    if (thread->isRunning()) {
+        thread->wait();
+    }
     QList<QDir> dirs = getElementsFromDirsListWidget();
     if(!dirs.isEmpty() && !thread->isRunning())
     {
@@ -565,6 +563,7 @@ void MainWindow::startCheckZipsInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        setUiPushButtonsEnabled(false);
     }
 }
 

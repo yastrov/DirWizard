@@ -19,7 +19,7 @@ class FiltersDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit FiltersDialog(QWidget *parent = 0);
+    explicit FiltersDialog(QWidget *parent = nullptr);
     virtual ~FiltersDialog();
     QStringList getActiveFilters() const;
     QStringList getNonActiveFilters() const;

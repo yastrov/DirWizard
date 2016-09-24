@@ -1,8 +1,4 @@
 #include "duplicatestablemodel.h"
-#include <QApplication>
-#ifdef MYPREFIX_DEBUG
-#include <QDebug>
-#endif
 
 namespace {
 const int MaxColumns = 5;
