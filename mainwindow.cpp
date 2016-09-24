@@ -232,8 +232,8 @@ void MainWindow::startDuplicateSearchInBackground()
         qDebug() << "startThread";
 #endif
         thread->start();
+        setUiPushButtonsEnabled(false);
     }
-    setUiPushButtonsEnabled(false);
 }
 
 // End
