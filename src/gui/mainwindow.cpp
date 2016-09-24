@@ -90,6 +90,48 @@ MainWindow::MainWindow(QWidget *parent) :
         }
         qobject_cast<BaseTableModel*>(ui->tableView->model())->unselectAll();
     });
+    connect(ui->actionFind_Empty_folders, &QAction::triggered, this, [this](){
+        if (thread->isRunning()) {
+            thread->wait();
+        }
+        //ClearItemsResultStore();
+        QList<QDir> dirs = getElementsFromDirsListWidget();
+        if(!dirs.isEmpty() && !thread->isRunning())
+        {
+            EmptyDirFinder *worker = new EmptyDirFinder(nullptr);
+            worker->setQDir(dirs);
+            if(useFilters()) worker->setFilters(fileFilters);
+            callBeforeBackgrowndWorkerStarted();
+            worker->moveToThread(thread);
+            //connect(thread, SIGNAL(started()), worker, SLOT(process()));
+            QObject::connect(thread, &QThread::started, worker, &EmptyDirFinder::process);
+            //connect(worker, SIGNAL(finished()), thread, SLOT(quit()));
+            QObject::connect(worker, &EmptyDirFinder::finished, thread, &QThread::quit);
+            QObject::connect(thread, &QThread::finished, worker, &EmptyDirFinder::deleteLater);//From Off documentation
+            QObject::connect(worker, &EmptyDirFinder::finished, this, &MainWindow::finishedThread);
+            QObject::connect(worker, &EmptyDirFinder::finishedWData, this, [this](QSharedPtrListHFIS itemsPtr){
+#ifdef MYPREFIX_DEBUG
+                qDebug() << "&EmptyDirFinder::finishedWData received data";
+#endif
+                QTableView *const table = ui->tableView;
+                if(table->model() != nullptr)
+                    table->model()->deleteLater();
+                EmptyFolderTableModel *model = new EmptyFolderTableModel(itemsPtr, this);
+                table->setModel(model);
+                table->setSortingEnabled(true);
+                table->sortByColumn(EmptyFolderTableModel::Column::fileName);
+                table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+                table->resizeColumnsToContents();
+            });
+            connect(worker, &EmptyDirFinder::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
+            connect(worker, &EmptyDirFinder::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
+#ifdef MYPREFIX_DEBUG
+            qDebug() << "startThread";
+#endif
+            thread->start();
+            setUiPushButtonsEnabled(false);
+        }
+    });
 }
 
 void MainWindow::showEvent(QShowEvent *e)
@@ -237,7 +279,7 @@ void MainWindow::startDuplicateSearchInBackground()
         QObject::connect(worker, &DuplicateFinder::finishedWData, this, &MainWindow::showDuplicatesInTable);
 
         connect(worker, &DuplicateFinder::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
-        connect(worker, &DuplicateFinder::currentProcessedFiles, this, &MainWindow::CurrentProcessedFilesForProgressReceived);
+        connect(worker, &DuplicateFinder::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -292,7 +334,7 @@ void MainWindow::startComparingFoldersInBackground()
         //connect(worker, SIGNAL(finishedWData(QList<HashFileInfoStruct> *)), this, SLOT(compareFoldersComplete(QList<HashFileInfoStruct> *)));
         QObject::connect(worker, &DirComparator::finishedWData, this, &MainWindow::showUniqFilesInTable);
         connect(worker, &DirComparator::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
-        connect(worker, &DirComparator::currentProcessedFiles, this, &MainWindow::CurrentProcessedFilesForProgressReceived);
+        connect(worker, &DirComparator::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -448,7 +490,7 @@ void MainWindow::startCalcHashesInBackground()
         QObject::connect(thread, &QThread::finished, worker, &CalcAndSaveHash::deleteLater);//From Off documentation
         QObject::connect(worker, &CalcAndSaveHash::finished, this, &MainWindow::finishedThread);
         connect(worker, &CalcAndSaveHash::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
-        connect(worker, &CalcAndSaveHash::currentProcessedFiles, this, &MainWindow::CurrentProcessedFilesForProgressReceived);
+        connect(worker, &CalcAndSaveHash::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -501,7 +543,7 @@ void MainWindow::startCheckHashesInBackground()
         QObject::connect(worker, &LoadAndCheckHash::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &LoadAndCheckHash::finishedWData, this, &MainWindow::showInvalidHashFilesInTable);
         connect(worker, &LoadAndCheckHash::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
-        connect(worker, &LoadAndCheckHash::currentProcessedFiles, this, &MainWindow::CurrentProcessedFilesForProgressReceived);
+        connect(worker, &LoadAndCheckHash::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -554,7 +596,7 @@ void MainWindow::startCheckZipsInBackground()
         QObject::connect(worker, &ZipWalkChecker::finished, this, &MainWindow::finishedThread);
         QObject::connect(worker, &ZipWalkChecker::finishedWData, this, &MainWindow::showInvalidZipInTable);
         connect(worker, &ZipWalkChecker::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
-        connect(worker, &ZipWalkChecker::currentProcessedFiles, this, &MainWindow::CurrentProcessedFilesForProgressReceived);
+        connect(worker, &ZipWalkChecker::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
 #ifdef MYPREFIX_DEBUG
         qDebug() << "startThread";
 #endif
@@ -690,7 +732,7 @@ void MainWindow::maximumFilesFoProgressReceived(quint64 count)
     progressWinExtra->setMaximum(count);
 }
 
-void MainWindow::CurrentProcessedFilesForProgressReceived(quint64 count)
+void MainWindow::currentProcessedFilesForProgressReceived(quint64 count)
 {
     if(count > CONSTANTS::MAX_INT) return;
     ui->progressBar->setValue(count);

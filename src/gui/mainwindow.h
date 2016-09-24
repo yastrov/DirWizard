@@ -32,8 +32,10 @@
 #include "../worker/calcandsavehash.h"
 #include "../worker/loadandcheckhash.h"
 #include "../worker/zipwalkchecker.h"
+#include "../worker/emptydirfinder.h"
 #include "../tablemodel/duplicatestablemodel.h"
 #include "../tablemodel/filelisttablemodel.h"
+#include "../tablemodel/emptyfoldertablemodel.h"
 #include "dialog/filtersdialog.h"
 #include <QThread>
 #include <QComboBox>
@@ -91,7 +93,7 @@ private slots:
     void on_setFiltersBtn_clicked();
     void maximumFilesFoProgressReceived(quint64 count);
     // Progress Bars
-    void CurrentProcessedFilesForProgressReceived(quint64 count);
+    void currentProcessedFilesForProgressReceived(quint64 count);
 
 private:
     Ui::MainWindow *ui;

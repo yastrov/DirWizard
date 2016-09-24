@@ -58,6 +58,8 @@ SOURCES += src/main.cpp\
     src/tablemodel/basetablemodel.cpp \
     src/tablemodel/duplicatestablemodel.cpp \
     src/tablemodel/filelisttablemodel.cpp \
+    src/tablemodel/emptyfoldertablemodel.cpp \
+    src/worker/emptydirfinder.cpp \
     src/gui/dialog/filtersdialog.cpp
 
 HEADERS  += src/gui/mainwindow.h \
@@ -72,6 +74,8 @@ HEADERS  += src/gui/mainwindow.h \
     src/tablemodel/basetablemodel.h \
     src/tablemodel/duplicatestablemodel.h \
     src/tablemodel/filelisttablemodel.h \
+    src/tablemodel/emptyfoldertablemodel.h \
+    src/worker/emptydirfinder.h \
     src/gui/dialog/filtersdialog.h \
     src/constants.h
 
