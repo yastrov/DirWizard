@@ -25,57 +25,57 @@ CONFIG += c++11
 
 win32: {
     INCLUDEPATH += C:/Qt/zlib-1.2.8
-    INCLUDEPATH += C:/Qt/quazip-0.7.1
+    INCLUDEPATH += C:/Qt/quazip-0.7.2
 }
 
 win32-g++: {
     LIBS += -LC:/Qt/zlib-1.2.8 -lz
-    LIBS += -LC:/Qt/quazip-0.7.1/quazip/release -lquazip
+    LIBS += -LC:/Qt/quazip-0.7.2/quazip/release -lquazip
 }
 
 win32-msvc: {
     LIBS += C:/Qt/zlib-1.2.8/zlib.lib
-    LIBS += C:/Qt/quazip-0.7.1/quazip/release/quazip.lib
+    LIBS += C:/Qt/quazip-0.7.2/quazip/release/quazip.lib
 }
 
 unix: {
     LIBS+=-L/usr/local/zlib/lib -lz
     INCLUDEPATH+=/usr/local/zlib/include
 
-    LIBS += -L/usr/local/quazip-0.7.1/quazip/release -lquazip
-    INCLUDEPATH += /usr/local/quazip-0.7.1
+    LIBS += -L/usr/local/quazip-0.7.2/quazip/release -lquazip
+    INCLUDEPATH += /usr/local/quazip-0.7.2
 }
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    dirwalker.cpp \
-    hashdirwalker.cpp \
-    duplicatefinder.cpp \
-    dircomparator.cpp \
-    calcandsavehash.cpp \
-    loadandcheckhash.cpp \
-    zipwalkchecker.cpp \
-    basetablemodel.cpp \
-    duplicatestablemodel.cpp \
-    filelisttablemodel.cpp \
-    filtersdialog.cpp
+SOURCES += src/main.cpp\
+        src/gui/mainwindow.cpp \
+    src/worker/dirwalker.cpp \
+    src/worker/hashdirwalker.cpp \
+    src/worker/duplicatefinder.cpp \
+    src/worker/dircomparator.cpp \
+    src/worker/calcandsavehash.cpp \
+    src/worker/loadandcheckhash.cpp \
+    src/worker/zipwalkchecker.cpp \
+    src/tablemodel/basetablemodel.cpp \
+    src/tablemodel/duplicatestablemodel.cpp \
+    src/tablemodel/filelisttablemodel.cpp \
+    src/gui/dialog/filtersdialog.cpp
 
-HEADERS  += mainwindow.h \
-    dirwalker.h \
-    hashdirwalker.h \
-    duplicatefinder.h \
-    hashfileinfostruct.h \
-    dircomparator.h \
-    calcandsavehash.h \
-    loadandcheckhash.h \
-    zipwalkchecker.h \
-    basetablemodel.h \
-    duplicatestablemodel.h \
-    filelisttablemodel.h \
-    filtersdialog.h \
-    constants.h
+HEADERS  += src/gui/mainwindow.h \
+    src/worker/dirwalker.h \
+    src/worker/hashdirwalker.h \
+    src/worker/duplicatefinder.h \
+    src/hashfileinfostruct.h \
+    src/worker/dircomparator.h \
+    src/worker/calcandsavehash.h \
+    src/worker/loadandcheckhash.h \
+    src/worker/zipwalkchecker.h \
+    src/tablemodel/basetablemodel.h \
+    src/tablemodel/duplicatestablemodel.h \
+    src/tablemodel/filelisttablemodel.h \
+    src/gui/dialog/filtersdialog.h \
+    src/constants.h
 
-FORMS    += mainwindow.ui
+FORMS    += src/gui/mainwindow.ui
 
 VERSION = 0.0.0.1
 #QMAKE_TARGET_COMPANY = company

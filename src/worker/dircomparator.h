@@ -12,13 +12,13 @@
 #include <QVectorIterator>
 #include <QFileInfo>
 #include <QCryptographicHash>
-#include <hashfileinfostruct.h>
-#include <hashdirwalker.h>
+#include "../hashfileinfostruct.h"
+#include "hashdirwalker.h"
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
 #include <QThread>
-#include "constants.h"
+#include "../constants.h"
 
 #define SizeForInnerVector 0
 

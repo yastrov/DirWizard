@@ -454,6 +454,8 @@
     <addaction name="separator"/>
     <addaction name="actionCalc_Hashes"/>
     <addaction name="actionCheck_Hashes"/>
+    <addaction name="separator"/>
+    <addaction name="actionFind_Empty_folders"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -486,6 +488,9 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
    <property name="text">
+    <string>About</string>
+   </property>
+   <property name="iconText">
     <string>About</string>
    </property>
    <property name="statusTip">
@@ -627,6 +632,14 @@
    </property>
    <property name="statusTip">
     <string>Mark files in concrete folder as checked.</string>
+   </property>
+  </action>
+  <action name="actionFind_Empty_folders">
+   <property name="text">
+    <string>Find Empty folders</string>
+   </property>
+   <property name="statusTip">
+    <string>Find Empty folders</string>
    </property>
   </action>
  </widget>

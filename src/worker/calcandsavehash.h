@@ -5,9 +5,9 @@
 #endif
 #include <QCryptographicHash>
 #include "hashdirwalker.h"
-#include "hashfileinfostruct.h"
+#include "../hashfileinfostruct.h"
 #include <QThread>
-#include "constants.h"
+#include "../constants.h"
 
 class CalcAndSaveHash : public HashDirWalker
 {

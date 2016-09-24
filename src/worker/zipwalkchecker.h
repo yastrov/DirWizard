@@ -2,7 +2,7 @@
 #define ZIPWALKCHECKER_H
 #include <QObject>
 #include "dirwalker.h"
-#include "hashfileinfostruct.h"
+#include "../hashfileinfostruct.h"
 #include <quazip/quazip.h>
 #include <quazip/quazipfile.h>
 #include <quazip/quazipfileinfo.h>
@@ -10,7 +10,7 @@
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
-#include "constants.h"
+#include "../constants.h"
 #include <QLinkedList>
 
 class ZipWalkChecker : public DirWalker

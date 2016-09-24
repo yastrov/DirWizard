@@ -2,7 +2,7 @@
 #define BASETABLEMODEL_H
 #include <QObject>
 #include <QAbstractTableModel>
-#include "hashfileinfostruct.h"
+#include "../hashfileinfostruct.h"
 #include <QFile>
 #include <QTextStream>
 #include <QDir>

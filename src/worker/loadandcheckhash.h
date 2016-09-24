@@ -1,12 +1,12 @@
 #ifndef LOADANDCHECKHASH_H
 #define LOADANDCHECKHASH_H
 #include "hashdirwalker.h"
-#include "hashfileinfostruct.h"
+#include "../hashfileinfostruct.h"
 #include <QObject>
 #include <QCryptographicHash>
 #include <QDir>
 #include <QThread>
-#include "constants.h"
+#include "../constants.h"
 
 class LoadAndCheckHash : public HashDirWalker
 {
