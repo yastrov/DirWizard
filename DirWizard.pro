@@ -24,11 +24,12 @@ DEFINES *= QT_USE_QSTRINGBUILDER
 CONFIG += c++11
 
 win32: {
-    INCLUDEPATH += C:/Qt/zlib-1.2.8
-    INCLUDEPATH += C:/Qt/quazip-0.7.2
 }
 
 win32-g++: {
+    DEFINES += USE_WIN_EXTRAS
+    INCLUDEPATH += C:/Qt/zlib-1.2.8
+    INCLUDEPATH += C:/Qt/quazip-0.7.2
     LIBS += -LC:/Qt/zlib-1.2.8 -lz
     LIBS += -LC:/Qt/quazip-0.7.2/quazip/release -lquazip
 }

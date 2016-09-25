@@ -50,7 +50,7 @@
 #include <QDragEnterEvent>
 
 #include <QProcess>
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 #endif
@@ -100,7 +100,7 @@ private:
     QString dirNameForFolderDialog;
     QThread* thread;
     QStringList fileFilters;
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     QWinTaskbarButton *buttonWinExtra;
     QWinTaskbarProgress *progressWinExtra;
 #endif

@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     // Progress Bar
     ui->progressBar->setVisible(false);
     // Win Extras
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     buttonWinExtra = new QWinTaskbarButton(this);
     buttonWinExtra->setWindow(windowHandle());
 //    buttonWinExtra->setOverlayIcon(QIcon(":/loading.png"));
@@ -136,7 +136,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::showEvent(QShowEvent *e)
 {
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     buttonWinExtra->setWindow(windowHandle());
 #endif
 
@@ -241,7 +241,7 @@ void MainWindow::callBeforeBackgrowndWorkerStarted()
     ui->progressBar->setVisible(true);
     ui->progressBar->setValue(ui->progressBar->minimum());
     ui->progressBar->setStatusTip("");
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     if(progressWinExtra != nullptr) {
         progressWinExtra->setMinimum(0);
         progressWinExtra->setVisible(true);
@@ -412,7 +412,7 @@ void MainWindow::on_pushButton_Cancel_clicked()
 
 void MainWindow::finishedThread()
 {
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     if(progressWinExtra != nullptr)
         progressWinExtra->setVisible(false);
 #endif
@@ -729,14 +729,16 @@ void MainWindow::maximumFilesFoProgressReceived(quint64 count)
 {
     if(count > CONSTANTS::MAX_INT) return;
     ui->progressBar->setMaximum(count);
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     progressWinExtra->setMaximum(count);
+#endif
 }
 
 void MainWindow::currentProcessedFilesForProgressReceived(quint64 count)
 {
     if(count > CONSTANTS::MAX_INT) return;
     ui->progressBar->setValue(count);
-#ifdef Q_OS_WIN32
+#if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     progressWinExtra->setValue(count);
 #endif
     const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
