@@ -5,7 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT += winextras
+
+win32: {
+    QT += winextras
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -23,9 +26,6 @@ release {
 DEFINES *= QT_USE_QSTRINGBUILDER
 CONFIG += c++11
 
-win32: {
-}
-
 win32-g++: {
     DEFINES += USE_WIN_EXTRAS
     INCLUDEPATH += C:/Qt/zlib-1.2.8
@@ -40,11 +40,11 @@ win32-msvc: {
 }
 
 unix: {
-    LIBS+=-L/usr/local/zlib/lib -lz
-    INCLUDEPATH+=/usr/local/zlib/include
+    CONFIG += link_pkgconfig
+    PKGCONFIG += zlib
 
-    LIBS += -L/usr/local/quazip-0.7.2/quazip/release -lquazip
-    INCLUDEPATH += /usr/local/quazip-0.7.2
+    LIBS += -L/usr/lib -lquazip5
+    INCLUDEPATH += /usr/include/quazip5
 }
 
 SOURCES += src/main.cpp\
