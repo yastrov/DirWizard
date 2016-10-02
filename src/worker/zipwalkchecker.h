@@ -3,10 +3,19 @@
 #include <QObject>
 #include "dirwalker.h"
 #include "../hashfileinfostruct.h"
+
+#ifdef Q_OS_WIN
 #include <quazip/quazip.h>
 #include <quazip/quazipfile.h>
 #include <quazip/quazipfileinfo.h>
 #include <quazip/quacrc32.h>
+#else
+#include <quazip.h>
+#include <quazipfile.h>
+#include <quazipfileinfo.h>
+#include <quacrc32.h>
+#endif
+
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
