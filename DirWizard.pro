@@ -5,7 +5,10 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT += winextras
+
+win32: {
+    QT += winextras
+}
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,9 +25,6 @@ release {
 
 DEFINES *= QT_USE_QSTRINGBUILDER
 CONFIG += c++11
-
-win32: {
-}
 
 win32-g++: {
     DEFINES += USE_WIN_EXTRAS
