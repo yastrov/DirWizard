@@ -43,8 +43,8 @@ unix: {
     CONFIG += link_pkgconfig
     PKGCONFIG += zlib
 
-    LIBS += -L/usr/local/quazip-0.7.2/quazip/release -lquazip
-    INCLUDEPATH += /usr/local/quazip-0.7.2
+    LIBS += -L/usr/lib -lquazip5
+    INCLUDEPATH += /usr/include/quazip5
 }
 
 SOURCES += src/main.cpp\
