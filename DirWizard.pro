@@ -40,8 +40,8 @@ win32-msvc: {
 }
 
 unix: {
-    LIBS+=-L/usr/local/zlib/lib -lz
-    INCLUDEPATH+=/usr/local/zlib/include
+    CONFIG += link_pkgconfig
+    PKGCONFIG += zlib
 
     LIBS += -L/usr/local/quazip-0.7.2/quazip/release -lquazip
     INCLUDEPATH += /usr/local/quazip-0.7.2
