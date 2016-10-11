@@ -437,6 +437,7 @@
      <string>About</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionAbout_Qt"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
     <property name="font">
@@ -640,6 +641,11 @@
    </property>
    <property name="statusTip">
     <string>Find Empty folders</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

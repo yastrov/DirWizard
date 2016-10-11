@@ -132,6 +132,7 @@ MainWindow::MainWindow(QWidget *parent) :
             setUiPushButtonsEnabled(false);
         }
     });
+    connect(ui->actionAbout_Qt, &QAction::triggered, this, [this](){ QMessageBox::aboutQt(this); });
 }
 
 void MainWindow::showEvent(QShowEvent *e)
