@@ -21,8 +21,8 @@ No many programs for find duplicates files, and and even fewer programs to find 
 In Windows 10 start with admin rights, if you want to remove some things.
 
 ## Technology
--  QT 5 with QThreads, signals and slots, QTableWidget, QComboBox Widget, QListWidget.
--  QT Creator
+-  Qt 5 with QThreads, signals and slots, QTableWidget, QComboBox Widget, QListWidget.
+-  Qt Creator
 -  c++ with some features from c++11
 -  qt-opensource-windows-x86-mingw530-5.7.0
 
@@ -47,21 +47,21 @@ QAbstractTableModel -> BaseTableModel -> DuplicatesTableModel
 QDialog -> FiltersDialog
 
 ## Windows build instruction
-I used MinGW 4.9.2 32 bit version. (From qt-opensource-windows-x86-mingw492-5.5.0 package.)  
+I used MinGW 5.3.0 32 bit version. (From qt-opensource-windows-x86-mingw492-5.7.0 package.)  
 Download zlib (for example [zlib128.zip](http://zlib.net/zlib128.zip) ) and extract to C:\Qt\zlib-1.2.8 :
 
 Bat script:
     setlocal
-    set PATH=C:\Qt\Qt5.5.0\Tools\mingw492_32\bin\;%PATH%
+    set PATH=C:\Qt\Qt5.7.0\Tools\mingw53_32\bin\;%PATH%
     cd C:\Qt\zlib-1.2.8
     mingw32-make -f win32/Makefile.gcc
     endlocal
 
-Download [QuaZIP](http://sourceforge.net/projects/quazip/) and unpack to C:\Qt\quazip-0.7.1 .
+Download [QuaZIP](http://sourceforge.net/projects/quazip/) and unpack to C:\Qt\quazip-0.7.2 .
 Bat script:
     setlocal
-    set PATH=C:\Qt\Qt5.5.0\Tools\mingw492_32\bin\;C:\Qt\Qt5.5.0\5.5\mingw492_32\bin;%PATH%
-    cd C:\Qt\quazip-0.7.1
+    set PATH=C:\Qt\Qt5.7.0\Tools\mingw53_32\bin\;C:\Qt\Qt5.7.0\5.7\mingw53_32\bin;%PATH%
+    cd C:\Qt\quazip-0.7.2
     qmake "CONFIG+=release" "INCLUDEPATH+=C:/Qt/zlib-1.2.8" "LIBS+=-LC:/Qt/zlib-1.2.8 -lz"
     mingw32-make
     qmake "CONFIG+=debug" "INCLUDEPATH+=C:/Qt/zlib-1.2.8" "LIBS+=-LC:/Qt/zlib-1.2.8 -lz"
