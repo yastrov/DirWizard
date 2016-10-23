@@ -13,19 +13,20 @@ MainWindow::MainWindow(QWidget *parent) :
     thread(new QThread(this))
 {
     ui->setupUi(this);
+    setWindowTitle(qApp->applicationName());
     initDirsListWidget();
     initHashComboBoxWidget();
     initTableWidget();
     QObject::connect(ui->actionAbout, &QAction::triggered, this, [this](bool checked){
         Q_UNUSED(checked)
         QMessageBox::about(this,
-                           tr("About DirWizard"),
-                           tr("<h2>DirWizard</h2>"
+                           tr("About %1").arg(qApp->applicationName()),
+                           tr("<h2>%1</h2>"
                               "<p>Written by Yuriy (Yuri) Astrov<br/>"
-                              "Based on QT 5<br/>"
+                              "Based on Qt 5<br/>"
                               "Licensed by GPLv2<br/>"
-                              "Version: %1<br/>"
-                              "URL: <a href='%2'>%2</a><p>").arg(APP_VERSION, APP_URL));
+                              "Version: %2<br/>"
+                              "URL: <a href='%3'>%3</a><p>").arg(qApp->applicationName(), APP_VERSION, APP_URL));
     });
 
     // Drag and Drop
@@ -675,6 +676,18 @@ void MainWindow::dropEvent(QDropEvent *e)
     }
 }
 // Drag Drop END
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    QMainWindow::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
 
 // Custom popup menu for Table View
 void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)

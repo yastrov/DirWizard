@@ -593,6 +593,9 @@
    <property name="statusTip">
     <string>Open saved duplicates file list.</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+O</string>
+   </property>
   </action>
   <action name="actionSaveAs">
    <property name="text">
@@ -603,6 +606,9 @@
    </property>
    <property name="statusTip">
     <string>Save results from table to file.</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+S</string>
    </property>
   </action>
   <action name="actionClear_all_flags">

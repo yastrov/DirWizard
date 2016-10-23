@@ -67,7 +67,7 @@ void FiltersDialog::initGUI()
       lineEdit->setToolTip(tr("You can type new filter here!"));
       myLayout->addWidget(lineEdit, 5, 3);
 
-      QPushButton *okBtn = new QPushButton(tr("Ok"));
+      QPushButton *okBtn = new QPushButton(tr("&Ok"));
       QPushButton *cancelBtn = new QPushButton(tr("Cancel"));
       myLayout->addWidget(okBtn, 6, 3);
       myLayout->addWidget(cancelBtn, 6, 4);
@@ -138,9 +138,10 @@ void FiltersDialog::setNonActiveFilters(const QStringList& list)
 void FiltersDialog::okPressed()
 {
     emit activeFiltersSig(getActiveFilters());
-    emit done(QDialog::Accepted);
+    accept();
 }
+
 void FiltersDialog::cancelPressed()
 {
-    emit done(QDialog::Rejected);
+    reject();
 }

@@ -136,7 +136,8 @@ private:
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *e);
+    void showEvent(QShowEvent *e) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *e) Q_DECL_OVERRIDE;
 };
 
 #endif // MAINWINDOW_H

@@ -78,9 +78,12 @@ HEADERS  += src/gui/mainwindow.h \
     src/tablemodel/emptyfoldertablemodel.h \
     src/worker/emptydirfinder.h \
     src/gui/dialog/filtersdialog.h \
-    src/constants.h
+    src/constants.h \
+    src/helper.h
 
 FORMS    += src/gui/mainwindow.ui
+
+TRANSLATIONS += translations/dirwizard_ru.ts
 
 VERSION = 0.0.0.1
 #QMAKE_TARGET_COMPANY = company

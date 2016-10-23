@@ -80,11 +80,12 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
                    fontMetrics.height());
         return qApp->style()->sizeFromContents(QStyle::CT_ComboBox,
                                                &option, size);
-    }
+    } static int i=0;
     case Qt::DisplayRole: {
         switch (index.column()) {
         case Column::checked: return QVariant();
-        case Column::fileName: return getFileNameShort(item.fileName);
+        case Column::fileName:  qDebug() <<++i<< "DisplayRole getFileNameShort(item.fileName)";
+            return getFileNameShort(item.fileName);
         case Column::hash: return item.hash;
         case Column::groupId: return item.groupID;
         case Column::size: return item.size;
