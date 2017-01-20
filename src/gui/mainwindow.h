@@ -97,6 +97,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    void initOnceGui();
+    void initOnceConnectSlots();
     QString dirNameForFolderDialog;
     QThread* thread;
     QStringList fileFilters;

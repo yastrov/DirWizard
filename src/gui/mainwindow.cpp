@@ -14,21 +14,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle(qApp->applicationName());
+    initOnceGui();
+    initOnceConnectSlots();
+}
+
+void MainWindow::initOnceGui()
+{
     initDirsListWidget();
     initHashComboBoxWidget();
     initTableWidget();
-    QObject::connect(ui->actionAbout, &QAction::triggered, this, [this](bool checked){
-        Q_UNUSED(checked)
-        QMessageBox::about(this,
-                           tr("About %1").arg(qApp->applicationName()),
-                           tr("<h2>%1</h2>"
-                              "<p>Written by Yuriy (Yuri) Astrov<br/>"
-                              "Based on Qt 5<br/>"
-                              "Licensed by GPLv2<br/>"
-                              "Version: %2<br/>"
-                              "URL: <a href='%3'>%3</a><p>").arg(qApp->applicationName(), APP_VERSION, APP_URL));
-    });
-
     // Drag and Drop
     setAcceptDrops(true);
     // Progress Bar
@@ -41,6 +35,21 @@ MainWindow::MainWindow(QWidget *parent) :
     progressWinExtra = buttonWinExtra->progress();
     progressWinExtra->setVisible(false);
 #endif
+}
+
+void MainWindow::initOnceConnectSlots()
+{
+    QObject::connect(ui->actionAbout, &QAction::triggered, this, [this](bool checked){
+        Q_UNUSED(checked)
+        QMessageBox::about(this,
+                           tr("About %1").arg(qApp->applicationName()),
+                           tr("<h2>%1</h2>"
+                              "<p>Written by Yuriy (Yuri) Astrov<br/>"
+                              "Based on Qt 5<br/>"
+                              "Licensed by GPLv2<br/>"
+                              "Version: %2<br/>"
+                              "URL: <a href='%3'>%3</a><p>").arg(qApp->applicationName(), APP_VERSION, APP_URL));
+    });
     connect(ui->actionStart_Dupl_Find, &QAction::triggered, this, &MainWindow::on_pushButton_Duplicate_Search_clicked);
     connect(ui->actionCompare_Folders, &QAction::triggered, this, &MainWindow::on_pushButton_Compare_Folders_clicked);
     connect(ui->actionCheck_ZIP, &QAction::triggered, this, &MainWindow::on_pushButton_Check_Zip_clicked);
