@@ -497,11 +497,6 @@
    <property name="statusTip">
     <string>About this program.</string>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionStart_Dupl_Find">
    <property name="text">
@@ -512,11 +507,6 @@
    </property>
    <property name="statusTip">
     <string>Start duplicate files search</string>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionCompare_Folders">
@@ -529,11 +519,6 @@
    <property name="statusTip">
     <string>Compare folders and find uniq files.</string>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionCheck_ZIP">
    <property name="text">
@@ -544,11 +529,6 @@
    </property>
    <property name="statusTip">
     <string>Check ZIP archives. Show invalid or bad ZIP archives.</string>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionCheck_Hashes">
@@ -561,11 +541,6 @@
    <property name="statusTip">
     <string>Check files in folders by hashes.</string>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
   </action>
   <action name="actionCalc_Hashes">
    <property name="text">
@@ -576,11 +551,6 @@
    </property>
    <property name="statusTip">
     <string>Calc hash sum for each file in folders and  and save to disk.</string>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>12</pointsize>
-    </font>
    </property>
   </action>
   <action name="actionOpen">
