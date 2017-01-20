@@ -374,6 +374,13 @@ void MainWindow::on_pushButton_Remove_Checked_clicked()
 #ifdef MYPREFIX_DEBUG
     qDebug() << ":on_pushButton_Remove_Checked_clicked";
 #endif
+    QMessageBox::StandardButton reply = QMessageBox::question(this,
+                                                              qApp->applicationName(),
+                                                              tr("Are you sure to remove checked items?"),
+                                                              QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::No) {
+        return;
+    }
     if(ui->tableView->model()!=nullptr)
     qobject_cast<BaseTableModel*>(ui->tableView->model())->removeCheckedFunc();
 }
