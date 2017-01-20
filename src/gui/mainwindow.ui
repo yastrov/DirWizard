@@ -428,11 +428,6 @@
     </rect>
    </property>
    <widget class="QMenu" name="menuAbout">
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
     <property name="title">
      <string>About</string>
     </property>
@@ -440,11 +435,6 @@
     <addaction name="actionAbout_Qt"/>
    </widget>
    <widget class="QMenu" name="menuCommands">
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
     <property name="title">
      <string>Commands</string>
     </property>
