@@ -26,11 +26,16 @@ SettingsHelper::SettingsHelper()
     qDebug()<< "Settings ctor";
 #endif
     QString fname;
+#if defined(Q_OS_WIN)
     if(QCoreApplication::applicationDirPath().contains("Program Files")) {
         fname = QString("%1/%2.ini").arg(QDir::currentPath()).arg(QCoreApplication::applicationName());
     } else {
         fname = QString("%1/%2.ini").arg(QCoreApplication::applicationDirPath()).arg(QCoreApplication::applicationName());
     }
+#elif defined(Q_OS_UNIX) || defined(Q_OS_LINUX)
+    fname = QString("%1/.config/%2.ini").arg(QDir::homePath()).arg(QCoreApplication::applicationName());
+#endif
+
 #ifdef MYPREFIX_DEBUG
     qDebug()<< "Settings File name: " << fname;
 #endif
