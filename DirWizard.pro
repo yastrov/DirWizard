@@ -61,7 +61,8 @@ SOURCES += src/main.cpp\
     src/tablemodel/filelisttablemodel.cpp \
     src/tablemodel/emptyfoldertablemodel.cpp \
     src/worker/emptydirfinder.cpp \
-    src/gui/dialog/filtersdialog.cpp
+    src/gui/dialog/filtersdialog.cpp \
+    src/settingshelper.cpp
 
 HEADERS  += src/gui/mainwindow.h \
     src/worker/dirwalker.h \
@@ -79,7 +80,8 @@ HEADERS  += src/gui/mainwindow.h \
     src/worker/emptydirfinder.h \
     src/gui/dialog/filtersdialog.h \
     src/constants.h \
-    src/helper.h
+    src/helper.h \
+    src/settingshelper.h
 
 FORMS    += src/gui/mainwindow.ui
 
