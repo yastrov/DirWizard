@@ -54,6 +54,7 @@
 #include <QWinTaskbarButton>
 #include <QWinTaskbarProgress>
 #endif
+#include "../settingshelper.h"
 
 namespace Ui {
 class MainWindow;
@@ -135,6 +136,10 @@ private:
     void callBeforeBackgrowndWorkerStarted();
     // Filters
     bool useFilters() const;
+    // Settings
+    SettingsHelper _settingsHelper;
+    void storeSettings();
+    void loadSettings();
 
 protected:
     void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;

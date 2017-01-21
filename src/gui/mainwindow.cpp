@@ -16,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(qApp->applicationName());
     initOnceGui();
     initOnceConnectSlots();
+#ifdef MYPREFIX_DEBUG
+    qDebug()<<"before MainWindow::loadSettings";
+#endif
+    loadSettings();
 }
 
 void MainWindow::initOnceGui()
@@ -652,6 +656,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
         thread->wait(250);
         event->accept();
     } else {
+        storeSettings();
         event->accept();
     }
 }
@@ -775,4 +780,30 @@ void MainWindow::currentProcessedFilesForProgressReceived(quint64 count)
     const QString s = QString::number(count) + " / " + QString::number(ui->progressBar->maximum());
     ui->progressBar->setStatusTip(s);
     ui->statusBar->showMessage(s);
+}
+
+void MainWindow::storeSettings()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug()<<"MainWindow::storeSettings";
+#endif
+    _settingsHelper.saveFileExtFilters(fileFilters);
+    _settingsHelper.saveHashIndex(ui->comboBox->currentIndex());
+    _settingsHelper.saveMainWindowPosition(size(), pos());
+}
+
+void MainWindow::loadSettings()
+{
+#ifdef MYPREFIX_DEBUG
+    qDebug()<<"MainWindow::loadSettings";
+#endif
+    fileFilters = _settingsHelper.loadFileExtFilters();
+    this->setStyleSheet(_settingsHelper.loadFontStyleSheet());
+    ui->comboBox->setCurrentIndex(_settingsHelper.loadHashIndex());
+    // Load MainWindow position and size
+    QSize size;
+    QPoint pos;
+    _settingsHelper.loadMainWindowPosition(size, pos);
+    resize(size);
+    move(pos);
 }
