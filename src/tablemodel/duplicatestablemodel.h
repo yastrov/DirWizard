@@ -36,6 +36,9 @@ public:
     QString getFileName(const QModelIndex &index) const Q_DECL_OVERRIDE;
     bool checkOneInGroupUnChecked();
     void removeCheckedFunc() Q_DECL_OVERRIDE;
+#if defined(Q_OS_WIN)
+    void removeCheckedToTrashFunc() Q_DECL_OVERRIDE;
+#endif
 };
 
 #endif // DUPLICATESTABLEMODEL_H

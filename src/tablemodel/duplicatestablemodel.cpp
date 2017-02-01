@@ -234,3 +234,19 @@ void DuplicatesTableModel::removeCheckedFunc()
     }
     BaseTableModel::removeCheckedFunc();
 }
+
+#if defined(Q_OS_WIN)
+void DuplicatesTableModel::removeCheckedToTrashFunc()
+{
+    if(!checkOneInGroupUnChecked()) {
+        QMessageBox::StandardButton reply = QMessageBox::question(nullptr,
+                                                                  qApp->applicationName(),
+                                                                  tr("In one group all files have been checked!.\nDo you want to continue?"),
+                                                                  QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::No) {
+            return;
+        }
+    }
+    BaseTableModel::removeCheckedToTrashFunc();
+}
+#endif

@@ -39,6 +39,26 @@ void MainWindow::initOnceGui()
     progressWinExtra = buttonWinExtra->progress();
     progressWinExtra->setVisible(false);
 #endif
+#if defined(Q_OS_WIN)
+    QAction *actionRemoveToTrash_checked = new QAction(ui->menuWork_with_results);
+    actionRemoveToTrash_checked->setText(tr("Remove checked elements to system Trash (Recycle Bin)."));
+    actionRemoveToTrash_checked->setToolTip(tr("Remove checked elements to system Trash (Recycle Bin)."));
+    actionRemoveToTrash_checked->setStatusTip(tr("Remove checked elements to system Trash (Recycle Bin)."));
+    ui->menuWork_with_results->insertAction(ui->actionRemove_checked, actionRemoveToTrash_checked);
+    connect(actionRemoveToTrash_checked, &QAction::triggered, this, [this](bool checked){
+        Q_UNUSED(checked)
+        QMessageBox::StandardButton reply = QMessageBox::question(this,
+                                                                  qApp->applicationName(),
+                                                                  tr("Are you sure to remove checked items?"),
+                                                                  QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::No) {
+            return;
+        }
+        if(ui->tableView->model() != nullptr) {
+            qobject_cast<BaseTableModel*>(ui->tableView->model())->removeCheckedToTrashFunc();
+        }
+    });
+#endif
 }
 
 void MainWindow::initOnceConnectSlots()
