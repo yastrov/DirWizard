@@ -72,7 +72,7 @@ void MainWindow::initOnceConnectSlots()
                               "Based on Qt 5<br/>"
                               "Licensed by GPLv2<br/>"
                               "Version: %2<br/>"
-                              "URL: <a href='%3'>%3</a><p>").arg(qApp->applicationName(), APP_VERSION, APP_URL));
+                              "URL: <a href='%3'>%3</a></p>").arg(qApp->applicationName(), APP_VERSION, APP_URL));
     });
     connect(ui->actionStart_Dupl_Find, &QAction::triggered, this, &MainWindow::on_pushButton_Duplicate_Search_clicked);
     connect(ui->actionCompare_Folders, &QAction::triggered, this, &MainWindow::on_pushButton_Compare_Folders_clicked);
