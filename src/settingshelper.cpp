@@ -177,5 +177,5 @@ QString SettingsHelper::loadFontStyleSheet()
     QString fontFamily;
     int fontSize;
     loadFont(fontSize, fontFamily);
-    return QString("font-size:%1px;font-family: %2;").arg(fontSize).arg(fontFamily);
+    return QString("font-size:%1pt;font-family:%2;").arg(fontSize).arg(fontFamily);
 }
