@@ -55,6 +55,7 @@
 #include <QWinTaskbarProgress>
 #endif
 #include "../settingshelper.h"
+#include <QFontDialog>
 
 namespace Ui {
 class MainWindow;

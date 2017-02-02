@@ -167,6 +167,22 @@ void MainWindow::initOnceConnectSlots()
         }
     });
     connect(ui->actionAbout_Qt, &QAction::triggered, this, [this](){ QMessageBox::aboutQt(this); });
+    QObject::connect(ui->actionSet_Font, &QAction::triggered, this, [this](bool checked){
+        Q_UNUSED(checked)
+        bool ok;
+        int fontSize;
+        QString fontFamily;
+        _settingsHelper.loadFont(fontSize, fontFamily);
+        QFont font = QFontDialog::getFont(
+                        &ok, QFont(fontFamily, fontSize), this);
+        if (ok) {
+            _settingsHelper.saveFont(font.pointSize(), font.family());
+            // Try to move it to helper failed.
+            this->setStyleSheet(QString("font-size:%1pt;font-family:%2;").arg(fontSize).arg(fontFamily));
+        } else {
+            ;
+        }
+    });
 }
 
 void MainWindow::showEvent(QShowEvent *e)
