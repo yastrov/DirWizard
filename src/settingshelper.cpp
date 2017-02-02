@@ -16,7 +16,7 @@ static const QString HashIndex = "index";
 static const QString FontGroup = "Font";
 static const QString FontSize = "size";
 static const QString FontFamily = "family";
-static const QString FontFamilyDefault = "Ariel";
+static const QString FontFamilyDefault = "Arial";
 static const int     FontSizeDefault = 16;
 }
 
