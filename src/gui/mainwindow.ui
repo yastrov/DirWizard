@@ -458,9 +458,22 @@
     <addaction name="actionRemove_checked"/>
     <addaction name="actionSelect_files_in_concrete_folder"/>
    </widget>
+   <widget class="QMenu" name="menuPreferences">
+    <property name="toolTip">
+     <string>Preferences</string>
+    </property>
+    <property name="statusTip">
+     <string>Preferences</string>
+    </property>
+    <property name="title">
+     <string>Preferences</string>
+    </property>
+    <addaction name="actionSet_Font"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuCommands"/>
    <addaction name="menuWork_with_results"/>
+   <addaction name="menuPreferences"/>
    <addaction name="menuAbout"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -607,6 +620,14 @@
   <action name="actionAbout_Qt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionSet_Font">
+   <property name="text">
+    <string>Set Font</string>
+   </property>
+   <property name="statusTip">
+    <string>Set Font</string>
    </property>
   </action>
  </widget>
