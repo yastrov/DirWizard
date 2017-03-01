@@ -241,19 +241,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="251"/>
-        <location filename="../src/gui/mainwindow.ui" line="491"/>
+        <location filename="../src/gui/mainwindow.ui" line="504"/>
         <source>Start duplicate search</source>
         <translation>Начать поиск дубликатов</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="254"/>
-        <location filename="../src/gui/mainwindow.ui" line="494"/>
+        <location filename="../src/gui/mainwindow.ui" line="507"/>
         <source>Start duplicate files search</source>
         <translation>Начать поиск дубликатов файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="257"/>
-        <location filename="../src/gui/mainwindow.ui" line="488"/>
+        <location filename="../src/gui/mainwindow.ui" line="501"/>
         <source>Start Dupl Find</source>
         <translation>Поиск дублей</translation>
     </message>
@@ -289,19 +289,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="343"/>
-        <location filename="../src/gui/mainwindow.ui" line="585"/>
+        <location filename="../src/gui/mainwindow.ui" line="598"/>
         <source>Remove elements, where are you make check from disk</source>
         <translation>Удалить отмеченные файлы с диска</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="346"/>
-        <location filename="../src/gui/mainwindow.ui" line="582"/>
+        <location filename="../src/gui/mainwindow.ui" line="595"/>
         <source>Remove checked elements from disk.</source>
         <translation>Удалить отмеченные файлы с диска.</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="349"/>
-        <location filename="../src/gui/mainwindow.ui" line="579"/>
+        <location filename="../src/gui/mainwindow.ui" line="592"/>
         <source>Remove checked</source>
         <translation>Удалить отмеченное</translation>
     </message>
@@ -323,8 +323,8 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.ui" line="427"/>
-        <location filename="../src/gui/mainwindow.ui" line="477"/>
-        <location filename="../src/gui/mainwindow.ui" line="480"/>
+        <location filename="../src/gui/mainwindow.ui" line="490"/>
+        <location filename="../src/gui/mainwindow.ui" line="493"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
@@ -344,129 +344,142 @@ Do you want to continue?</source>
         <translation>Обработка результатов</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="483"/>
+        <location filename="../src/gui/mainwindow.ui" line="463"/>
+        <location filename="../src/gui/mainwindow.ui" line="466"/>
+        <location filename="../src/gui/mainwindow.ui" line="469"/>
+        <source>Preferences</source>
+        <translation>Настройки</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.ui" line="496"/>
         <source>About this program.</source>
         <translation>О программе.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="499"/>
+        <location filename="../src/gui/mainwindow.ui" line="512"/>
         <source>Compare Folders</source>
         <translation>Сравнить директории</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="502"/>
+        <location filename="../src/gui/mainwindow.ui" line="515"/>
         <source>Compare folders, find uniq files.</source>
         <translation>Сравнить директори, найти уникальные файлы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="505"/>
+        <location filename="../src/gui/mainwindow.ui" line="518"/>
         <source>Compare folders and find uniq files.</source>
         <translation>Сравнить директории и найти уникальные файлы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="510"/>
+        <location filename="../src/gui/mainwindow.ui" line="523"/>
         <source>Check ZIP</source>
         <translation>Проверить ZIP</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="513"/>
+        <location filename="../src/gui/mainwindow.ui" line="526"/>
         <source>Check ZIP archives</source>
         <translation>Проверить ZIP архивы</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="516"/>
+        <location filename="../src/gui/mainwindow.ui" line="529"/>
         <source>Check ZIP archives. Show invalid or bad ZIP archives.</source>
         <translation>Проверить ZIP. Показать список  испорченных.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="521"/>
+        <location filename="../src/gui/mainwindow.ui" line="534"/>
         <source>Check Hashes</source>
         <translation>Проверить хэши</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="524"/>
+        <location filename="../src/gui/mainwindow.ui" line="537"/>
         <source>Check hashes</source>
         <translation>Проверить хэши</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="527"/>
+        <location filename="../src/gui/mainwindow.ui" line="540"/>
         <source>Check files in folders by hashes.</source>
         <translation>Проверить файлы на соответствие хэшам. </translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="532"/>
+        <location filename="../src/gui/mainwindow.ui" line="545"/>
         <source>Calc Hashes</source>
         <translation>Вычислить хэши</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="535"/>
+        <location filename="../src/gui/mainwindow.ui" line="548"/>
         <source>Calc hashes and store to disk.</source>
         <translation>Вычислить хэши и сохранить на диск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="538"/>
+        <location filename="../src/gui/mainwindow.ui" line="551"/>
         <source>Calc hash sum for each file in folders and  and save to disk.</source>
         <translation>Вычислить хэшсуммы для каждого файла и сохранить рядом с самим файлом.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="543"/>
+        <location filename="../src/gui/mainwindow.ui" line="556"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="546"/>
-        <location filename="../src/gui/mainwindow.ui" line="549"/>
+        <location filename="../src/gui/mainwindow.ui" line="559"/>
+        <location filename="../src/gui/mainwindow.ui" line="562"/>
         <source>Open saved duplicates file list.</source>
         <translation>Открыть файл со списком дубликатов.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="552"/>
+        <location filename="../src/gui/mainwindow.ui" line="565"/>
         <source>Alt+O</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="557"/>
-        <location filename="../src/gui/mainwindow.ui" line="563"/>
+        <location filename="../src/gui/mainwindow.ui" line="570"/>
+        <location filename="../src/gui/mainwindow.ui" line="576"/>
         <source>Save results from table to file.</source>
         <translation>Сохранить результаты в файл.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="560"/>
+        <location filename="../src/gui/mainwindow.ui" line="573"/>
         <source>Save results as duplicates files list from table to file.</source>
         <translation>Сохранить результаты в файл.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="566"/>
+        <location filename="../src/gui/mainwindow.ui" line="579"/>
         <source>Alt+S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="571"/>
-        <location filename="../src/gui/mainwindow.ui" line="574"/>
+        <location filename="../src/gui/mainwindow.ui" line="584"/>
+        <location filename="../src/gui/mainwindow.ui" line="587"/>
         <source>Clear all selection flags.</source>
         <translation>Снять пометки в элементах списка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="588"/>
+        <location filename="../src/gui/mainwindow.ui" line="601"/>
         <source>Remove checked elements from disk</source>
         <translation>Удалить отмеченные элементы с диска</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="593"/>
-        <location filename="../src/gui/mainwindow.ui" line="596"/>
+        <location filename="../src/gui/mainwindow.ui" line="606"/>
+        <location filename="../src/gui/mainwindow.ui" line="609"/>
         <source>Mark files in concrete folder as checked.</source>
         <translation>Отметить файлы в конкретной директории для удаления.</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="601"/>
-        <location filename="../src/gui/mainwindow.ui" line="604"/>
+        <location filename="../src/gui/mainwindow.ui" line="614"/>
+        <location filename="../src/gui/mainwindow.ui" line="617"/>
         <source>Find Empty folders</source>
         <translation>Поиск пустых директорияй</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.ui" line="609"/>
+        <location filename="../src/gui/mainwindow.ui" line="622"/>
         <source>About Qt</source>
         <translation>О Qt</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/mainwindow.ui" line="627"/>
+        <location filename="../src/gui/mainwindow.ui" line="630"/>
+        <source>Set Font</source>
+        <translation>Настроить шрифт</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="69"/>
@@ -486,7 +499,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="52"/>
-        <location filename="../src/gui/mainwindow.cpp" line="412"/>
+        <location filename="../src/gui/mainwindow.cpp" line="428"/>
         <source>Are you sure to remove checked items?</source>
         <translation>Вы уверены, что хотите удалить отмеченные элементы?</translation>
     </message>
@@ -506,28 +519,28 @@ Do you want to continue?</source>
         <translation>Выберите директорию</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="390"/>
+        <location filename="../src/gui/mainwindow.cpp" line="406"/>
         <source>Open Directory</source>
         <translation>Открыть директорию</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="465"/>
+        <location filename="../src/gui/mainwindow.cpp" line="481"/>
         <source>Task completed successfully!</source>
         <translation>Задача выполнена!</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="482"/>
+        <location filename="../src/gui/mainwindow.cpp" line="498"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="497"/>
+        <location filename="../src/gui/mainwindow.cpp" line="513"/>
         <source>File already exists!
 Overwrite?</source>
         <translation>Файл уже существует! Перезаписать?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="738"/>
+        <location filename="../src/gui/mainwindow.cpp" line="754"/>
         <source>Open Folder with selected file</source>
         <translation>Открыть проводник с выбранным файлом</translation>
     </message>
