@@ -487,10 +487,6 @@ Do you want to continue?</source>
         <translation>О %1</translation>
     </message>
     <message>
-        <source>&lt;h2&gt;%1&lt;/h2&gt;&lt;p&gt;Written by Yuriy (Yuri) Astrov&lt;br/&gt;Based on Qt 5&lt;br/&gt;Licensed by GPLv2&lt;br/&gt;Version: %1&lt;br/&gt;URL: &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="vanished">&lt;h2&gt;%1&lt;/h2&gt;&lt;p&gt;Написана Юрием Астровым&lt;br/&gt;С использовванием Qt 5&lt;br/&gt;Лицензия:  GPLv2&lt;br/&gt;Версия: %1&lt;br/&gt;URL: &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/mainwindow.cpp" line="44"/>
         <location filename="../src/gui/mainwindow.cpp" line="45"/>
         <location filename="../src/gui/mainwindow.cpp" line="46"/>
@@ -506,7 +502,7 @@ Do you want to continue?</source>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="70"/>
         <source>&lt;h2&gt;%1&lt;/h2&gt;&lt;p&gt;Written by Yuriy (Yuri) Astrov&lt;br/&gt;Based on Qt 5&lt;br/&gt;Licensed by GPLv2&lt;br/&gt;Version: %2&lt;br/&gt;URL: &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</source>
-        <translation type="unfinished">&lt;h2&gt;%1&lt;/h2&gt;&lt;p&gt;Написана Юрием Астровым&lt;br/&gt;С использовванием Qt 5&lt;br/&gt;Лицензия:  GPLv2&lt;br/&gt;Версия: %1&lt;br/&gt;URL: &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;/p&gt; {2&gt;?} {1&lt;?} {2&gt;?} {5&lt;?} {2&lt;?} {2&lt;?} {3&apos;?} {3&lt;?} {1&lt; or 2&lt;?}</translation>
+        <translation type="unfinished">&lt;h2&gt;%1&lt;/h2&gt;&lt;p&gt;Написана Юрием Астровым&lt;br/&gt;С использовванием Qt 5&lt;br/&gt;Лицензия:  GPLv2&lt;br/&gt;Версия: %2&lt;br/&gt;URL: &lt;a href=&apos;%3&apos;&gt;%3&lt;/a&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="88"/>
