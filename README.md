@@ -26,6 +26,11 @@ In Windows 10 start with admin rights, if you want to remove some things.
 -  c++ with some features from c++11
 -  qt-opensource-windows-x86-mingw530-5.7.0
 
+## Licences:
+-  DirWizard under GNU GPL version 2  
+-  QuaZIP under GNU Lesser General Public License version 2.1   
+-  zlib under zlib License and compatible with GNU GPL
+
 ## Class Hierarchy
 
 QMainWindow -> MainWindow
