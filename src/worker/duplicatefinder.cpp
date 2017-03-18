@@ -31,6 +31,7 @@ void DuplicateFinder::process()
     }
     calcTotalFiles();
     emit sayTotalFiles(total_files);
+    hashBySize.reserve(total_files);
     processFilesRecursively();
     if(QThread::currentThread()->isInterruptionRequested())
     {
@@ -43,6 +44,7 @@ void DuplicateFinder::process()
         emit finished();
         return;
     }
+    hashByHash.reserve(hashBySize.size());
     makeHashByHashes();
     if(QThread::currentThread()->isInterruptionRequested())
     {
