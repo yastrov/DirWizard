@@ -3,7 +3,7 @@
 #include <limits>
 
 namespace CONSTANTS {
-    const quint64 MAX_INT = static_cast<qint64>(std::numeric_limits<int>::max());
+    //const quint64 MAX_INT = static_cast<qint64>(std::numeric_limits<int>::max());
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -797,18 +797,16 @@ void MainWindow::on_setFiltersBtn_clicked()
     }
 }
 
-void MainWindow::maximumFilesFoProgressReceived(quint64 count)
+void MainWindow::maximumFilesFoProgressReceived(q_coll_s_t count)
 {
-    if(count > CONSTANTS::MAX_INT) return;
     ui->progressBar->setMaximum(count);
 #if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     progressWinExtra->setMaximum(count);
 #endif
 }
 
-void MainWindow::currentProcessedFilesForProgressReceived(quint64 count)
+void MainWindow::currentProcessedFilesForProgressReceived(q_coll_s_t count)
 {
-    if(count > CONSTANTS::MAX_INT) return;
     ui->progressBar->setValue(count);
 #if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
     progressWinExtra->setValue(count);

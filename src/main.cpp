@@ -7,11 +7,13 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 #include "src/helper.h"
+#include "constants.h"
 
 int main(int argc, char *argv[])
 {
     qRegisterMetaType<QSharedPointer<QList<HashFileInfoStruct>>>("QSharedPointer<QList<HashFileInfoStruct>>");
     qRegisterMetaType<QSharedPtrListHFIS>("QSharedPtrListHFIS");
+    qRegisterMetaType<q_coll_s_t>("q_coll_s_t");
 
     QApplication a(argc, argv);
     QTranslator qtTranslator;

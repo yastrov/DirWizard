@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QDirIterator>
 #include <QThread>
+#include "../constants.h"
 
 class DirWalker : public QObject
 {
@@ -24,8 +25,8 @@ public:
 
 protected:
     bool stopped;
-    quint64 total_files;
-    quint64 processed_files;
+    q_coll_s_t total_files;
+    q_coll_s_t processed_files;
     virtual void processFilesRecursively(const QDir &rootDir);
     void processFilesRecursively();
     QList<QDir> rootDirs;
@@ -34,8 +35,8 @@ protected:
 
 signals:
     void finished();
-    void sayTotalFiles(quint64 total_files);
-    void currentProcessedFiles(quint64 count);
+    void sayTotalFiles(q_coll_s_t total_files);
+    void currentProcessedFiles(q_coll_s_t count);
 
 public slots:
 };

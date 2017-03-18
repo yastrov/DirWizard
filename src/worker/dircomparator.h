@@ -34,7 +34,7 @@ protected:
 
 private:
     QMultiHash<QString, HashFileInfoStruct> hashByHash;
-    int resultCount;
+    q_coll_s_t resultCount;
     void clearNoDuplicatedSize();
     void makeHashByHashes();
     void clearNoDuplicatedHashes();

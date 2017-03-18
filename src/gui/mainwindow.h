@@ -55,6 +55,7 @@
 #include <QWinTaskbarProgress>
 #endif
 #include "../settingshelper.h"
+#include "../constants.h"
 #include <QFontDialog>
 
 namespace Ui {
@@ -93,9 +94,9 @@ private slots:
     void createCustomPopupMenuForTableView(const QPoint &pos);
 
     void on_setFiltersBtn_clicked();
-    void maximumFilesFoProgressReceived(quint64 count);
+    void maximumFilesFoProgressReceived(q_coll_s_t count);
     // Progress Bars
-    void currentProcessedFilesForProgressReceived(quint64 count);
+    void currentProcessedFilesForProgressReceived(q_coll_s_t count);
 
 private:
     Ui::MainWindow *ui;
