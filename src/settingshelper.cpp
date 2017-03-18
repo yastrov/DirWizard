@@ -12,6 +12,7 @@ static const QString FileFiltersExt = "ext";
 
 static const QString HashGroup = "Hash";
 static const QString HashIndex = "index";
+static const int HashIndexDefault = 0;
 
 static const QString FontGroup = "Font";
 static const QString FontSize = "size";
@@ -118,7 +119,7 @@ void SettingsHelper::saveHashIndex(int index)
 int SettingsHelper::loadHashIndex()
 {
     _settings->beginGroup(SettingsNames::HashGroup);
-    const int index = _settings->value(SettingsNames::HashIndex, 0).toInt();
+    const int index = _settings->value(SettingsNames::HashIndex, SettingsNames::HashIndexDefault).toInt();
     _settings->endGroup();
     return index;
 }
@@ -133,7 +134,7 @@ void SettingsHelper::saveFontSize(int size)
 int SettingsHelper::loadFontSize()
 {
     _settings->beginGroup(SettingsNames::FontGroup);
-    const int size = _settings->value(SettingsNames::FontSize, 14).toInt();
+    const int size = _settings->value(SettingsNames::FontSize, SettingsNames::FontSizeDefault).toInt();
     _settings->endGroup();
     return size;
 }
@@ -148,7 +149,7 @@ void SettingsHelper::saveFontFamily(const QString& fontFamily)
 QString SettingsHelper::loadFontFamily()
 {
     _settings->beginGroup(SettingsNames::FontGroup);
-    const QString fontFamily = _settings->value(SettingsNames::FontFamily, "Ariel").toString();
+    const QString fontFamily = _settings->value(SettingsNames::FontFamily, SettingsNames::FontFamilyDefault).toString();
     _settings->endGroup();
     return fontFamily;
 }
