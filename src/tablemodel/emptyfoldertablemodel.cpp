@@ -149,7 +149,7 @@ void EmptyFolderTableModel::sort(int column, Qt::SortOrder order)
         }); break;
     case Column::fileName:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.fileName > v2.fileName;
+            return v1.fileName < v2.fileName;
         });
         break;
     default: return;

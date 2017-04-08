@@ -119,17 +119,17 @@ void FileListTableModel::sort(int column, Qt::SortOrder order)
     switch(column) {
     case Column::fileName:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.fileName > v2.fileName;
+            return v1.fileName < v2.fileName;
         });
         break;
     case Column::hash:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.hash > v2.hash;
+            return v1.hash < v2.hash;
         });
         break;
     case Column::size:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.size > v2.size;
+            return v1.size < v2.size;
         });
         break;
     default: return;

@@ -161,22 +161,28 @@ void DuplicatesTableModel::sort(int column, Qt::SortOrder order)
         }); break;
     case Column::fileName:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.fileName > v2.fileName;
+            if(v1.groupID < v2.groupID) {
+                return true;
+            }
+            if(v1.groupID > v2.groupID) {
+                return false;
+            }
+            return v1.fileName < v2.fileName;
         });
         break;
     case Column::hash:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.hash > v2.hash;
+            return v1.hash < v2.hash;
         });
         break;
     case Column::groupId:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.groupID > v2.groupID;
+            return v1.groupID < v2.groupID;
         });
         break;
     case Column::size:
         std::sort(items->begin(), items->end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
-            return v1.size > v2.size;
+            return v1.size < v2.size;
         });
         break;
     default: return;
