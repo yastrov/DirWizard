@@ -49,13 +49,11 @@ void EmptyDirFinder::processFile(const QString &fileName)
 #ifdef MYPREFIX_DEBUG
     qDebug() << "EmptyDirFinder::processFile "<<fileName;
 #endif
-    static const QStringList nameFilters("*.*");
     QFileInfo fInfo(fileName);
     if(fInfo.isDir())
     {
         QDir dir(fileName);
-        dir.setFilter(QDir::NoDotAndDotDot | QDir::Files);
-        dir.setNameFilters(nameFilters);
+        dir.setFilter(QDir::NoDotAndDotDot | QDir::Files | QDir::AllDirs);
         if(dir.entryList().size() == 0)
         {
             HashFileInfoStruct st;
