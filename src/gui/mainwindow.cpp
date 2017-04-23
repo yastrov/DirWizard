@@ -156,6 +156,7 @@ void MainWindow::initOnceConnectSlots()
                 table->sortByColumn(EmptyFolderTableModel::Column::fileName);
                 table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
                 table->resizeColumnsToContents();
+                table->horizontalHeader()->setStretchLastSection(true);
             });
             connect(worker, &EmptyDirFinder::sayTotalFiles, this, &MainWindow::maximumFilesFoProgressReceived);
             connect(worker, &EmptyDirFinder::currentProcessedFiles, this, &MainWindow::currentProcessedFilesForProgressReceived);
