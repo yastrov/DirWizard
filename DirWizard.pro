@@ -15,12 +15,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DirWizard
 TEMPLATE = app
 
-debug {
-  DEFINES += MYPREFIX_DEBUG
-}
-
-release {
-  DEFINES += MYPREFIX_RELEASE
+CONFIG(release, debug|release): {
+    DEFINES += QT_NO_DEBUG_OUTPUT
+    DEFINES += MYPREFIX_RELEASE
+} else {
+    DEFINES += MYPREFIX_DEBUG
 }
 
 DEFINES *= QT_USE_QSTRINGBUILDER
@@ -28,10 +27,10 @@ CONFIG += c++11
 
 win32-g++: {
     DEFINES += USE_WIN_EXTRAS
-    INCLUDEPATH += C:/Qt/zlib-1.2.8
-    INCLUDEPATH += C:/Qt/quazip-0.7.2
-    LIBS += -LC:/Qt/zlib-1.2.8 -lz
-    LIBS += -LC:/Qt/quazip-0.7.2/quazip/release -lquazip
+    INCLUDEPATH += C:/Qt/zlib-1.2.11
+    INCLUDEPATH += C:/Qt/quazip-0.7.3
+    LIBS += -LC:/Qt/zlib-1.2.11 -lz
+    LIBS += -LC:/Qt/quazip-0.7.3/quazip/release -lquazip
 }
 
 win32-msvc: {
@@ -87,7 +86,7 @@ FORMS    += src/gui/mainwindow.ui
 
 TRANSLATIONS += translations/dirwizard_ru.ts
 
-VERSION = 0.0.0.1
+VERSION = 0.0.0.6
 #QMAKE_TARGET_COMPANY = company
 QMAKE_TARGET_PRODUCT = DirWizard
 QMAKE_TARGET_DESCRIPTION = "Program for find duplicates or unique files, calculate and check hashes."
