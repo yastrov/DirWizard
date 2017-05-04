@@ -254,7 +254,6 @@ qDebug() << "BaseTableModel::selectFilesInFolder: "<<dirName;
         HashFileInfoStruct &strct = it.next();
         if(strct.fileName.startsWith(dirName)){
             strct.checked = true;
-            qDebug()<<strct.fileName;
         }
     }
     emit dataChanged(createIndex(0,0), createIndex(count,0));
