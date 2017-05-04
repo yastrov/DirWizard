@@ -4,6 +4,7 @@
 #include <QDebug>
 #endif
 #include <QCryptographicHash>
+#include <QTextStream>
 #include "hashdirwalker.h"
 #include "../hashfileinfostruct.h"
 #include <QThread>
