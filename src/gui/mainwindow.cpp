@@ -765,7 +765,6 @@ void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
         QStringList commands;
         #if defined(Q_OS_WIN)
         commands<< "explorer.exe /select, \"" << QDir::toNativeSeparators(dir) <<"\"";
-        qDebug()<<commands.join("");
         QProcess::startDetached(commands.join(""));
         #elif defined(Q_OS_MAC)
         QStringList scriptArgs;
