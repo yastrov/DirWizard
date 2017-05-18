@@ -31,7 +31,7 @@ public:
     bool setHeaderData(int, Qt::Orientation, const QVariant&,
                        int=Qt::EditRole) { return false; }
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
-    enum Column {checked, fileName, hash, groupId, size};
+    enum Column {checked, fileName, groupId, size, path, hash};
 
     QString getFileName(const QModelIndex &index) const Q_DECL_OVERRIDE;
     bool checkOneInGroupUnChecked();

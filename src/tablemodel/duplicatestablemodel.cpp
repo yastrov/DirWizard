@@ -1,7 +1,7 @@
 #include "duplicatestablemodel.h"
 
 namespace {
-const int MaxColumns = 5;
+const int MaxColumns = 6;
 QColor firstColor = QColor(Qt::white);
 QColor secondColor = QColor(Qt::green);
 
@@ -49,6 +49,7 @@ QVariant DuplicatesTableModel::headerData(int section,
         case Column::hash: return tr("Hash");  break;
         case Column::groupId: return tr("groupId"); break;
         case Column::size: return tr("Size"); break;
+        case Column::path: return tr("Path"); break;
         default: Q_ASSERT(false);
         }
     }
@@ -71,6 +72,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
         case Column::hash: option.currentText = item.hash; break;
         case Column::groupId: option.currentText = item.groupID; break;
         case Column::size: option.currentText = QString::number(item.size); break;
+        case Column::path: option.currentText = item.fileName; break;
         default: Q_ASSERT(false);
         }
         QFontMetrics fontMetrics(data(index, Qt::FontRole)
@@ -88,6 +90,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
         case Column::hash: return item.hash;
         case Column::groupId: return item.groupID;
         case Column::size: return item.size;
+        case Column::path: return item.fileName;
         default: Q_ASSERT(false);
         }
     }
@@ -107,6 +110,7 @@ QVariant DuplicatesTableModel::data(const QModelIndex &index, int role) const
         case Column::hash: return item.hash;
         case Column::groupId: return item.groupID;
         case Column::size: return item.size;
+        case Column::path: return item.fileName;
         default: Q_ASSERT(false);
         }
     }
