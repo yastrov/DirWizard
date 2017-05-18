@@ -40,6 +40,7 @@ QVariant FileListTableModel::headerData(int section,
         case Column::fileName: return tr("FileName"); break;
         case Column::hash: return tr("Hash");  break;
         case Column::size: return tr("Size"); break;
+        case Column::path: return tr("Path");
         default: Q_ASSERT(false);
         }
     }
@@ -60,6 +61,7 @@ QVariant FileListTableModel::data(const QModelIndex &index, int role) const
         case Column::fileName: option.currentText = getFileNameShort(item.fileName); break;
         case Column::hash: option.currentText = item.hash; break;
         case Column::size: option.currentText = QString::number(item.size); break;
+        case Column::path: option.currentText = item.fileName;
         default: Q_ASSERT(false);
         }
         QFontMetrics fontMetrics(data(index, Qt::FontRole)
@@ -75,6 +77,7 @@ QVariant FileListTableModel::data(const QModelIndex &index, int role) const
         case Column::fileName: return getFileNameShort(item.fileName);
         case Column::hash: return item.hash;
         case Column::size: return item.size;
+        case Column::path: return item.fileName;
         default: Q_ASSERT(false);
         }
     }
@@ -86,6 +89,7 @@ QVariant FileListTableModel::data(const QModelIndex &index, int role) const
         case Column::fileName: return item.fileName;
         case Column::hash: return item.hash;
         case Column::size: return item.size;
+        case Column::path: return item.fileName;
         default: Q_ASSERT(false);
         }
     }

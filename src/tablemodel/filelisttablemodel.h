@@ -24,7 +24,7 @@ public:
     bool setHeaderData(int, Qt::Orientation, const QVariant&,
                        int=Qt::EditRole) { return false; }
     void sort(int column, Qt::SortOrder order = Qt::AscendingOrder) Q_DECL_OVERRIDE;
-    enum Column {fileName, hash, size};
+    enum Column {fileName, hash, path, size};
 
 
     QString getFileName(const QModelIndex &index) const Q_DECL_OVERRIDE;
