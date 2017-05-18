@@ -28,7 +28,7 @@
     <name>DuplicatesTableModel</name>
     <message>
         <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="47"/>
-        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="105"/>
+        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="108"/>
         <source>Remove?</source>
         <translation>Удалить?</translation>
     </message>
@@ -53,8 +53,13 @@
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="229"/>
-        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="244"/>
+        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="52"/>
+        <source>Path</source>
+        <translation>Путь</translation>
+    </message>
+    <message>
+        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="239"/>
+        <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="254"/>
         <source>In one group all files have been checked!.
 Do you want to continue?</source>
         <translation>В одной из групп выделены все элементы!\nВы хотите продолжить?</translation>
@@ -495,7 +500,7 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../src/gui/mainwindow.cpp" line="52"/>
-        <location filename="../src/gui/mainwindow.cpp" line="428"/>
+        <location filename="../src/gui/mainwindow.cpp" line="430"/>
         <source>Are you sure to remove checked items?</source>
         <translation>Вы уверены, что хотите удалить отмеченные элементы?</translation>
     </message>
@@ -515,28 +520,28 @@ Do you want to continue?</source>
         <translation>Выберите директорию</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="406"/>
+        <location filename="../src/gui/mainwindow.cpp" line="408"/>
         <source>Open Directory</source>
         <translation>Открыть директорию</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="481"/>
+        <location filename="../src/gui/mainwindow.cpp" line="483"/>
         <source>Task completed successfully!</source>
         <translation>Задача выполнена!</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="498"/>
+        <location filename="../src/gui/mainwindow.cpp" line="500"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="513"/>
+        <location filename="../src/gui/mainwindow.cpp" line="515"/>
         <source>File already exists!
 Overwrite?</source>
         <translation>Файл уже существует! Перезаписать?</translation>
     </message>
     <message>
-        <location filename="../src/gui/mainwindow.cpp" line="754"/>
+        <location filename="../src/gui/mainwindow.cpp" line="756"/>
         <source>Open Folder with selected file</source>
         <translation>Открыть проводник с выбранным файлом</translation>
     </message>
