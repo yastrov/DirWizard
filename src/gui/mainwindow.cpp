@@ -97,9 +97,7 @@ void MainWindow::initOnceConnectSlots()
                 DuplicatesTableModel *model = new DuplicatesTableModel(this);
                 model->loadFromFileFunc(fileName);
                 table->setModel(model);
-                table->setSortingEnabled(true);
                 table->sortByColumn(DuplicatesTableModel::Column::groupId);
-                table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
                 table->resizeColumnsToContents();
             }
     });
@@ -152,7 +150,6 @@ void MainWindow::initOnceConnectSlots()
                     table->model()->deleteLater();
                 EmptyFolderTableModel *model = new EmptyFolderTableModel(itemsPtr, this);
                 table->setModel(model);
-                table->setSortingEnabled(true);
                 table->sortByColumn(EmptyFolderTableModel::Column::fileName);
                 table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
                 table->resizeColumnsToContents();
@@ -284,9 +281,7 @@ void MainWindow::showDuplicatesInTable(QSharedPtrListHFIS itemsPtr)
         table->model()->deleteLater();
     DuplicatesTableModel *model = new DuplicatesTableModel(itemsPtr, this);
     table->setModel(model);
-    table->setSortingEnabled(true);
     table->sortByColumn(DuplicatesTableModel::Column::groupId);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     table->resizeColumnsToContents();
 }
 // END
@@ -359,9 +354,7 @@ void MainWindow::showUniqFilesInTable(QSharedPtrListHFIS itemsPtr)
         table->model()->deleteLater();
     FileListTableModel *model = new FileListTableModel(itemsPtr, this);
     table->setModel(model);
-    table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::startComparingFoldersInBackground()
@@ -624,9 +617,7 @@ void MainWindow::showInvalidHashFilesInTable(QSharedPtrListHFIS itemsPtr)
         table->model()->deleteLater();
     FileListTableModel *model = new FileListTableModel(itemsPtr, this);
     table->setModel(model);
-    table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::on_pushButton_Check_Zip_clicked()
@@ -677,9 +668,7 @@ void MainWindow::showInvalidZipInTable(QSharedPtrListHFIS itemsPtr)
         table->model()->deleteLater();
     FileListTableModel *model = new FileListTableModel(itemsPtr, this);
     table->setModel(model);
-    table->setSortingEnabled(true);
     table->sortByColumn(FileListTableModel::Column::fileName);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
