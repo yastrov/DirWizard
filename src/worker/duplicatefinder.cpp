@@ -48,7 +48,7 @@ void DuplicateFinder::process()
     }
     const int before = hashBySize.size();
     removeUniqueKeysFromMultHash(hashBySize);
-    processed_files += hashBySize.size() - before;
+    processed_files +=  before - hashBySize.size();
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
