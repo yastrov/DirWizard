@@ -84,12 +84,9 @@ void DirComparator::clearNoDuplicatedHashes()
     #ifdef MYPREFIX_DEBUG
     qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
 #endif
-    //QString key;
-    QSetIterator<QString> it(hashByHash.keys().toSet());
     int count;
-    while(it.hasNext())
+    for(const QString &key: hashByHash.uniqueKeys())
     {
-       const QString &key = it.next();
        count = hashByHash.count(key);
        if(count > 1) {
            hashByHash.remove(key);

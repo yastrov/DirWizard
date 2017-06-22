@@ -1,15 +1,8 @@
 #ifndef DIRCOMPARATOR_H
 #define DIRCOMPARATOR_H
 #include <QObject>
-#include <QLinkedList>
-#include <QVector>
-#include <QHash>
 #include <QMutableListIterator>
-#include <QLinkedListIterator>
-#include <QListIterator>
 #include <QList>
-#include <QMutableVectorIterator>
-#include <QVectorIterator>
 #include <QFileInfo>
 #include <QCryptographicHash>
 #include "../hashfileinfostruct.h"
