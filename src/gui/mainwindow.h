@@ -103,6 +103,7 @@ private:
     void initOnceGui();
     void initOnceConnectSlots();
     QString dirNameForFolderDialog;
+    QMenu *tableViewCustomPopupMenu;
     QThread* thread;
     QStringList fileFilters;
 #if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)

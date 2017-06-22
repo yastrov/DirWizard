@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     dirNameForFolderDialog(QDir::current().dirName()),
+    tableViewCustomPopupMenu(nullptr),
     thread(new QThread(this))
 {
     ui->setupUi(this);
@@ -474,7 +475,7 @@ void MainWindow::finishedThread()
     ui->progressBar->setVisible(false);
     setUiPushButtonsEnabled(true);
     QMessageBox::information(this,
-                             "DirWizard",
+                             qApp->applicationName(),
                              tr("Task completed successfully!"));
 }
 
@@ -491,11 +492,12 @@ void MainWindow::on_pushButton_Compare_Folders_clicked()
 void MainWindow::on_pushButton_Save_From_Table_clicked()
 {
     QString filter = "Text files (*.txt)";
+    QString cfilter = "Text files (*.txt)";
     QString fileName = QFileDialog::getSaveFileName(this,
                                                     tr("Save File"),
                                      QDir::homePath()+"/results.txt",
-                                     "Text files (*.txt)",
-                                     &filter, QFileDialog::DontUseNativeDialog);
+                                     filter,
+                                     &cfilter);
 #ifdef MYPREFIX_DEBUG
     qDebug() << __PRETTY_FUNCTION__ << "\n";
     qDebug() << "File: " << fileName << "\n";
@@ -506,7 +508,7 @@ void MainWindow::on_pushButton_Save_From_Table_clicked()
         if(qF.exists())
         {
             QMessageBox::StandardButton reply = QMessageBox::question(this,
-                                                                      "DirWizard",
+                                                                      windowTitle(),
                                                                       tr("File already exists!\nOverwrite?"),
                                                                       QMessageBox::Yes|QMessageBox::No);
             if (reply == QMessageBox::No)
@@ -743,7 +745,8 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
 {
     const QTableView *table = ui->tableView;
-    QMenu *menu = new QMenu(this);
+    if(!tableViewCustomPopupMenu) {
+    tableViewCustomPopupMenu = new QMenu(this);
     QAction *openFolder = new QAction(tr("Open Folder with selected file"), this);
     connect(openFolder, &QAction::triggered, this, [this](){
         const QTableView *table = ui->tableView;
@@ -770,8 +773,9 @@ void MainWindow::createCustomPopupMenuForTableView(const QPoint &pos)
         QProcess::execute("/usr/bin/osascript", scriptArgs);
         #endif
     });
-    menu->addAction(openFolder);
-    menu->popup(table->viewport()->mapToGlobal(pos));
+    tableViewCustomPopupMenu->addAction(openFolder);
+    }
+    tableViewCustomPopupMenu->popup(table->viewport()->mapToGlobal(pos));
 }
 
 bool MainWindow::useFilters() const
