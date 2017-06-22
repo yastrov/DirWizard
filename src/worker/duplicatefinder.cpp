@@ -131,10 +131,8 @@ void DuplicateFinder::reduceToResult()
     int groupId = 0;
     bool checked = false;
     QList<HashFileInfoStruct> * const list = result.data();
-    QSetIterator<QString> it(hashByHash.keys().toSet());
-    while(it.hasNext())
+    for(const QString &key: hashByHash.uniqueKeys())
     {
-        const QString &key = it.next();
         checked = false;
         QList<HashFileInfoStruct> values = hashByHash.values(key);
         QMutableListIterator<HashFileInfoStruct> vIt(values);

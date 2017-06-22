@@ -2,7 +2,6 @@
 #define DUPLICATEFINDER_H
 #include <QObject>
 #include <QMutableListIterator>
-#include <QListIterator>
 #include <QList>
 #include <QFileInfo>
 #include <QCryptographicHash>
