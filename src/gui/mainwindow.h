@@ -3,29 +3,20 @@
 
 #include <QMainWindow>
 #include <QListWidgetItem>
-#include <QTableWidgetItem>
 #include <QDir>
 #include <QList>
 #include <QCryptographicHash>
 #ifdef MYPREFIX_DEBUG
 #include <QDebug>
 #endif
-#include <QListWidgetItem>
 #include <QCryptographicHash>
 #include <QComboBox>
 #include <QStringList>
-#include <QTableWidgetItem>
 #include <QHeaderView>
 #include <QFileInfo>
-#include <QList>
-#include <QVector>
 #include <QHash>
 #include <QFile>
 #include <QFileDialog>
-#include <QDirIterator>
-#include <QDir>
-#include <QMutableListIterator>
-#include <QListIterator>
 #include "../hashfileinfostruct.h"
 #include "../worker/duplicatefinder.h"
 #include "../worker/dircomparator.h"
@@ -38,17 +29,12 @@
 #include "../tablemodel/emptyfoldertablemodel.h"
 #include "dialog/filtersdialog.h"
 #include <QThread>
-#include <QComboBox>
-#include <QTableWidget>
 #include <QListWidget>
 #include <QRegExp>
-#include <QStringListIterator>
-#include <QStringList>
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QMimeData>
 #include <QDragEnterEvent>
-
 #include <QProcess>
 #if defined(USE_WIN_EXTRAS) && defined(Q_OS_WIN)
 #include <QWinTaskbarButton>
