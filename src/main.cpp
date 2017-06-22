@@ -1,7 +1,5 @@
 #include "src/gui/mainwindow.h"
 #include <QApplication>
-#include <QFileInfo>
-#include <QCoreApplication>
 #include "hashfileinfostruct.h"
 #include <QSharedPointer>
 #include <QTranslator>
