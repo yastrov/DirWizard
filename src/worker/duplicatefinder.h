@@ -28,9 +28,7 @@ private:
     QMultiHash<qint64, HashFileInfoStruct> hashBySize;
     QMultiHash<QString, HashFileInfoStruct> hashByHash;
     q_coll_s_t resultCount;
-    void clearNoDuplicatedSize();
     void makeHashByHashes();
-    void clearNoDuplicatedHashes();
     void reduceToResult();
     QSharedPtrListHFIS result;
 

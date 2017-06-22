@@ -1,5 +1,16 @@
 #include "duplicatefinder.h"
 
+template<typename container>
+void removeUniqueKeysFromMultHash(container& hash)
+{
+    for(const auto& key: hash.uniqueKeys())
+    {
+       if(hash.count(key) < 2) {
+           hash.remove(key);
+       }
+    }
+}
+
 DuplicateFinder::DuplicateFinder(QCryptographicHash::Algorithm hash, QObject *parent) :
     HashDirWalker(hash, parent),
     resultCount(0)
@@ -36,7 +47,7 @@ void DuplicateFinder::process()
         return;
     }
     const int before = hashBySize.size();
-    clearNoDuplicatedSize();
+    removeUniqueKeysFromMultHash(hashBySize);
     processed_files += hashBySize.size() - before;
     if(QThread::currentThread()->isInterruptionRequested())
     {
@@ -50,7 +61,7 @@ void DuplicateFinder::process()
         emit finished();
         return;
     }
-    clearNoDuplicatedHashes();
+    removeUniqueKeysFromMultHash(hashByHash);
     if(QThread::currentThread()->isInterruptionRequested())
     {
         emit finished();
@@ -80,20 +91,6 @@ void DuplicateFinder::processFile(const QString &fileName)
     }
 }
 
-void DuplicateFinder::clearNoDuplicatedSize()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "DuplicateFinder::clearNoDuplicatedSize";
-#endif
-    QListIterator<qint64> it(hashBySize.keys());
-    while(it.hasNext())
-    {
-       const qint64 &key = it.next();
-       if(hashBySize.count(key) < 2) {
-           hashBySize.remove(key);
-       }
-    }
-}
 
 void DuplicateFinder::makeHashByHashes()
 {
@@ -121,24 +118,6 @@ void DuplicateFinder::makeHashByHashes()
            emit currentProcessedFiles(processed_files);
     }
     hashBySize.clear();
-}
-
-void DuplicateFinder::clearNoDuplicatedHashes()
-{
-#ifdef MYPREFIX_DEBUG
-    qDebug() << "DuplicateFinder::clearNoDuplicatedHashes";
-#endif
-    QSetIterator<QString> it(hashByHash.keys().toSet());
-    int count;
-    while(it.hasNext())
-    {
-       const QString &key = it.next();
-       count = hashByHash.count(key);
-       if(count < 2) {
-           hashByHash.remove(key);
-       } else {
-       }
-    }
 }
 
 void DuplicateFinder::reduceToResult()
