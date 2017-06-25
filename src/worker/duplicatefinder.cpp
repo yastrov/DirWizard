@@ -135,6 +135,9 @@ void DuplicateFinder::reduceToResult()
     {
         checked = false;
         QList<HashFileInfoStruct> values = hashByHash.values(key);
+        std::sort(values.begin(), values.end(), [](const HashFileInfoStruct &v1, const HashFileInfoStruct &v2)->bool {
+            return v1.fileName < v2.fileName;
+        });
         QMutableListIterator<HashFileInfoStruct> vIt(values);
         while(vIt.hasNext())
         {
