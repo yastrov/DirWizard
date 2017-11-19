@@ -14,10 +14,6 @@ int main(int argc, char *argv[])
     qRegisterMetaType<q_coll_s_t>("q_coll_s_t");
 
     QApplication a(argc, argv);
-    QTranslator qtTranslator;
-    qtTranslator.load("qt_" + QLocale::system().name(),
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    a.installTranslator(&qtTranslator);
 
     QTranslator myappTranslator;
     myappTranslator.load(HELPER::getTranslateLocation());
