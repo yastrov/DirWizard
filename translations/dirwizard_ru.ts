@@ -60,9 +60,9 @@
     <message>
         <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="239"/>
         <location filename="../src/tablemodel/duplicatestablemodel.cpp" line="254"/>
-        <source>In one group all files have been checked!.
+        <source>In groups: %1 all files have been checked!
 Do you want to continue?</source>
-        <translation>В одной из групп выделены все элементы!\nВы хотите продолжить?</translation>
+        <translation>В одной из групп: %1 выделены все элементы!\nВы хотите продолжить?</translation>
     </message>
 </context>
 <context>

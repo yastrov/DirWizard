@@ -34,7 +34,7 @@ public:
     enum Column {checked, fileName, groupId, size, path, hash};
 
     QString getFileName(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    bool checkOneInGroupUnChecked();
+    QList<uint> checkOneInGroupUnChecked();
     void removeCheckedFunc() Q_DECL_OVERRIDE;
 #if defined(Q_OS_WIN)
     void removeCheckedToTrashFunc() Q_DECL_OVERRIDE;

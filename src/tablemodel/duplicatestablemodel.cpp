@@ -206,8 +206,9 @@ QString DuplicatesTableModel::getFileName(const QModelIndex &index) const
     return item.fileName;
 }
 
-bool DuplicatesTableModel::checkOneInGroupUnChecked()
+QList<uint> DuplicatesTableModel::checkOneInGroupUnChecked()
 {
+    QList<uint> groups;
     sort(Column::groupId);
     uint currentGroup = 0;
     int numOfAll = 0;
@@ -215,10 +216,10 @@ bool DuplicatesTableModel::checkOneInGroupUnChecked()
     QList<HashFileInfoStruct> * const list = items.data();
     for(const HashFileInfoStruct &s: qAsConst(*list)){
         if(s.groupID != currentGroup) {
-            currentGroup = s.groupID;
             if(numOfAll == numOfChecked && numOfAll != 0) {
-                return false;
+                groups.append(currentGroup);
             }
+            currentGroup = s.groupID;
             numOfAll = 0;
             numOfChecked = 0;
         }
@@ -226,17 +227,23 @@ bool DuplicatesTableModel::checkOneInGroupUnChecked()
         ++numOfAll;
     }
     if(numOfAll == numOfChecked && numOfAll != 0) {
-        return false;
+        groups.append(currentGroup);
     }
-    return true;
+    return groups;
 }
 
 void DuplicatesTableModel::removeCheckedFunc()
 {
-    if(!checkOneInGroupUnChecked()) {
+    const QList<uint> groups = checkOneInGroupUnChecked();
+    if(!groups.empty()) {
+        QStringList l;
+        for(const uint& e: qAsConst(groups)) {
+            l << QString("%1").arg(e);
+        }
+        const QString groups_str = l.join(", ");
         QMessageBox::StandardButton reply = QMessageBox::question(nullptr,
                                                                   qApp->applicationName(),
-                                                                  tr("In one group all files have been checked!.\nDo you want to continue?"),
+                                                                  tr("In groups: %1 all files have been checked!\nDo you want to continue?").arg(groups_str),
                                                                   QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::No) {
             return;
@@ -248,10 +255,16 @@ void DuplicatesTableModel::removeCheckedFunc()
 #if defined(Q_OS_WIN)
 void DuplicatesTableModel::removeCheckedToTrashFunc()
 {
-    if(!checkOneInGroupUnChecked()) {
+    const QList<uint> groups = checkOneInGroupUnChecked();
+    if(!groups.empty()) {
+        QStringList l;
+        for(const uint& e: qAsConst(groups)) {
+            l << QString("%1").arg(e);
+        }
+        const QString groups_str = l.join(", ");
         QMessageBox::StandardButton reply = QMessageBox::question(nullptr,
                                                                   qApp->applicationName(),
-                                                                  tr("In one group all files have been checked!.\nDo you want to continue?"),
+                                                                  tr("In groups: %1 all files have been checked!\nDo you want to continue?").arg(groups_str),
                                                                   QMessageBox::Yes|QMessageBox::No);
         if (reply == QMessageBox::No) {
             return;
