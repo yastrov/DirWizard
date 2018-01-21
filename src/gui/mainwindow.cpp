@@ -84,11 +84,12 @@ void MainWindow::initOnceConnectSlots()
     connect(ui->actionSaveAs, &QAction::triggered, this, &MainWindow::on_pushButton_Save_From_Table_clicked);
     connect(ui->actionOpen, &QAction::triggered, this, [this]{
         QTableView * const table = ui->tableView;
+        const QString filters_all = "Text files (*.txt)";
         QString filter = "Text files (*.txt)";
         const QString fileName = QFileDialog::getOpenFileName(this,
                                                             tr("Open File"),
                                              QDir::homePath(),
-                                             "Text files (*.txt)",
+                                             filters_all,
                                              &filter, QFileDialog::DontUseNativeDialog);
             if(!fileName.isNull() && !fileName.isEmpty())
             {
