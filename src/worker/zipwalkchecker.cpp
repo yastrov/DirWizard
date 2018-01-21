@@ -62,39 +62,33 @@ void ZipWalkChecker::processFile(const QString &fileName)
             QuaCrc32 crc32Obj;
 
             for(bool more=qzip.goToFirstFile(); more; more=qzip.goToNextFile()) {
-                if(qzip.getZipError() != UNZ_OK) {
-                    isDamagedZip = true;
-                    break;
-                }
+                crc32Obj.reset();
                 if (!qzip.getCurrentFileInfo(&zipInfo)) {
                     isDamagedZip = true;
                     break;
                 }
-                file.open(QIODevice::ReadOnly);
-                if(file.getZipError() != UNZ_OK) {
-                    isDamagedZip = true;
-                    break;
-                }
+                if(file.open(QIODevice::ReadOnly)) {
 #ifdef MYPREFIX_DEBUG
-                qDebug() << "innerFile: " << file.getActualFileName();
+                    qDebug() << "innerFile: " << file.getActualFileName();
 #endif
-                while(!file.atEnd()) {
-                    const qint64 readLen = file.read(buffer, bufferSize);
-                    if (readLen <= 0)
-                        break;
-                    crc32Obj.update(QByteArray(buffer, readLen));
-                }
-                if(crc32Obj.value() != zipInfo.crc) {
-                    isDamagedZip = true;
+                    while(!file.atEnd()) {
+                        const qint64 readLen = file.read(buffer, bufferSize);
+                        if (readLen <= 0)
+                            break;
+                        crc32Obj.update(QByteArray(buffer, readLen));
+                    }
                     file.close();
-                    break;
+                    if(crc32Obj.value() != zipInfo.crc) {
+                        isDamagedZip = true;
+                        break;
+                    }
+
+                } else {
+                    if(qzip.getZipError() != UNZ_OK) {
+                        isDamagedZip = true;
+                        break;
+                    }
                 }
-                file.close();
-                if(file.getZipError() != UNZ_OK) {
-                    isDamagedZip = true;
-                    break;
-                }
-                crc32Obj.reset();
             }
         }
         if(qzip.isOpen())
